@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "@babel/preset-react": "^7.0.0"
+    "@babel/preset-react": "^7.0.0",
+    "@symfony/webpack-encore": "^0.28.0"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -10,6 +11,8 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
-    "reactstrap": "^8.0.1"
+    "reactstrap": "^8.0.1",
+    "webpack-notifier": "^1.8.0",
+    "yarn": "^1.17.3"
   }
 }
