@@ -6,12 +6,12 @@ use App\Entity\Brand;
 use App\Entity\Model;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
+use App\Service\ApiJsonResponseBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/model")
@@ -21,25 +21,17 @@ class ModelController extends AbstractController
     /**
      * @Route("/", name="model_index", methods={"GET"})
      */
-    public function index(SerializerInterface $serializer, ModelRepository $modelRepository): JsonResponse
+    public function index(ApiJsonResponseBuilder $builder, ModelRepository $modelRepository): JsonResponse
     {
-        return new JsonResponse($serializer->serialize($modelRepository->findAll(), 'json'), 200, [
-            'Access-Control-Allow-Origin' => 'http://localhost:3000'
-        ], true);
+        return $builder->buildResponse($modelRepository->findAll());
     }
 
     /**
      * @Route("/brand/{brand}", name="model_by_brand", methods={"GET"})
      */
-    public function showByBrand(SerializerInterface $serializer, Brand $brand): JsonResponse
+    public function showByBrand(ApiJsonResponseBuilder $builder, Brand $brand): JsonResponse
     {
-        return new JsonResponse($serializer->serialize($brand->getModels(), 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]), 200, [
-            'Access-Control-Allow-Origin' => 'http://localhost:3000'
-        ], true);
+        return $builder->buildResponse($brand->getModels());
     }
 
     /**

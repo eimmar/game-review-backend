@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Entity\Brand;
 use App\Form\BrandType;
 use App\Repository\BrandRepository;
+use App\Service\ApiJsonResponseBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/brand")
@@ -20,15 +20,9 @@ class BrandController extends AbstractController
     /**
      * @Route("/", name="brand_index", methods={"GET"})
      */
-    public function index(SerializerInterface $serializer, BrandRepository $brandRepository): JsonResponse
+    public function index(ApiJsonResponseBuilder $builder, BrandRepository $brandRepository): JsonResponse
     {
-        return new JsonResponse($serializer->serialize($brandRepository->findAll(), 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]), 200, [
-            'Access-Control-Allow-Origin' => 'http://localhost:3000'
-        ], true);
+        return $builder->buildResponse($brandRepository->findAll());
     }
 
     /**
