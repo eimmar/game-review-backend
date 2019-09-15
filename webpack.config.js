@@ -11,7 +11,8 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
-    .enableReactPreset()
+    // .enableReactPreset()
+    .enableSassLoader()
 
     .configureBabel(function (babelConfig) {
         babelConfig.plugins = [

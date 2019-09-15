@@ -12,6 +12,7 @@ class IndexController extends AbstractController
      */
     public function index()
     {
+        //yarn encore dev --watch
         return $this->render('index/index.html.twig');
     }
 }
