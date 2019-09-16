@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VehicleRepository")
@@ -19,16 +20,19 @@ class Vehicle
     private $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $brand;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $model;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="integer")
      */
     private $madeFrom;
@@ -39,21 +43,25 @@ class Vehicle
     private $madeTo;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $fuelType;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="integer")
      */
     private $engineCapacity;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="integer")
      */
     private $power;
 
     /**
+     * @Assert\NotBlank
      * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="vehicle", orphanRemoval=true)
      */
     private $reviews;

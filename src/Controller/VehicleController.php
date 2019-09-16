@@ -18,7 +18,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class VehicleController extends AbstractController
 {
     /**
+     * @Route("/", name="vehicle_options", methods={"OPTIONS"})
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
+     */
+    public function options(ApiJsonResponseBuilder $builder): JsonResponse
+    {
+        return $builder->preflightResponse();
+    }
+
+    /**
+     * @Route("/{id}", name="individual_vehicle_options", methods={"OPTIONS"})
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
+     */
+    public function individualOptions(ApiJsonResponseBuilder $builder): JsonResponse
+    {
+        return $builder->preflightResponse();
+    }
+
+    /**
      * @Route("/", name="vehicle_index", methods={"GET"})
+     * @param ApiJsonResponseBuilder $builder
+     * @param VehicleRepository $vehicleRepository
+     * @return JsonResponse
      */
     public function index(ApiJsonResponseBuilder $builder, VehicleRepository $vehicleRepository): JsonResponse
     {
@@ -26,69 +49,78 @@ class VehicleController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="vehicle_new", methods={"GET","POST"})
+     * @Route("/", name="vehicle_new", methods={"POST"})
+     * @param Request $request
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ApiJsonResponseBuilder $builder): JsonResponse
     {
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleType::class, $vehicle);
-        $form->handleRequest($request);
+        $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($vehicle);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('vehicle_index');
+            try {
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                return $builder->buildResponse('Incorrect data.', 400);
+            }
+            return $builder->buildResponse($vehicle);
         }
 
-        return $this->render('vehicle/new.html.twig', [
-            'vehicle' => $vehicle,
-            'form' => $form->createView(),
-        ]);
+        return $builder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="vehicle_show", methods={"GET"})
+     * @param ApiJsonResponseBuilder $builder
+     * @param Vehicle $vehicle
+     * @return JsonResponse
      */
-    public function show(Vehicle $vehicle): Response
+    public function show(ApiJsonResponseBuilder $builder, Vehicle $vehicle): JsonResponse
     {
-        return $this->render('vehicle/show.html.twig', [
-            'vehicle' => $vehicle,
-        ]);
+        return $builder->buildResponse($vehicle);
     }
 
     /**
-     * @Route("/{id}/edit", name="vehicle_edit", methods={"GET","POST"})
+     * @Route("/{id}", name="vehicle_edit", methods={"PUT"})
+     * @param Request $request
+     * @param Vehicle $vehicle
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function edit(Request $request, Vehicle $vehicle): Response
+    public function edit(Request $request, Vehicle $vehicle, ApiJsonResponseBuilder $builder): JsonResponse
     {
         $form = $this->createForm(VehicleType::class, $vehicle);
-        $form->handleRequest($request);
+        $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('vehicle_index');
+        if ($form->isValid()) {
+            try {
+                $this->getDoctrine()->getManager()->flush();
+            } catch (\Exception $e) {
+                return $builder->buildResponse('Incorrect data.', 400);
+            }
+            return $builder->buildResponse($vehicle);
         }
 
-        return $this->render('vehicle/edit.html.twig', [
-            'vehicle' => $vehicle,
-            'form' => $form->createView(),
-        ]);
+        return $builder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="vehicle_delete", methods={"DELETE"})
+     * @param Vehicle $vehicle
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function delete(Request $request, Vehicle $vehicle): Response
+    public function delete(Vehicle $vehicle, ApiJsonResponseBuilder $builder): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($vehicle);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($vehicle);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('vehicle_index');
+        return $builder->buildResponse($vehicle);
     }
 }
