@@ -25,7 +25,7 @@ class VehicleRepository extends ServiceEntityRepository
     public function findAllWithRatings()
     {
         return $this->createQueryBuilder('v')
-            ->select('v, AVG(r.rating) as rating')
+            ->select('v.id, v.brand, v.model, v.madeFrom, v.madeTo, v.fuelType, v.engineCapacity, v.power, AVG(r.rating) as rating')
             ->leftJoin('v.reviews', 'r')
             ->groupBy('v.id')
             ->getQuery()
