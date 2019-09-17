@@ -81,6 +81,7 @@ class VehicleController extends AbstractController
      */
     public function show(ApiJsonResponseBuilder $builder, Vehicle $vehicle): JsonResponse
     {
+        $vehicle->getReviews();
         return $builder->buildResponse($vehicle);
     }
 

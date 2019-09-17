@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Review;
+use App\Entity\Vehicle;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
 use App\Service\ApiJsonResponseBuilder;
@@ -45,6 +46,14 @@ class ReviewController extends AbstractController
     public function index(ApiJsonResponseBuilder $builder, ReviewRepository $reviewRepository): JsonResponse
     {
         return $builder->buildResponse($reviewRepository->findAll());
+    }
+
+    /**
+     * @Route("/vehicle/{vehicle}", name="reviews_by_vehicle", methods={"GET"})
+     */
+    public function showByVehicle(ApiJsonResponseBuilder $builder, Vehicle $vehicle): JsonResponse
+    {
+        return $builder->buildResponse($vehicle->getReviews());
     }
 
     /**

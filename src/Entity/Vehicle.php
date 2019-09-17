@@ -66,6 +66,11 @@ class Vehicle
      */
     private $reviews;
 
+    /**
+     * @var float|null
+     */
+    private $rating;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
@@ -189,5 +194,21 @@ class Vehicle
         }
 
         return $this;
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getRating()
+    {
+        if ($this->rating === null && $this->getReviews()->count()) {
+            $avg = 0;
+            foreach ($this->getReviews() as $review) {
+                $avg += $review->getRating();
+            }
+            $this->rating = $avg / $this->getReviews()->count();
+        }
+
+        return $this->rating;
     }
 }
