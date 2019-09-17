@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/vehicle")
+ * @Route("/vehicle")
  */
 class VehicleController extends AbstractController
 {
@@ -45,7 +45,7 @@ class VehicleController extends AbstractController
      */
     public function index(ApiJsonResponseBuilder $builder, VehicleRepository $vehicleRepository): JsonResponse
     {
-        return $builder->buildResponse($vehicleRepository->findAll());
+        return $builder->buildResponse($vehicleRepository->findAllWithRatings());
     }
 
     /**

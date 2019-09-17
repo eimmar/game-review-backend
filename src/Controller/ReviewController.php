@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
+use App\Service\ApiJsonResponseBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,79 +18,109 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReviewController extends AbstractController
 {
     /**
-     * @Route("/", name="review_index", methods={"GET"})
+     * @Route("/", name="review_options", methods={"OPTIONS"})
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function index(ReviewRepository $reviewRepository): Response
+    public function options(ApiJsonResponseBuilder $builder): JsonResponse
     {
-        return $this->render('review/index.html.twig', [
-            'reviews' => $reviewRepository->findAll(),
-        ]);
+        return $builder->preflightResponse();
     }
 
     /**
-     * @Route("/new", name="review_new", methods={"GET","POST"})
+     * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function new(Request $request): Response
+    public function individualOptions(ApiJsonResponseBuilder $builder): JsonResponse
+    {
+        return $builder->preflightResponse();
+    }
+
+    /**
+     * @Route("/", name="review_index", methods={"GET"})
+     * @param ApiJsonResponseBuilder $builder
+     * @param ReviewRepository $reviewRepository
+     * @return JsonResponse
+     */
+    public function index(ApiJsonResponseBuilder $builder, ReviewRepository $reviewRepository): JsonResponse
+    {
+        return $builder->buildResponse($reviewRepository->findAll());
+    }
+
+    /**
+     * @Route("/", name="review_new", methods={"POST"})
+     * @param Request $request
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
+     */
+    public function new(Request $request, ApiJsonResponseBuilder $builder): JsonResponse
     {
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
-        $form->handleRequest($request);
+        $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($review);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('review_index');
+            try {
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                return $builder->buildResponse('Incorrect data.', 400);
+            }
+            return $builder->buildResponse($review);
         }
 
-        return $this->render('review/new.html.twig', [
-            'review' => $review,
-            'form' => $form->createView(),
-        ]);
+        return $builder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="review_show", methods={"GET"})
+     * @param ApiJsonResponseBuilder $builder
+     * @param Review $review
+     * @return JsonResponse
      */
-    public function show(Review $review): Response
+    public function show(ApiJsonResponseBuilder $builder, Review $review): JsonResponse
     {
-        return $this->render('review/show.html.twig', [
-            'review' => $review,
-        ]);
+        return $builder->buildResponse($review);
     }
 
     /**
-     * @Route("/{id}/edit", name="review_edit", methods={"GET","POST"})
+     * @Route("/{id}", name="review_edit", methods={"PUT"})
+     * @param Request $request
+     * @param Review $review
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function edit(Request $request, Review $review): Response
+    public function edit(Request $request, Review $review, ApiJsonResponseBuilder $builder): JsonResponse
     {
         $form = $this->createForm(ReviewType::class, $review);
-        $form->handleRequest($request);
+        $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('review_index');
+        if ($form->isValid()) {
+            try {
+                $this->getDoctrine()->getManager()->flush();
+            } catch (\Exception $e) {
+                return $builder->buildResponse('Incorrect data.', 400);
+            }
+            return $builder->buildResponse($review);
         }
 
-        return $this->render('review/edit.html.twig', [
-            'review' => $review,
-            'form' => $form->createView(),
-        ]);
+        return $builder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="review_delete", methods={"DELETE"})
+     * @param Review $review
+     * @param ApiJsonResponseBuilder $builder
+     * @return JsonResponse
      */
-    public function delete(Request $request, Review $review): Response
+    public function delete(Review $review, ApiJsonResponseBuilder $builder): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$review->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($review);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($review);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('review_index');
+        return $builder->buildResponse($review);
     }
 }

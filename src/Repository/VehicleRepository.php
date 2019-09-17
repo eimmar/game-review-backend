@@ -19,22 +19,18 @@ class VehicleRepository extends ServiceEntityRepository
         parent::__construct($registry, Vehicle::class);
     }
 
-    // /**
-    //  * @return Vehicle[] Returns an array of Vehicle objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Vehicle[] Returns an array of Vehicle objects
+     */
+    public function findAllWithRatings()
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('v, AVG(r.rating) as rating')
+            ->leftJoin('v.reviews', 'r')
+            ->groupBy('v.id')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getScalarResult();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Vehicle
