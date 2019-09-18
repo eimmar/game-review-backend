@@ -27,6 +27,7 @@ class Vehicle
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $model;
@@ -44,6 +45,7 @@ class Vehicle
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $fuelType;

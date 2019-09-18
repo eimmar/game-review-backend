@@ -14,15 +14,15 @@ class ReviewType extends AbstractType
         $builder
             ->add('comment')
             ->add('rating')
-            ->add('dateCreated')
-            ->add('vehicle')
-        ;
+            ->add('vehicle');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Review::class,
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ]);
     }
 }
