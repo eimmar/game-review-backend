@@ -6,9 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReviewReportRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class ReviewReport
 {
+    const STATUS_NEW = 0;
+    const STATUS_APPROVED = 1;
+    const STATUS_DECLINED = 2;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -88,5 +93,14 @@ class ReviewReport
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setDateCreated(new \DateTime())
+            ->setStatus(self::STATUS_NEW);
     }
 }

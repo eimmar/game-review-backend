@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/review/report")
+ * @Route("/review-report")
  */
 class ReviewReportController extends AbstractController
 {

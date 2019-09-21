@@ -13,7 +13,6 @@ class ReviewReportType extends AbstractType
     {
         $builder
             ->add('comment')
-            ->add('dateCreated')
             ->add('status')
             ->add('review')
         ;
@@ -23,6 +22,8 @@ class ReviewReportType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ReviewReport::class,
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ]);
     }
 }
