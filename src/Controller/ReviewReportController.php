@@ -12,24 +12,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/review-report")
- * @IsGranted({"ROLE_USER"})
  */
 class ReviewReportController extends BaseApiController
 {
     /**
      * @Route("/", name="reviewReport_options", methods={"OPTIONS"})
-     * @return JsonResponse
-     */
-    public function options(): JsonResponse
-    {
-        return $this->apiResponseBuilder->preflightResponse();
-    }
-
-    /**
      * @Route("/{id}", name="individual_reviewReport_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
-    public function individualOptions(): JsonResponse
+    public function options(): JsonResponse
     {
         return $this->apiResponseBuilder->preflightResponse();
     }
@@ -47,6 +38,7 @@ class ReviewReportController extends BaseApiController
 
     /**
      * @Route("/", name="reviewReport_new", methods={"POST"})
+     * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @return JsonResponse
      */

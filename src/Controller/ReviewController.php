@@ -18,18 +18,11 @@ class ReviewController extends BaseApiController
 {
     /**
      * @Route("/", name="review_options", methods={"OPTIONS"})
+     * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
+     * @Route("/vehicle/{vehicle}", name="vehicle_review_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
-    {
-        return $this->apiResponseBuilder->preflightResponse();
-    }
-
-    /**
-     * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
-     * @return JsonResponse
-     */
-    public function individualOptions(): JsonResponse
     {
         return $this->apiResponseBuilder->preflightResponse();
     }
