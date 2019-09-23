@@ -55,6 +55,17 @@ class ApiJsonResponseBuilder
     }
 
     /**
+     * @param string $message
+     * @param int $status
+     * @param array $headers
+     * @return JsonResponse
+     */
+    public function buildMessageResponse($message, $status = 200, $headers = [])
+    {
+        return $this->buildResponse(['message' => $message], $status, $headers);
+    }
+
+    /**
      * @param FormInterface $form
      * @return JsonResponse
      */
@@ -68,6 +79,6 @@ class ApiJsonResponseBuilder
            $msg = 'Invalid form data.';
        }
 
-       return $this->buildResponse($msg, 400);
+       return $this->buildResponse(['message' => $msg], 400);
     }
 }

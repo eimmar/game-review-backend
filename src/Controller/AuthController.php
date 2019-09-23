@@ -48,10 +48,10 @@ class AuthController extends BaseApiController
             try {
                 $userManager->updateUser($user, true);
             } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
 
-            return $this->apiResponseBuilder->buildResponse($user->getUsername(). " has been registered!");
+            return $this->apiResponseBuilder->buildMessageResponse($user->getUsername(). " has been registered!");
         }
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
     }

@@ -63,7 +63,7 @@ class ReviewController extends BaseApiController
             try {
                 $entityManager->flush();
             } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
             return $this->apiResponseBuilder->buildResponse($review);
         }
@@ -97,7 +97,7 @@ class ReviewController extends BaseApiController
             try {
                 $this->getDoctrine()->getManager()->flush();
             } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
             return $this->apiResponseBuilder->buildResponse($review);
         }
