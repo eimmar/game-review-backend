@@ -5,8 +5,7 @@ namespace App\Controller;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
-use App\Service\ApiJsonResponseBuilder;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,46 +13,43 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/vehicle")
  */
-class VehicleController extends AbstractController
+class VehicleController extends BaseApiController
 {
     /**
      * @Route("/", name="vehicle_options", methods={"OPTIONS"})
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function options(ApiJsonResponseBuilder $builder): JsonResponse
+    public function options(): JsonResponse
     {
-        return $builder->preflightResponse();
+        return $this->apiResponseBuilder->preflightResponse();
     }
 
     /**
      * @Route("/{id}", name="individual_vehicle_options", methods={"OPTIONS"})
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function individualOptions(ApiJsonResponseBuilder $builder): JsonResponse
+    public function individualOptions(): JsonResponse
     {
-        return $builder->preflightResponse();
+        return $this->apiResponseBuilder->preflightResponse();
     }
 
     /**
      * @Route("/", name="vehicle_index", methods={"GET"})
-     * @param ApiJsonResponseBuilder $builder
      * @param VehicleRepository $vehicleRepository
      * @return JsonResponse
      */
-    public function index(ApiJsonResponseBuilder $builder, VehicleRepository $vehicleRepository): JsonResponse
+    public function index(VehicleRepository $vehicleRepository): JsonResponse
     {
-        return $builder->buildResponse($vehicleRepository->findAllWithRatings());
+        return $this->apiResponseBuilder->buildResponse($vehicleRepository->findAllWithRatings());
     }
 
     /**
      * @Route("/", name="vehicle_new", methods={"POST"})
+     * @IsGranted({"ROLE_ADMIN"})
      * @param Request $request
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function new(Request $request, ApiJsonResponseBuilder $builder): JsonResponse
+    public function new(Request $request): JsonResponse
     {
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleType::class, $vehicle);
@@ -65,34 +61,33 @@ class VehicleController extends AbstractController
             try {
                 $entityManager->flush();
             } catch (\Exception $e) {
-                return $builder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
             }
-            return $builder->buildResponse($vehicle);
+            return $this->apiResponseBuilder->buildResponse($vehicle);
         }
 
-        return $builder->buildFormErrorResponse($form);
+        return $this->apiResponseBuilder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="vehicle_show", methods={"GET"})
-     * @param ApiJsonResponseBuilder $builder
      * @param Vehicle $vehicle
      * @return JsonResponse
      */
-    public function show(ApiJsonResponseBuilder $builder, Vehicle $vehicle): JsonResponse
+    public function show(Vehicle $vehicle): JsonResponse
     {
         $vehicle->getReviews();
-        return $builder->buildResponse($vehicle);
+        return $this->apiResponseBuilder->buildResponse($vehicle);
     }
 
     /**
      * @Route("/{id}", name="vehicle_edit", methods={"PUT"})
+     * @IsGranted({"ROLE_ADMIN"})
      * @param Request $request
      * @param Vehicle $vehicle
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function edit(Request $request, Vehicle $vehicle, ApiJsonResponseBuilder $builder): JsonResponse
+    public function edit(Request $request, Vehicle $vehicle): JsonResponse
     {
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->submit(json_decode($request->getContent(), true));
@@ -101,26 +96,26 @@ class VehicleController extends AbstractController
             try {
                 $this->getDoctrine()->getManager()->flush();
             } catch (\Exception $e) {
-                return $builder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
             }
-            return $builder->buildResponse($vehicle);
+            return $this->apiResponseBuilder->buildResponse($vehicle);
         }
 
-        return $builder->buildFormErrorResponse($form);
+        return $this->apiResponseBuilder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="vehicle_delete", methods={"DELETE"})
+     * @IsGranted({"ROLE_SUPER_ADMIN"})
      * @param Vehicle $vehicle
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function delete(Vehicle $vehicle, ApiJsonResponseBuilder $builder): JsonResponse
+    public function delete(Vehicle $vehicle): JsonResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($vehicle);
         $entityManager->flush();
 
-        return $builder->buildResponse($vehicle);
+        return $this->apiResponseBuilder->buildResponse($vehicle);
     }
 }

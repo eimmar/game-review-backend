@@ -30,7 +30,7 @@ class ApiJsonResponseBuilder
     {
         $headers = [
             'Access-Control-Allow-Methods' => 'GET, POST, PUT, OPTIONS, DELETE',
-            'Access-Control-Allow-Headers' => 'Origin, Authorization, X-Requested-With, Content-Type, Accept, Cache-Control'
+            'Access-Control-Allow-Headers' => '*'
         ];
         return $this->buildResponse([], 200, $headers);
     }
@@ -60,7 +60,7 @@ class ApiJsonResponseBuilder
      */
     public function buildFormErrorResponse(FormInterface $form)
     {
-       $currentError =  $form->getErrors(true)->current();
+       $currentError = $form->getErrors(true)->current();
 
        if ($currentError) {
            $msg = sprintf('%s: %s', ucfirst($currentError->getOrigin()->getName()), $currentError->getMessage());

@@ -29,3 +29,11 @@ services:
     App\Service\ApiJsonResponseBuilder:
         arguments:
             $corsAllowedUrls: ['http://localhost:3000']
+
+    App\Security\Http\Authentication\CORSAuthenticationSuccessHandler:
+        arguments:
+            $corsAllowedUrls: ['http://localhost:3000']
+
+    App\Security\Http\Authentication\CORSAuthenticationFailureHandler:
+        arguments:
+            $corsAllowedUrls: ['http://localhost:3000']

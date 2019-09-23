@@ -5,55 +5,52 @@ namespace App\Controller;
 use App\Entity\ReviewReport;
 use App\Form\ReviewReportType;
 use App\Repository\ReviewReportRepository;
-use App\Service\ApiJsonResponseBuilder;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/review-report")
+ * @IsGranted({"ROLE_USER"})
  */
-class ReviewReportController extends AbstractController
+class ReviewReportController extends BaseApiController
 {
     /**
      * @Route("/", name="reviewReport_options", methods={"OPTIONS"})
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function options(ApiJsonResponseBuilder $builder): JsonResponse
+    public function options(): JsonResponse
     {
-        return $builder->preflightResponse();
+        return $this->apiResponseBuilder->preflightResponse();
     }
 
     /**
      * @Route("/{id}", name="individual_reviewReport_options", methods={"OPTIONS"})
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function individualOptions(ApiJsonResponseBuilder $builder): JsonResponse
+    public function individualOptions(): JsonResponse
     {
-        return $builder->preflightResponse();
+        return $this->apiResponseBuilder->preflightResponse();
     }
 
     /**
      * @Route("/", name="reviewReport_index", methods={"GET"})
-     * @param ApiJsonResponseBuilder $builder
+     * @IsGranted({"ROLE_ADMIN"})
      * @param ReviewReportRepository $reviewReportRepository
      * @return JsonResponse
      */
-    public function index(ApiJsonResponseBuilder $builder, ReviewReportRepository $reviewReportRepository): JsonResponse
+    public function index(ReviewReportRepository $reviewReportRepository): JsonResponse
     {
-        return $builder->buildResponse($reviewReportRepository->findAll());
+        return $this->apiResponseBuilder->buildResponse($reviewReportRepository->findAll());
     }
 
     /**
      * @Route("/", name="reviewReport_new", methods={"POST"})
      * @param Request $request
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function new(Request $request, ApiJsonResponseBuilder $builder): JsonResponse
+    public function new(Request $request): JsonResponse
     {
         $reviewReport = new ReviewReport();
         $form = $this->createForm(ReviewReportType::class, $reviewReport);
@@ -65,33 +62,33 @@ class ReviewReportController extends AbstractController
             try {
                 $entityManager->flush();
             } catch (\Exception $e) {
-                return $builder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
             }
-            return $builder->buildResponse($reviewReport);
+            return $this->apiResponseBuilder->buildResponse($reviewReport);
         }
 
-        return $builder->buildFormErrorResponse($form);
+        return $this->apiResponseBuilder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="reviewReport_show", methods={"GET"})
-     * @param ApiJsonResponseBuilder $builder
+     * @IsGranted({"ROLE_ADMIN"})
      * @param ReviewReport $reviewReport
      * @return JsonResponse
      */
-    public function show(ApiJsonResponseBuilder $builder, ReviewReport $reviewReport): JsonResponse
+    public function show(ReviewReport $reviewReport): JsonResponse
     {
-        return $builder->buildResponse($reviewReport);
+        return $this->apiResponseBuilder->buildResponse($reviewReport);
     }
 
     /**
      * @Route("/{id}", name="reviewReport_edit", methods={"PUT"})
+     * @IsGranted({"ROLE_ADMIN"})
      * @param Request $request
      * @param ReviewReport $reviewReport
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function edit(Request $request, ReviewReport $reviewReport, ApiJsonResponseBuilder $builder): JsonResponse
+    public function edit(Request $request, ReviewReport $reviewReport): JsonResponse
     {
         $form = $this->createForm(ReviewReportType::class, $reviewReport);
         $form->submit(json_decode($request->getContent(), true));
@@ -100,26 +97,26 @@ class ReviewReportController extends AbstractController
             try {
                 $this->getDoctrine()->getManager()->flush();
             } catch (\Exception $e) {
-                return $builder->buildResponse('Incorrect data.', 400);
+                return $this->apiResponseBuilder->buildResponse('Incorrect data.', 400);
             }
-            return $builder->buildResponse($reviewReport);
+            return $this->apiResponseBuilder->buildResponse($reviewReport);
         }
 
-        return $builder->buildFormErrorResponse($form);
+        return $this->apiResponseBuilder->buildFormErrorResponse($form);
     }
 
     /**
      * @Route("/{id}", name="reviewReport_delete", methods={"DELETE"})
+     * @IsGranted({"ROLE_SUPER_ADMIN"})
      * @param ReviewReport $reviewReport
-     * @param ApiJsonResponseBuilder $builder
      * @return JsonResponse
      */
-    public function delete(ReviewReport $reviewReport, ApiJsonResponseBuilder $builder): JsonResponse
+    public function delete(ReviewReport $reviewReport): JsonResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($reviewReport);
         $entityManager->flush();
 
-        return $builder->buildResponse($reviewReport);
+        return $this->apiResponseBuilder->buildResponse($reviewReport);
     }
 }
