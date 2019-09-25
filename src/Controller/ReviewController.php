@@ -34,7 +34,7 @@ class ReviewController extends BaseApiController
      */
     public function index(ReviewRepository $reviewRepository): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($reviewRepository->findAll());
+        return $this->apiResponseBuilder->buildResponse($reviewRepository->findAllForApi());
     }
 
     /**
