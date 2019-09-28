@@ -34,7 +34,12 @@ class ReviewController extends BaseApiController
      */
     public function index(ReviewRepository $reviewRepository): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($reviewRepository->findAllForApi());
+        $reviews = $reviewRepository->findAll();
+        $serialized = [];
+        foreach ($reviews as $review) {
+            $serialized[] = $review->serialize();
+        }
+        return $this->apiResponseBuilder->buildResponse($serialized);
     }
 
     /**
