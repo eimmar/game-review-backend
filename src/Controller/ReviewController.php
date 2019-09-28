@@ -65,7 +65,7 @@ class ReviewController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($review);
+            return $this->apiResponseBuilder->buildResponse($review->serialize());
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
@@ -78,7 +78,7 @@ class ReviewController extends BaseApiController
      */
     public function show(Review $review): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($review);
+        return $this->apiResponseBuilder->buildResponse($review->serialize());
     }
 
     /**
@@ -99,7 +99,7 @@ class ReviewController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($review);
+            return $this->apiResponseBuilder->buildResponse($review->serialize());
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
@@ -117,6 +117,6 @@ class ReviewController extends BaseApiController
         $entityManager->remove($review);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($review);
+        return $this->apiResponseBuilder->buildResponse($review->serialize());
     }
 }

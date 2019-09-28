@@ -147,4 +147,21 @@ class Review
     {
         $this->setDateCreated(new \DateTime());
     }
+
+    /**
+     * @return array
+     */
+    public function serialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'vehicle' => $this->getVehicle()->serialize(),
+            'comment' => $this->getComment(),
+            'rating' => $this->getRating(),
+            'dateCreated' => $this->getDateCreated(),
+            'reviewReports' => $this->getReviewReports()->map(function (ReviewReport $rr) {
+                return $rr->serialize();
+            })
+        ];
+    }
 }

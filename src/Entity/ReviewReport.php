@@ -103,4 +103,26 @@ class ReviewReport
         $this->setDateCreated(new \DateTime())
             ->setStatus(self::STATUS_NEW);
     }
+
+    public function serialize($withReview = false)
+    {
+        $data = [
+            'id' => $this->getId(),
+            'comment' => $this->getComment(),
+            'dateCreated' => $this->getDateCreated(),
+            'status' => $this->getStatus(),
+        ];
+
+        if ($withReview) {
+            $data['review'] = [
+                'id' => $this->getReview()->getId(),
+                'vehicle' => $this->getReview()->getVehicle()->serialize(),
+                'comment' => $this->getReview()->getComment(),
+                'rating' => $this->getReview()->getRating(),
+                'dateCreated' => $this->getDateCreated(),
+            ];
+        }
+
+        return $data;
+    }
 }

@@ -213,4 +213,19 @@ class Vehicle
 
         return $this->rating;
     }
+
+    public function serialize()
+    {
+        return [
+            "id" => $this->getId(),
+            "brand" => $this->getBrand(),
+            "model" => $this->getModel(),
+            "madeFrom" => $this->getMadeFrom(),
+            "madeTo" => $this->getMadeTo(),
+            "fuelType" => $this->getFuelType(),
+            "engineCapacity" => $this->getEngineCapacity(),
+            "power" => $this->getPower(),
+            'rating' => $this->getRating()
+        ];
+    }
 }
