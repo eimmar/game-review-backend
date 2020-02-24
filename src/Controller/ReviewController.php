@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Review;
-use App\Entity\Vehicle;
+use App\Entity\Game;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -45,7 +45,7 @@ class ReviewController extends BaseApiController
     /**
      * @Route("/vehicle/{vehicle}", name="reviews_by_vehicle", methods={"GET"})
      */
-    public function showByVehicle(Vehicle $vehicle): JsonResponse
+    public function showByVehicle(Game $vehicle): JsonResponse
     {
         return $this->apiResponseBuilder->buildResponse($vehicle->getReviews());
     }

@@ -22,7 +22,7 @@ class Review
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Vehicle", inversedBy="reviews")
+     * @ORM\ManyToOne(targetEntity="Game", inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
      */
     private $vehicle;
@@ -61,12 +61,12 @@ class Review
         return $this->id;
     }
 
-    public function getVehicle(): ?Vehicle
+    public function getVehicle(): ?Game
     {
         return $this->vehicle;
     }
 
-    public function setVehicle(?Vehicle $vehicle): self
+    public function setVehicle(?Game $vehicle): self
     {
         $this->vehicle = $vehicle;
 

@@ -27,7 +27,7 @@ class AuthController extends BaseApiController
     }
 
     /**
-     * @Route("/register", name="api_auth_register",  methods={"POST"})
+     * @Route("/register", name="api_auth_register", methods={"POST"})
      * @param Request $request
      * @param UserManagerInterface $userManager
      * @return JsonResponse|RedirectResponse
