@@ -46,7 +46,7 @@ class AuthController extends BaseApiController
                 ->setRoles(['ROLE_USER'])
                 ->setSuperAdmin(false);
             try {
-                $userManager->updateUser($user, true);
+                $userManager->updateUser($user);
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
