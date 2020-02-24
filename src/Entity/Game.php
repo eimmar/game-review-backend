@@ -22,52 +22,63 @@ class Game
     /**
      * @Assert\NotBlank
      * @Assert\Length(max="255")
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $externalId;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    private $coverImage;
 
     /**
      * @Assert\NotBlank
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
-    private $mainImagePath;
+    private $summary;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
-    private $developer;
+    private $storyline;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime", length=255, nullable=true)
      */
-    private $publisher;
+    private $releaseDate;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="datetime", length=255, nullable=false)
      */
-    private $ageRating;
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", length=255, nullable=false)
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $category;
 
 //    /**
 //     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\Screenshot", mappedBy="game", orphanRemoval=true)
+//     * @ORM\OneToMany(targetEntity="App\Entity\AgeRating", mappedBy="game", orphanRemoval=true)
 //     */
-//    private $screenShots;
+//    private $ageRatings;
 
-//    /**
+    //    /**
 //     * @Assert\NotBlank
 //     * @ORM\OneToMany(targetEntity="App\Entity\Genre", mappedBy="game", orphanRemoval=true)
 //     */
@@ -75,9 +86,57 @@ class Game
 
 //    /**
 //     * @Assert\NotBlank
+//     * @ORM\OneToMany(targetEntity="App\Entity\Screenshot", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $screenshots;
+
+    //    /**
+//     * @Assert\NotBlank
+//     * @ORM\OneToMany(targetEntity="App\Entity\Genre", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $themes;
+
+//    /**
+//     * @Assert\NotBlank
 //     * @ORM\OneToMany(targetEntity="App\Entity\Platform", mappedBy="game", orphanRemoval=true)
 //     */
 //    private $platforms;
+
+//    /**
+//     * @Assert\NotBlank
+//     * @ORM\OneToMany(targetEntity="App\Entity\AggregatedRating", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $aggregatedRatings;
+
+//    /**
+//     * @Assert\NotBlank
+//     * @ORM\OneToMany(targetEntity="App\Entity\GameMode", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $gameModes;
+
+//    /**
+//     * @Assert\NotBlank
+//     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $similarGames;
+
+//    /**
+//     * @Assert\NotBlank
+//     * @ORM\ManyToMany(targetEntity="App\Entity\TimeToBeat", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $timesToBeat;
+
+//    /**
+//     * @Assert\NotBlank
+//     * @ORM\OneToMany(targetEntity="App\Entity\GameWebsite", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $websites;
+
+//    /**
+//     * @Assert\NotBlank
+//     * @ORM\OneToMany(targetEntity="App\Entity\GameCompany", mappedBy="game", orphanRemoval=true)
+//     */
+//    private $involvedCompanies;
 
     /**
      * @Assert\NotBlank

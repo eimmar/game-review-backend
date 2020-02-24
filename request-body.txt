@@ -1,0 +1,2 @@
+fields *, genres.*, cover.*, themes.*, time_to_beat.*, websites.*, release_dates.*, age_ratings.*, involved_companies.*, screenshots.*, similar_games.*;
+where name = "Counter-Strike: Global Offensive";
