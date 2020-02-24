@@ -80,7 +80,7 @@ class Game
 
     //    /**
 //     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\Genre", mappedBy="game", orphanRemoval=true)
+//     * @ORM\OneToMany(targetEntity="App\Entity\Game\Genre", mappedBy="game", orphanRemoval=true)
 //     */
 //    private $genres;
 
@@ -140,7 +140,7 @@ class Game
 
     /**
      * @Assert\NotBlank
-     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="vehicle", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="game", orphanRemoval=true)
      */
     private $reviews;
 

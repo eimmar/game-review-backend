@@ -16,8 +16,8 @@ class Review
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
@@ -25,7 +25,7 @@ class Review
      * @ORM\ManyToOne(targetEntity="Game", inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $vehicle;
+    private $game;
 
     /**
      * @Assert\NotBlank
@@ -36,7 +36,7 @@ class Review
 
     /**
      * @Assert\NotBlank
-     * @Assert\Range(min="1", max="5")
+     * @Assert\Range(min="1", max="100")
      * @ORM\Column(type="integer")
      */
     private $rating;
@@ -61,40 +61,14 @@ class Review
         return $this->id;
     }
 
-    public function getVehicle(): ?Game
-    {
-        return $this->vehicle;
-    }
-
-    public function setVehicle(?Game $vehicle): self
-    {
-        $this->vehicle = $vehicle;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
     public function getRating(): ?int
     {
         return $this->rating;
-    }
-
-    public function setRating(int $rating): self
-    {
-        $this->rating = $rating;
-
-        return $this;
     }
 
     public function getDateCreated(): ?\DateTimeInterface
