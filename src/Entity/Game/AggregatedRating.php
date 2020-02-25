@@ -22,13 +22,9 @@ declare(strict_types=1);
 namespace App\Entity\Game;
 
 use App\Entity\Game;
-use App\Traits\TimestampableTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 
-class Genre
+class AggregatedRating
 {
-    use TimestampableTrait;
-
     /**
      * @var string
      * @ORM\Id()
@@ -38,26 +34,20 @@ class Genre
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @var int
+     * @ORM\Column(type="integer")
      */
-    private $externalId;
+    private $count;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @var float
+     * @ORM\Column(type="float")
      */
-    private $name;
+    private $rating;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @var Game
+     * @ORM\ManyToOne(targetEntity="Game", inversedBy="aggregatedRatings")
      */
-    private $url;
-
-    /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
-     */
-    private $games;
+    private $game;
 }

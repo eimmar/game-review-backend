@@ -23,9 +23,8 @@ namespace App\Entity\Game;
 
 use App\Entity\Game;
 use App\Traits\TimestampableTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 
-class Genre
+class Screenshot
 {
     use TimestampableTrait;
 
@@ -47,7 +46,7 @@ class Genre
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $name;
+    private $imageId;
 
     /**
      * @var string
@@ -56,8 +55,20 @@ class Genre
     private $url;
 
     /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
      */
-    private $games;
+    private $height;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $width;
+
+    /**
+     * @var Game
+     * @ORM\ManyToOne(targetEntity="Game", inversedBy="screenshots")
+     */
+    private $game;
 }

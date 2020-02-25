@@ -1,5 +1,15 @@
 [
     {
+        "id": 128525,
+        "category": 0,
+        "created_at": 1579305600,
+        "name": "Counter-Strike: Global Offensive",
+        "popularity": 1.0,
+        "slug": "counter-strike-global-offensive--1",
+        "updated_at": 1579305600,
+        "url": "https://www.igdb.com/games/counter-strike-global-offensive--1"
+    },
+    {
         "id": 1372,
         "age_ratings": [
             {
@@ -90,7 +100,41 @@
         "involved_companies": [
             {
                 "id": 7247,
-                "company": 150,
+                "company": {
+                    "id": 150,
+                    "change_date_category": 7,
+                    "country": 840,
+                    "created_at": 1301270400,
+                    "developed": [
+                        307,
+                        1372,
+                        2950,
+                        8190,
+                        10184,
+                        21819,
+                        126273,
+                        128847
+                    ],
+                    "logo": 800,
+                    "name": "Hidden Path Entertainment",
+                    "published": [
+                        5588,
+                        126273
+                    ],
+                    "slug": "hidden-path-entertainment",
+                    "start_date": 1136073600,
+                    "start_date_category": 0,
+                    "updated_at": 1579824000,
+                    "url": "https://www.igdb.com/companies/hidden-path-entertainment",
+                    "websites": [
+                        {
+                            "id": 491,
+                            "category": 1,
+                            "trusted": false,
+                            "url": "http://hiddenpath.com/"
+                        }
+                    ]
+                },
                 "created_at": 1380931200,
                 "developer": true,
                 "game": 1372,
@@ -101,7 +145,121 @@
             },
             {
                 "id": 18004,
-                "company": 56,
+                "company": {
+                    "id": 56,
+                    "change_date_category": 7,
+                    "country": 840,
+                    "created_at": 1300060800,
+                    "description": "Valve's debut title, Half-Life, was released in 1998. It won more than 50 game of the year awards, and PC Gamer even called it the Best PC Game Ever. Since then, we've released dozens of titles that changed the world. Today, millions of people play our games every day.",
+                    "developed": [
+                        71,
+                        72,
+                        122,
+                        124,
+                        231,
+                        233,
+                        241,
+                        247,
+                        297,
+                        307,
+                        338,
+                        339,
+                        891,
+                        1372,
+                        2963,
+                        2997,
+                        3267,
+                        6359,
+                        6738,
+                        6744,
+                        7551,
+                        7589,
+                        7598,
+                        9073,
+                        9471,
+                        10395,
+                        13950,
+                        16957,
+                        19348,
+                        21798,
+                        22890,
+                        28029,
+                        33308,
+                        50095,
+                        54572,
+                        55025,
+                        86654,
+                        93807,
+                        119416,
+                        126098,
+                        127835,
+                        127906
+                    ],
+                    "logo": 3218,
+                    "name": "Valve Corporation",
+                    "published": [
+                        71,
+                        72,
+                        122,
+                        124,
+                        231,
+                        232,
+                        233,
+                        247,
+                        307,
+                        338,
+                        339,
+                        891,
+                        1372,
+                        2549,
+                        2956,
+                        2963,
+                        2997,
+                        3267,
+                        3278,
+                        6744,
+                        7589,
+                        7598,
+                        9073,
+                        9471,
+                        10395,
+                        11749,
+                        13950,
+                        19348,
+                        21798,
+                        28029,
+                        33308,
+                        51690,
+                        54572,
+                        55025,
+                        86654,
+                        87751,
+                        93807,
+                        119416,
+                        120607,
+                        126098,
+                        127835
+                    ],
+                    "slug": "valve-corporation",
+                    "start_date": 840844800,
+                    "start_date_category": 0,
+                    "updated_at": 1578096000,
+                    "url": "https://www.igdb.com/companies/valve-corporation",
+                    "websites": [
+                        {
+                            "id": 458,
+                            "category": 1,
+                            "trusted": false,
+                            "url": "http://www.valvesoftware.com/"
+                        },
+                        {
+                            "id": 3433,
+                            "category": 1,
+                            "trusted": false,
+                            "url": "https://www.valvesoftware.com"
+                        }
+                    ]
+                },
                 "created_at": 1408924800,
                 "developer": true,
                 "game": 1372,
@@ -214,19 +372,129 @@
         ],
         "name": "Counter-Strike: Global Offensive",
         "platforms": [
-            3,
-            6,
-            9,
-            12,
-            14
+            {
+                "id": 3,
+                "abbreviation": "Linux",
+                "alternative_name": "GNU/Linux",
+                "category": 4,
+                "created_at": 1297555200,
+                "name": "Linux",
+                "platform_logo": 33,
+                "product_family": 4,
+                "slug": "linux",
+                "summary": "Linux is a free and open-source (FOSS/FLOSS) Operating System. In a more precise and complex definition, Linux is an open-source OS kernel on which a large variety of Operating Systems (known as Linux distributions) are built.",
+                "updated_at": 1392940800,
+                "url": "https://www.igdb.com/platforms/linux",
+                "versions": [
+                    44
+                ],
+                "websites": [
+                    1
+                ]
+            },
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "alternative_name": "mswin",
+                "category": 4,
+                "created_at": 1297555200,
+                "name": "PC (Microsoft Windows)",
+                "platform_logo": 203,
+                "slug": "win",
+                "updated_at": 1470009600,
+                "url": "https://www.igdb.com/platforms/win",
+                "versions": [
+                    1,
+                    13,
+                    14,
+                    15,
+                    124
+                ],
+                "websites": [
+                    2
+                ]
+            },
+            {
+                "id": 9,
+                "abbreviation": "PS3",
+                "category": 1,
+                "created_at": 1297555200,
+                "generation": 7,
+                "name": "PlayStation 3",
+                "platform_logo": 79,
+                "product_family": 1,
+                "slug": "ps3",
+                "updated_at": 1391558400,
+                "url": "https://www.igdb.com/platforms/ps3",
+                "versions": [
+                    4,
+                    5,
+                    6
+                ],
+                "websites": [
+                    3
+                ]
+            },
+            {
+                "id": 12,
+                "abbreviation": "X360",
+                "alternative_name": "xbx360",
+                "category": 1,
+                "created_at": 1297555200,
+                "generation": 7,
+                "name": "Xbox 360",
+                "platform_logo": 250,
+                "product_family": 2,
+                "slug": "xbox360",
+                "summary": "Xbox 360 brings you a total games and entertainment experience. The largest library of games, including titles that get you right into the thick of it with Kinect. Plus, your whole family can watch HD movies, TV shows, live events, music, sports and more—across all your devices. Xbox 360 is the center of your games and entertainment universe.",
+                "updated_at": 1392854400,
+                "url": "https://www.igdb.com/platforms/xbox360",
+                "versions": [
+                    2,
+                    3,
+                    83
+                ],
+                "websites": [
+                    4
+                ]
+            },
+            {
+                "id": 14,
+                "abbreviation": "Mac",
+                "alternative_name": "Mac OS",
+                "category": 4,
+                "created_at": 1297641600,
+                "name": "Mac",
+                "platform_logo": 100,
+                "slug": "mac",
+                "updated_at": 1394236800,
+                "url": "https://www.igdb.com/platforms/mac",
+                "versions": [
+                    45,
+                    141,
+                    142,
+                    143,
+                    144,
+                    145,
+                    146,
+                    147,
+                    148,
+                    149,
+                    150,
+                    151
+                ],
+                "websites": [
+                    5
+                ]
+            }
         ],
         "player_perspectives": [
             1
         ],
         "popularity": 31.98186015401952,
         "pulse_count": 353,
-        "rating": 82.5776233639165,
-        "rating_count": 598,
+        "rating": 82.5775588984191,
+        "rating_count": 600,
         "release_dates": [
             {
                 "id": 6386,
@@ -609,8 +877,8 @@
                 ],
                 "popularity": 25.74090990716667,
                 "pulse_count": 13,
-                "rating": 83.16025147569601,
-                "rating_count": 244,
+                "rating": 83.1606949399339,
+                "rating_count": 245,
                 "release_dates": [
                     5324,
                     5325
@@ -848,9 +1116,9 @@
                     1,
                     39
                 ],
-                "total_rating": 76.58012573784801,
-                "total_rating_count": 246,
-                "updated_at": 1582416000,
+                "total_rating": 76.58034746996695,
+                "total_rating_count": 247,
+                "updated_at": 1582588800,
                 "url": "https://www.igdb.com/games/counter-strike",
                 "videos": [
                     261
@@ -1509,8 +1777,8 @@
                 ],
                 "popularity": 8.355405648076577,
                 "pulse_count": 1,
-                "rating": 79.7160424811008,
-                "rating_count": 247,
+                "rating": 79.7160632819868,
+                "rating_count": 248,
                 "release_dates": [
                     85258,
                     85259,
@@ -1767,9 +2035,9 @@
                     1
                 ],
                 "time_to_beat": 307,
-                "total_rating": 84.8580212405504,
-                "total_rating_count": 250,
-                "updated_at": 1582329600,
+                "total_rating": 84.8580316409934,
+                "total_rating_count": 251,
+                "updated_at": 1582588800,
                 "url": "https://www.igdb.com/games/counter-strike-source",
                 "videos": [
                     2615
@@ -3245,8 +3513,8 @@
                 ],
                 "popularity": 19.05417749982433,
                 "pulse_count": 4994,
-                "rating": 84.8220538207421,
-                "rating_count": 622,
+                "rating": 84.80202251584791,
+                "rating_count": 623,
                 "release_dates": [
                     47912,
                     47914,
@@ -3376,8 +3644,8 @@
                     27
                 ],
                 "time_to_beat": 8173,
-                "total_rating": 86.9526935770377,
-                "total_rating_count": 652,
+                "total_rating": 86.94267792459061,
+                "total_rating_count": 653,
                 "updated_at": 1582502400,
                 "url": "https://www.igdb.com/games/overwatch",
                 "videos": [
@@ -3949,9 +4217,9 @@
             }
         ],
         "time_to_beat": 1372,
-        "total_rating": 81.78881168195825,
-        "total_rating_count": 603,
-        "updated_at": 1582329600,
+        "total_rating": 81.78877944920956,
+        "total_rating_count": 605,
+        "updated_at": 1582588800,
         "url": "https://www.igdb.com/games/counter-strike-global-offensive",
         "videos": [
             1509
@@ -4021,15 +4289,5 @@
                 "url": "https://www.instagram.com/csgo_dev"
             }
         ]
-    },
-    {
-        "id": 128525,
-        "category": 0,
-        "created_at": 1579305600,
-        "name": "Counter-Strike: Global Offensive",
-        "popularity": 1.0,
-        "slug": "counter-strike-global-offensive--1",
-        "updated_at": 1579305600,
-        "url": "https://www.igdb.com/games/counter-strike-global-offensive--1"
     }
 ]

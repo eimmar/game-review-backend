@@ -25,7 +25,7 @@ use App\Entity\Game;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Genre
+class Platform
 {
     use TimestampableTrait;
 
@@ -45,19 +45,37 @@ class Genre
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
+     */
+    private $abbreviation;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255)
+     */
+    private $summary;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255)
      */
     private $url;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    private $category;
+
+    /**
      * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
+     * @ORM\ManyToMany(targetEntity="Game", mappedBy="platforms")
      */
     private $games;
 }

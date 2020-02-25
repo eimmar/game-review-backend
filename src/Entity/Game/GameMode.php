@@ -25,7 +25,7 @@ use App\Entity\Game;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Genre
+class GameMode
 {
     use TimestampableTrait;
 
@@ -37,11 +37,6 @@ class Genre
      */
     private $id;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    private $externalId;
 
     /**
      * @var string
@@ -57,7 +52,7 @@ class Genre
 
     /**
      * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
+     * @ORM\ManyToMany(targetEntity="Game", mappedBy="gameModes")
      */
     private $games;
 }

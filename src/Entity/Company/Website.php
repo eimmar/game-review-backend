@@ -19,16 +19,12 @@ declare(strict_types=1);
  */
 
 
-namespace App\Entity\Game;
+namespace App\Entity\Company;
 
-use App\Entity\Game;
-use App\Traits\TimestampableTrait;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Game\Company;
 
-class Genre
+class Website
 {
-    use TimestampableTrait;
-
     /**
      * @var string
      * @ORM\Id()
@@ -44,20 +40,26 @@ class Genre
     private $externalId;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @var bool
+     * @ORM\Column(type="bool", nullable=false)
      */
-    private $name;
+    private $trusted;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $url;
 
     /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
+     * @var int
+     * @ORM\Column(type="integer")
      */
-    private $games;
+    private $category;
+
+    /**
+     * @var Company
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="websites")
+     */
+    private $company;
 }

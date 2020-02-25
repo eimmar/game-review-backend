@@ -2,6 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Game\AggregatedRating;
+use App\Entity\Game\Company;
+use App\Entity\Game\GameMode;
+use App\Entity\Game\Genre;
+use App\Entity\Game\Platform;
+use App\Entity\Game\Screenshot;
+use App\Entity\Game\Theme;
+use App\Entity\Game\Website;
+use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +21,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Game
 {
+    use TimestampableTrait;
+
     /**
+     * @var string
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -20,123 +32,134 @@ class Game
     private $id;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
+     * @var string
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $externalId;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @Assert\Length(max="255")
+     * @var string|null
      * @ORM\Column(type="string", length=255)
      */
     private $coverImage;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
+     * @var string|null
      * @ORM\Column(type="string", length=255)
      */
     private $summary;
 
     /**
+     * @var string|null
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $storyline;
 
     /**
+     * @var string|null
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private $releaseDate;
 
     /**
-     * @ORM\Column(type="datetime", length=255, nullable=false)
-     */
-    private $updatedAt;
-
-    /**
-     * @ORM\Column(type="datetime", length=255, nullable=false)
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var int|null
+     * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private $category;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\AgeRating", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $ageRatings;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\AgeRating", inversedBy="games")
+     */
+    private $ageRatings;
 
-    //    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\Game\Genre", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $genres;
+    /**
+     * @var Genre[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Genre", inversedBy="games")
+     */
+    private $genres;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\Screenshot", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $screenshots;
+    /**
+     * @var Screenshot[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\Screenshot", mappedBy="game", orphanRemoval=true)
+     */
+    private $screenshots;
 
-    //    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\Genre", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $themes;
+    /**
+     * @var Theme[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Theme", inversedBy="games")
+     */
+    private $themes;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\Platform", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $platforms;
+    /**
+     * @var Platform[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Platform", inversedBy="games")
+     */
+    private $platforms;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\AggregatedRating", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $aggregatedRatings;
+    /**
+     * @var AggregatedRating[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\AggregatedRating", mappedBy="game", orphanRemoval=true)
+     */
+    private $aggregatedRatings;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\GameMode", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $gameModes;
+    /**
+     * @var GameMode[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\GameMode", inversedBy="games")
+     */
+    private $gameModes;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $similarGames;
+    /**
+     * @var Game[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game", inversedBy="similarGamesSource")
+     * @ORM\JoinTable(name="similar_games_relations",
+     *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="external_id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="similar_game_id", referencedColumnName="external_id")}
+     *      )
+     */
+    private $similarGames;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\ManyToMany(targetEntity="App\Entity\TimeToBeat", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $timesToBeat;
+    /**
+     * @var Game[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="similarGames")
+     */
+    protected $similarGamesSource;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\GameWebsite", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $websites;
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $timeToBeatCompletely;
 
-//    /**
-//     * @Assert\NotBlank
-//     * @ORM\OneToMany(targetEntity="App\Entity\GameCompany", mappedBy="game", orphanRemoval=true)
-//     */
-//    private $involvedCompanies;
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $timeToBeatHastly;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $timeToBeatNormally;
+
+    /**
+     * @var Website[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\Website", mappedBy="game", orphanRemoval=true)
+     */
+    private $websites;
+
+    /**
+     * @var Company[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Company", inversedBy="games")
+     */
+    private $companies;
 
     /**
      * @Assert\NotBlank
@@ -160,29 +183,6 @@ class Game
     public function getReviews(): Collection
     {
         return $this->reviews;
-    }
-
-    public function addReview(Review $review): self
-    {
-        if (!$this->reviews->contains($review)) {
-            $this->reviews[] = $review;
-            $review->setVehicle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReview(Review $review): self
-    {
-        if ($this->reviews->contains($review)) {
-            $this->reviews->removeElement($review);
-            // set the owning side to null (unless already changed)
-            if ($review->getVehicle() === $this) {
-                $review->setVehicle(null);
-            }
-        }
-
-        return $this;
     }
 
     public function serialize()

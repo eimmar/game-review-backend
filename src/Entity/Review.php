@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,14 +44,8 @@ class Review
      */
     private $dateCreated;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ReviewReport", mappedBy="review", orphanRemoval=true)
-     */
-    private $reviewReports;
-
     public function __construct()
     {
-        $this->reviewReports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,38 +74,6 @@ class Review
 
         return $this;
     }
-
-    /**
-     * @return Collection|ReviewReport[]
-     */
-    public function getReviewReports(): Collection
-    {
-        return $this->reviewReports;
-    }
-
-    public function addReviewReport(ReviewReport $reviewReport): self
-    {
-        if (!$this->reviewReports->contains($reviewReport)) {
-            $this->reviewReports[] = $reviewReport;
-            $reviewReport->setReview($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewReport(ReviewReport $reviewReport): self
-    {
-        if ($this->reviewReports->contains($reviewReport)) {
-            $this->reviewReports->removeElement($reviewReport);
-            // set the owning side to null (unless already changed)
-            if ($reviewReport->getReview() === $this) {
-                $reviewReport->setReview(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @ORM\PrePersist
      */
@@ -129,13 +89,9 @@ class Review
     {
         return [
             'id' => $this->getId(),
-            'vehicle' => $this->getVehicle()->serialize(),
             'comment' => $this->getComment(),
             'rating' => $this->getRating(),
             'dateCreated' => $this->getDateCreated(),
-            'reviewReports' => $this->getReviewReports()->map(function (ReviewReport $rr) {
-                return $rr->serialize();
-            })
         ];
     }
 }

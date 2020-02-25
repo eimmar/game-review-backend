@@ -22,13 +22,10 @@ declare(strict_types=1);
 namespace App\Entity\Game;
 
 use App\Entity\Game;
-use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Genre
+class AgeRating
 {
-    use TimestampableTrait;
-
     /**
      * @var string
      * @ORM\Id()
@@ -53,11 +50,23 @@ class Genre
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $url;
+    private $synopsis;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $category;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $rating;
 
     /**
      * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
+     * @ORM\ManyToMany(targetEntity="Game", mappedBy="ageRatings")
      */
     private $games;
 }
