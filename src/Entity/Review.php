@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,7 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Review
 {
+    use TimestampableTrait;
+
     /**
+     * @var string
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
@@ -20,12 +24,14 @@ class Review
     private $id;
 
     /**
+     * @var Game
      * @ORM\ManyToOne(targetEntity="Game", inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
      */
     private $game;
 
     /**
+     * @var string
      * @Assert\NotBlank
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
@@ -33,65 +39,10 @@ class Review
     private $comment;
 
     /**
+     * @var int
      * @Assert\NotBlank
      * @Assert\Range(min="1", max="100")
      * @ORM\Column(type="integer")
      */
     private $rating;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $dateCreated;
-
-    public function __construct()
-    {
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function getRating(): ?int
-    {
-        return $this->rating;
-    }
-
-    public function getDateCreated(): ?\DateTimeInterface
-    {
-        return $this->dateCreated;
-    }
-
-    public function setDateCreated(\DateTimeInterface $dateCreated): self
-    {
-        $this->dateCreated = $dateCreated;
-
-        return $this;
-    }
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->setDateCreated(new \DateTime());
-    }
-
-    /**
-     * @return array
-     */
-    public function serialize()
-    {
-        return [
-            'id' => $this->getId(),
-            'comment' => $this->getComment(),
-            'rating' => $this->getRating(),
-            'dateCreated' => $this->getDateCreated(),
-        ];
-    }
 }

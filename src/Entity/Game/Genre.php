@@ -24,7 +24,11 @@ namespace App\Entity\Game;
 use App\Entity\Game;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ */
 class Genre
 {
     use TimestampableTrait;
@@ -57,7 +61,7 @@ class Genre
 
     /**
      * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="genres")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="genres")
      */
     private $games;
 }

@@ -22,8 +22,12 @@ declare(strict_types=1);
 namespace App\Entity\Company;
 
 use App\Entity\Game\Company;
+use Doctrine\ORM\Mapping as ORM;
 
-class Website
+/**
+ * @ORM\Entity
+ */
+class CompanyWebsite
 {
     /**
      * @var string
@@ -41,7 +45,7 @@ class Website
 
     /**
      * @var bool
-     * @ORM\Column(type="bool", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $trusted;
 
@@ -59,7 +63,7 @@ class Website
 
     /**
      * @var Company
-     * @ORM\ManyToOne(targetEntity="Company", inversedBy="websites")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game\Company", inversedBy="websites")
      */
     private $company;
 }

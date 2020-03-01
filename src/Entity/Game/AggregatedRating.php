@@ -22,7 +22,11 @@ declare(strict_types=1);
 namespace App\Entity\Game;
 
 use App\Entity\Game;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ */
 class AggregatedRating
 {
     /**
@@ -47,7 +51,7 @@ class AggregatedRating
 
     /**
      * @var Game
-     * @ORM\ManyToOne(targetEntity="Game", inversedBy="aggregatedRatings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="aggregatedRatings")
      */
     private $game;
 }

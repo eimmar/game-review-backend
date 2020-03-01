@@ -23,7 +23,11 @@ namespace App\Entity\Game;
 
 use App\Entity\Game;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ */
 class AgeRating
 {
     /**
@@ -66,7 +70,7 @@ class AgeRating
 
     /**
      * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="ageRatings")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="ageRatings")
      */
     private $games;
 }

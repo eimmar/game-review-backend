@@ -23,7 +23,11 @@ namespace App\Entity\Game;
 
 use App\Entity\Game;
 use App\Traits\TimestampableTrait;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ */
 class Screenshot
 {
     use TimestampableTrait;
@@ -68,7 +72,7 @@ class Screenshot
 
     /**
      * @var Game
-     * @ORM\ManyToOne(targetEntity="Game", inversedBy="screenshots")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="screenshots")
      */
     private $game;
 }

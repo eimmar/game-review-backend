@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Game\AgeRating;
 use App\Entity\Game\AggregatedRating;
 use App\Entity\Game\Company;
 use App\Entity\Game\GameMode;
@@ -12,9 +13,7 @@ use App\Entity\Game\Theme;
 use App\Entity\Game\Website;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
@@ -57,7 +56,6 @@ class Game
 
     /**
      * @var string|null
-     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $storyline;
@@ -75,7 +73,8 @@ class Game
     private $category;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\AgeRating", inversedBy="games")
+     * @var AgeRating[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\AgeRating", inversedBy="games")
      */
     private $ageRatings;
 
@@ -115,21 +114,22 @@ class Game
      */
     private $gameModes;
 
-    /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game", inversedBy="similarGamesSource")
-     * @ORM\JoinTable(name="similar_games_relations",
-     *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="external_id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="similar_game_id", referencedColumnName="external_id")}
-     *      )
-     */
-    private $similarGames;
-
-    /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="similarGames")
-     */
-    protected $similarGamesSource;
+    //TODO: Implement similar games relations
+//    /**
+//     * @var Game[]|ArrayCollection
+//     * @ORM\ManyToMany(targetEntity="App\Entity\Game", inversedBy="similarGamesSource")
+//     * @ORM\JoinTable(name="similar_games_relations",
+//     *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="external_id")},
+//     *      inverseJoinColumns={@ORM\JoinColumn(name="similar_game_id", referencedColumnName="external_id")}
+//     *      )
+//     */
+//    private $similarGames;
+//
+//    /**
+//     * @var Game[]|ArrayCollection
+//     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="similarGames")
+//     */
+//    protected $similarGamesSource;
 
     /**
      * @var int|null
@@ -162,33 +162,19 @@ class Game
     private $companies;
 
     /**
-     * @Assert\NotBlank
+     * @var Review[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="game", orphanRemoval=true)
      */
     private $reviews;
 
+    /**
+     * @var GameList[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="App\Entity\GameList", inversedBy="games")
+     */
+    private $gameLists;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return Collection|Review[]
-     */
-    public function getReviews(): Collection
-    {
-        return $this->reviews;
-    }
-
-    public function serialize()
-    {
-        return [
-            "id" => $this->getId(),
-        ];
     }
 }
