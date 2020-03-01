@@ -34,6 +34,16 @@ class ContentDescription
     private $description;
 
     /**
+     * @param int|null $category
+     * @param string|null $description
+     */
+    public function __construct(?int $category, ?string $description)
+    {
+        $this->category = $category;
+        $this->description = $description;
+    }
+
+    /**
      * @return int|null
      */
     public function getCategory(): ?int

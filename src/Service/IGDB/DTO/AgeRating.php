@@ -32,6 +32,27 @@ class AgeRating
     private $synopsis;
 
     /**
+     * @param int|null $category
+     * @param int[]|null $contentDescriptions
+     * @param int|null $rating
+     * @param string|null $ratingCoverUrl
+     * @param string|null $synopsis
+     */
+    public function __construct(
+        ?int $category,
+        ?array $contentDescriptions,
+        ?int $rating,
+        ?string $ratingCoverUrl,
+        ?string $synopsis
+    ) {
+        $this->category = $category;
+        $this->contentDescriptions = $contentDescriptions;
+        $this->rating = $rating;
+        $this->ratingCoverUrl = $ratingCoverUrl;
+        $this->synopsis = $synopsis;
+    }
+
+    /**
      * @return int|null
      */
     public function getCategory(): ?int

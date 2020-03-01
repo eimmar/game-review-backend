@@ -30,6 +30,20 @@ class Website
     private $url;
 
     /**
+     * @param int|null $category
+     * @param Game|int|null $game
+     * @param bool|null $trusted
+     * @param string|null $url
+     */
+    public function __construct(?int $category, $game, ?bool $trusted, ?string $url)
+    {
+        $this->category = $category;
+        $this->game = $game;
+        $this->trusted = $trusted;
+        $this->url = $url;
+    }
+
+    /**
      * @return int|null
      */
     public function getCategory(): ?int

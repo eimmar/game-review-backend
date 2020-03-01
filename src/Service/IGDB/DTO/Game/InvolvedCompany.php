@@ -44,6 +44,28 @@ class InvolvedCompany
     private $supporting;
 
     /**
+     * @param Company|int|null $company
+     * @param bool|null $developer
+     * @param Game|int|null $game
+     * @param bool|null $porting
+     * @param bool|null $publisher
+     * @param bool|null $supporting
+     * @param int|null $createdAt
+     * @param int|null $updatedAt
+     */
+    public function __construct($company, ?bool $developer, $game, ?bool $porting, ?bool $publisher, ?bool $supporting, ?int $createdAt, ?int $updatedAt)
+    {
+        $this->company = $company;
+        $this->developer = $developer;
+        $this->game = $game;
+        $this->porting = $porting;
+        $this->publisher = $publisher;
+        $this->supporting = $supporting;
+        $this->updatedAt = $updatedAt;
+        $this->createdAt = $createdAt;
+    }
+
+    /**
      * @return Company|int|null
      */
     public function getCompany()

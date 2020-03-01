@@ -82,6 +82,57 @@ class Company
     private $websites;
 
     /**
+     * @param int|null $changeDate
+     * @param int|null $changeDateCategory
+     * @param Company|int|null $changedCompanyId
+     * @param int|null $country
+     * @param string|null $description
+     * @param CompanyLogo $logo
+     * @param Company|int|null $parent
+     * @param Game[]|int[]|null $published
+     * @param int|null $startDate
+     * @param CompanyWebsite[]|int[]|null $websites
+     * @param string|null $name
+     * @param string|null $url
+     * @param string|null $slug
+     * @param int|null $updatedAt
+     * @param int|null $createdAt
+     */
+    public function __construct(
+        ?int $changeDate,
+        ?int $changeDateCategory,
+        $changedCompanyId,
+        ?int $country,
+        ?string $description,
+        CompanyLogo $logo,
+        $parent,
+        $published,
+        ?int $startDate,
+        $websites,
+        ?string $name,
+        ?string $url,
+        ?string $slug,
+        ?int $updatedAt,
+        ?int $createdAt
+    ) {
+        $this->changeDate = $changeDate;
+        $this->changeDateCategory = $changeDateCategory;
+        $this->changedCompanyId = $changedCompanyId;
+        $this->country = $country;
+        $this->description = $description;
+        $this->logo = $logo;
+        $this->parent = $parent;
+        $this->published = $published;
+        $this->startDate = $startDate;
+        $this->websites = $websites;
+        $this->name = $name;
+        $this->slug = $slug;
+        $this->url = $url;
+        $this->updatedAt = $updatedAt;
+        $this->createdAt = $createdAt;
+    }
+
+    /**
      * @return int|null
      */
     public function getChangeDate(): ?int

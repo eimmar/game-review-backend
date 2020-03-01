@@ -39,6 +39,18 @@ class CompanyWebsite
     private $url;
 
     /**
+     * @param int|null $category
+     * @param bool|null $trusted
+     * @param string|null $url
+     */
+    public function __construct(?int $category, ?bool $trusted, ?string $url)
+    {
+        $this->category = $category;
+        $this->trusted = $trusted;
+        $this->url = $url;
+    }
+
+    /**
      * @return int|null
      */
     public function getCategory(): ?int

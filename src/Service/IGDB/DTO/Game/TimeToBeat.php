@@ -30,6 +30,20 @@ class TimeToBeat
     private $normally;
 
     /**
+     * @param int|null $completely
+     * @param Game|int|null $game
+     * @param int|null $hastly
+     * @param int|null $normally
+     */
+    public function __construct(?int $completely, $game, ?int $hastly, ?int $normally)
+    {
+        $this->completely = $completely;
+        $this->game = $game;
+        $this->hastly = $hastly;
+        $this->normally = $normally;
+    }
+
+    /**
      * @return int|null
      */
     public function getCompletely(): ?int

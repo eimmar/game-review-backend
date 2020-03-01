@@ -61,6 +61,54 @@ class Platform
     private $websites;
 
     /**
+     * @param string|null $abbreviation
+     * @param string|null $alternativeName
+     * @param int|null $category
+     * @param int|null $generation
+     * @param int|null $platformLogo
+     * @param int|null $productFamily
+     * @param string|null $summary
+     * @param int[]|null $versions
+     * @param int[]|null $websites
+     * @param string|null $name
+     * @param string|null $url
+     * @param string|null $slug
+     * @param int|null $updatedAt
+     * @param int|null $createdAt
+     */
+    public function __construct(
+        ?string $abbreviation,
+        ?string $alternativeName,
+        ?int $category,
+        ?int $generation,
+        ?int $platformLogo,
+        ?int $productFamily,
+        ?string $summary,
+        ?array $versions,
+        ?array $websites,
+        ?string $name,
+        ?string $url,
+        ?string  $slug,
+        ?int $updatedAt,
+        ?int $createdAt
+    ) {
+        $this->abbreviation = $abbreviation;
+        $this->alternativeName = $alternativeName;
+        $this->category = $category;
+        $this->generation = $generation;
+        $this->platformLogo = $platformLogo;
+        $this->productFamily = $productFamily;
+        $this->summary = $summary;
+        $this->versions = $versions;
+        $this->websites = $websites;
+        $this->name = $name;
+        $this->slug = $slug;
+        $this->url = $url;
+        $this->updatedAt = $updatedAt;
+        $this->createdAt = $createdAt;
+    }
+
+    /**
      * @return string|null
      */
     public function getAbbreviation(): ?string

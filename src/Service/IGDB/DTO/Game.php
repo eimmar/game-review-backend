@@ -242,6 +242,165 @@ class Game
     private $websites;
 
     /**
+     * @param AgeRating[]|int[]|null $ageRatings
+     * @param float|null $aggregatedRating
+     * @param int|null $aggregatedRatingCount
+     * @param int[]|null $alternativeNames
+     * @param int[]|null $artworks
+     * @param Game[]|int[]|null $bundles
+     * @param int|null $category
+     * @param int|null $collection
+     * @param Cover|int|null $cover
+     * @param Game[]|int[]|null $dlcs
+     * @param Game[]|int[]|null $expansions
+     * @param Game[]|int[]|null $externalGames
+     * @param int|null $firstReleaseDate
+     * @param int|null $follows
+     * @param int|null $franchise
+     * @param int[]|null $franchises
+     * @param int[]|null $gameEngines
+     * @param GameMode[]|int[]|null $gameModes
+     * @param Genre[]|int[]|null $genres
+     * @param int|null $hypes
+     * @param InvolvedCompany[]|int[]|null $involvedCompanies
+     * @param int[]|null $keywords
+     * @param int[]|null $multiplayerModes
+     * @param Game|int|null $parentGame
+     * @param Platform[]|int[]|null $platforms
+     * @param PlayerPerspective[]|int[]|null $playerPerspectives
+     * @param float|null $popularity
+     * @param int|null $pulseCount
+     * @param float|null $rating
+     * @param int|null $ratingCount
+     * @param int[]|null $releaseDates
+     * @param Screenshot[]|int[]|null $screenshots
+     * @param Game[]|int[]|null $similarGames
+     * @param Game[]|int[]|null $standaloneExpansions
+     * @param int|null $status
+     * @param string|null $storyline
+     * @param string|null $summary
+     * @param int[]|null $tags
+     * @param Theme[]|null $themes
+     * @param TimeToBeat|int|null $timeToBeat
+     * @param float|null $totalRating
+     * @param int|null $totalRatingCount
+     * @param Game|int|null $versionParent
+     * @param string|null $versionTitle
+     * @param int[]|null $videos
+     * @param Website[]|int[]|null $websites
+     * @param string|null $name
+     * @param string|null $url
+     * @param string|null $slug
+     * @param int|null $updatedAt
+     * @param int|null $createdAt
+     */
+    public function __construct(
+        $ageRatings,
+        ?float $aggregatedRating,
+        ?int $aggregatedRatingCount,
+        ?array $alternativeNames,
+        ?array $artworks,
+        $bundles,
+        ?int $category,
+        ?int $collection,
+        $cover,
+        $dlcs,
+        $expansions,
+        $externalGames,
+        ?int $firstReleaseDate,
+        ?int $follows,
+        ?int $franchise,
+        ?array $franchises,
+        ?array $gameEngines,
+        $gameModes,
+        $genres,
+        ?int $hypes,
+        $involvedCompanies,
+        ?array $keywords,
+        ?array $multiplayerModes,
+        $parentGame,
+        $platforms,
+        $playerPerspectives,
+        ?float $popularity,
+        ?int $pulseCount,
+        ?float $rating,
+        ?int $ratingCount,
+        ?array $releaseDates,
+        $screenshots,
+        $similarGames,
+        $standaloneExpansions,
+        ?int $status,
+        ?string $storyline,
+        ?string $summary,
+        ?array $tags,
+        ?array $themes,
+        $timeToBeat,
+        ?float $totalRating,
+        ?int $totalRatingCount,
+        $versionParent,
+        ?string $versionTitle,
+        ?array $videos,
+        $websites,
+        ?string $name,
+        ?string $url,
+        ?string $slug,
+        ?int $updatedAt,
+        ?int $createdAt
+    ) {
+        $this->ageRatings = $ageRatings;
+        $this->aggregatedRating = $aggregatedRating;
+        $this->aggregatedRatingCount = $aggregatedRatingCount;
+        $this->alternativeNames = $alternativeNames;
+        $this->artworks = $artworks;
+        $this->bundles = $bundles;
+        $this->category = $category;
+        $this->collection = $collection;
+        $this->cover = $cover;
+        $this->dlcs = $dlcs;
+        $this->expansions = $expansions;
+        $this->externalGames = $externalGames;
+        $this->firstReleaseDate = $firstReleaseDate;
+        $this->follows = $follows;
+        $this->franchise = $franchise;
+        $this->franchises = $franchises;
+        $this->gameEngines = $gameEngines;
+        $this->gameModes = $gameModes;
+        $this->genres = $genres;
+        $this->hypes = $hypes;
+        $this->involvedCompanies = $involvedCompanies;
+        $this->keywords = $keywords;
+        $this->multiplayerModes = $multiplayerModes;
+        $this->parentGame = $parentGame;
+        $this->platforms = $platforms;
+        $this->playerPerspectives = $playerPerspectives;
+        $this->popularity = $popularity;
+        $this->pulseCount = $pulseCount;
+        $this->rating = $rating;
+        $this->ratingCount = $ratingCount;
+        $this->releaseDates = $releaseDates;
+        $this->screenshots = $screenshots;
+        $this->similarGames = $similarGames;
+        $this->standaloneExpansions = $standaloneExpansions;
+        $this->status = $status;
+        $this->storyline = $storyline;
+        $this->summary = $summary;
+        $this->tags = $tags;
+        $this->themes = $themes;
+        $this->timeToBeat = $timeToBeat;
+        $this->totalRating = $totalRating;
+        $this->totalRatingCount = $totalRatingCount;
+        $this->versionParent = $versionParent;
+        $this->versionTitle = $versionTitle;
+        $this->videos = $videos;
+        $this->websites = $websites;
+        $this->name = $name;
+        $this->slug = $slug;
+        $this->url = $url;
+        $this->updatedAt = $updatedAt;
+        $this->createdAt = $createdAt;
+    }
+
+    /**
      * @return AgeRating[]|int[]|null
      */
     public function getAgeRatings()
