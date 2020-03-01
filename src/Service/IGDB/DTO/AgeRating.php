@@ -1,0 +1,73 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Service\IGDB\DTO;
+
+class AgeRating
+{
+    /**
+     * @var int|null
+     */
+    private $category;
+
+    /**
+     * @var int[]|null
+     */
+    private $contentDescriptions;
+
+    /**
+     * @var int|null
+     */
+    private $rating;
+
+    /**
+     * @var string|null
+     */
+    private $ratingCoverUrl;
+
+    /**
+     * @var string|null
+     */
+    private $synopsis;
+
+    /**
+     * @return int|null
+     */
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    /**
+     * @return int[]|null
+     */
+    public function getContentDescriptions(): ?array
+    {
+        return $this->contentDescriptions;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRatingCoverUrl(): ?string
+    {
+        return $this->ratingCoverUrl;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSynopsis(): ?string
+    {
+        return $this->synopsis;
+    }
+}

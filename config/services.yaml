@@ -37,3 +37,8 @@ services:
     App\Security\Http\Authentication\CORSAuthenticationFailureHandler:
         arguments:
             $corsAllowedUrls: ['http://localhost:3000']
+
+
+    App\Service\IGDB\ApiConnector:
+        arguments:
+            $userKey: '%env(IDGB_API_KEY)%'
