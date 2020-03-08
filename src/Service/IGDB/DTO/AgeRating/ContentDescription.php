@@ -21,8 +21,12 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO\AgeRating;
 
+use App\Traits\IdentifiableTrait;
+
 class ContentDescription
 {
+    use IdentifiableTrait;
+
     /**
      * @var int|null
      */
@@ -34,11 +38,13 @@ class ContentDescription
     private $description;
 
     /**
+     * @param int $id
      * @param int|null $category
      * @param string|null $description
      */
-    public function __construct(?int $category, ?string $description)
+    public function __construct(int $id, ?int $category, ?string $description)
     {
+        $this->id = $id;
         $this->category = $category;
         $this->description = $description;
     }

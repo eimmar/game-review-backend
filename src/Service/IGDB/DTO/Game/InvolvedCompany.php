@@ -8,10 +8,12 @@ declare(strict_types=1);
 namespace App\Service\IGDB\DTO;
 
 use App\Service\IGDB\Traits\TimestampableTrait;
+use App\Traits\IdentifiableTrait;
 
 class InvolvedCompany
 {
     use TimestampableTrait;
+    use IdentifiableTrait;
 
     /**
      * @var Company|int|null
@@ -44,6 +46,7 @@ class InvolvedCompany
     private $supporting;
 
     /**
+     * @param int $id
      * @param Company|int|null $company
      * @param bool|null $developer
      * @param Game|int|null $game
@@ -53,8 +56,9 @@ class InvolvedCompany
      * @param int|null $createdAt
      * @param int|null $updatedAt
      */
-    public function __construct($company, ?bool $developer, $game, ?bool $porting, ?bool $publisher, ?bool $supporting, ?int $createdAt, ?int $updatedAt)
+    public function __construct(int $id, $company, ?bool $developer, $game, ?bool $porting, ?bool $publisher, ?bool $supporting, ?int $createdAt, ?int $updatedAt)
     {
+        $this->id = $id;
         $this->company = $company;
         $this->developer = $developer;
         $this->game = $game;

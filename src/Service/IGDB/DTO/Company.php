@@ -21,15 +21,16 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO;
 
-use App\Service\IGDB\DTO\Company\CompanyLogo;
 use App\Service\IGDB\DTO\Company\CompanyWebsite;
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
+use App\Traits\IdentifiableTrait;
 
 class Company
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;
+    use IdentifiableTrait;
 
     /**
      * @var int|null
@@ -57,7 +58,7 @@ class Company
     private $description;
 
     /**
-     * @var CompanyLogo
+     * @var int|null
      */
     private $logo;
 
@@ -82,12 +83,13 @@ class Company
     private $websites;
 
     /**
+     * @param int $id
      * @param int|null $changeDate
      * @param int|null $changeDateCategory
      * @param Company|int|null $changedCompanyId
      * @param int|null $country
      * @param string|null $description
-     * @param CompanyLogo $logo
+     * @param int|null $logo
      * @param Company|int|null $parent
      * @param Game[]|int[]|null $published
      * @param int|null $startDate
@@ -99,12 +101,13 @@ class Company
      * @param int|null $createdAt
      */
     public function __construct(
+        int $id,
         ?int $changeDate,
         ?int $changeDateCategory,
         $changedCompanyId,
         ?int $country,
         ?string $description,
-        CompanyLogo $logo,
+        ?int $logo,
         $parent,
         $published,
         ?int $startDate,
@@ -115,6 +118,7 @@ class Company
         ?int $updatedAt,
         ?int $createdAt
     ) {
+        $this->id = $id;
         $this->changeDate = $changeDate;
         $this->changeDateCategory = $changeDateCategory;
         $this->changedCompanyId = $changedCompanyId;
@@ -173,9 +177,9 @@ class Company
     }
 
     /**
-     * @return CompanyLogo
+     * @return int|null
      */
-    public function getLogo(): CompanyLogo
+    public function getLogo(): ?int
     {
         return $this->logo;
     }

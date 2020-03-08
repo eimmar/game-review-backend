@@ -5,11 +5,13 @@ namespace App\Service\IGDB\DTO;
 
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
+use App\Traits\IdentifiableTrait;
 
 class Game
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;
+    use IdentifiableTrait;
 
     /**
      * @var AgeRating[]|int[]|null
@@ -242,6 +244,7 @@ class Game
     private $websites;
 
     /**
+     * @param int $id
      * @param AgeRating[]|int[]|null $ageRatings
      * @param float|null $aggregatedRating
      * @param int|null $aggregatedRatingCount
@@ -295,58 +298,60 @@ class Game
      * @param int|null $createdAt
      */
     public function __construct(
-        $ageRatings,
+        int $id,
+        ?array $ageRatings,
         ?float $aggregatedRating,
         ?int $aggregatedRatingCount,
         ?array $alternativeNames,
         ?array $artworks,
-        $bundles,
+        ?array $bundles,
         ?int $category,
         ?int $collection,
-        $cover,
-        $dlcs,
-        $expansions,
-        $externalGames,
+        ?array $dlcs,
+        ?array $expansions,
+        ?array $externalGames,
         ?int $firstReleaseDate,
         ?int $follows,
         ?int $franchise,
         ?array $franchises,
         ?array $gameEngines,
-        $gameModes,
-        $genres,
+        ?array $gameModes,
+        ?array $genres,
         ?int $hypes,
-        $involvedCompanies,
+        ?array $involvedCompanies,
         ?array $keywords,
         ?array $multiplayerModes,
-        $parentGame,
-        $platforms,
-        $playerPerspectives,
+        ?array $platforms,
+        ?array $playerPerspectives,
         ?float $popularity,
         ?int $pulseCount,
         ?float $rating,
         ?int $ratingCount,
         ?array $releaseDates,
-        $screenshots,
-        $similarGames,
-        $standaloneExpansions,
+        ?array $screenshots,
+        ?array $similarGames,
+        ?array $standaloneExpansions,
         ?int $status,
         ?string $storyline,
         ?string $summary,
         ?array $tags,
         ?array $themes,
-        $timeToBeat,
         ?float $totalRating,
         ?int $totalRatingCount,
-        $versionParent,
         ?string $versionTitle,
         ?array $videos,
-        $websites,
+        ?array $websites,
         ?string $name,
         ?string $url,
         ?string $slug,
         ?int $updatedAt,
-        ?int $createdAt
+        ?int $createdAt,
+        $versionParent = null,
+        $timeToBeat = null,
+        $parentGame = null,
+        $cover = null
     ) {
+        $this->id = $id;
         $this->ageRatings = $ageRatings;
         $this->aggregatedRating = $aggregatedRating;
         $this->aggregatedRatingCount = $aggregatedRatingCount;

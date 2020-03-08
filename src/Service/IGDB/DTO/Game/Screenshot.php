@@ -8,12 +8,15 @@ declare(strict_types=1);
 namespace App\Service\IGDB\DTO;
 
 use App\Service\IGDB\Traits\ImageTrait;
+use App\Traits\IdentifiableTrait;
 
 class Screenshot
 {
     use ImageTrait;
+    use IdentifiableTrait;
 
     /**
+     * @param int $id
      * @param bool|null $alphaChannel
      * @param bool|null $animated
      * @param int|null $height
@@ -22,6 +25,7 @@ class Screenshot
      * @param int|null $width
      */
     public function __construct(
+        int $id,
         ?bool $alphaChannel,
         ?bool $animated,
         ?int $height,
@@ -29,6 +33,7 @@ class Screenshot
         ?string $url,
         ?int $width
     ) {
+        $this->id = $id;
         $this->alphaChannel = $alphaChannel;
         $this->animated = $animated;
         $this->height = $height;

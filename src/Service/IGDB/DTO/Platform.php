@@ -9,11 +9,13 @@ namespace App\Service\IGDB\DTO;
 
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
+use App\Traits\IdentifiableTrait;
 
 class Platform
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;
+    use IdentifiableTrait;
 
     /**
      * @var string|null
@@ -61,6 +63,7 @@ class Platform
     private $websites;
 
     /**
+     * @param int $id
      * @param string|null $abbreviation
      * @param string|null $alternativeName
      * @param int|null $category
@@ -77,6 +80,7 @@ class Platform
      * @param int|null $createdAt
      */
     public function __construct(
+        int $id,
         ?string $abbreviation,
         ?string $alternativeName,
         ?int $category,
@@ -92,6 +96,7 @@ class Platform
         ?int $updatedAt,
         ?int $createdAt
     ) {
+        $this->id = $id;
         $this->abbreviation = $abbreviation;
         $this->alternativeName = $alternativeName;
         $this->category = $category;

@@ -7,8 +7,12 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO;
 
+use App\Traits\IdentifiableTrait;
+
 class TimeToBeat
 {
+    use IdentifiableTrait;
+
     /**
      * @var int|null
      */
@@ -30,13 +34,15 @@ class TimeToBeat
     private $normally;
 
     /**
+     * @param int $id
      * @param int|null $completely
      * @param Game|int|null $game
      * @param int|null $hastly
      * @param int|null $normally
      */
-    public function __construct(?int $completely, $game, ?int $hastly, ?int $normally)
+    public function __construct(int $id, ?int $completely, $game, ?int $hastly, ?int $normally)
     {
+        $this->id = $id;
         $this->completely = $completely;
         $this->game = $game;
         $this->hastly = $hastly;

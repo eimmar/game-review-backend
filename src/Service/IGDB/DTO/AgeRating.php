@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO;
 
+use App\Traits\IdentifiableTrait;
+
 class AgeRating
 {
+    use IdentifiableTrait;
+
     /**
      * @var int|null
      */
@@ -32,6 +36,7 @@ class AgeRating
     private $synopsis;
 
     /**
+     * @param int $id
      * @param int|null $category
      * @param int[]|null $contentDescriptions
      * @param int|null $rating
@@ -39,12 +44,14 @@ class AgeRating
      * @param string|null $synopsis
      */
     public function __construct(
+        int $id,
         ?int $category,
         ?array $contentDescriptions,
         ?int $rating,
         ?string $ratingCoverUrl,
         ?string $synopsis
     ) {
+        $this->id = $id;
         $this->category = $category;
         $this->contentDescriptions = $contentDescriptions;
         $this->rating = $rating;
