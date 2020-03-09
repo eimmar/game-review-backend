@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB;
 
+use App\Service\IGDB\Transformer\ResponseToGameTransformer;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiConnector
@@ -24,13 +25,20 @@ class ApiConnector
     private $httpClient;
 
     /**
+     * @var ResponseToGameTransformer
+     */
+    private $responseToGameTransformer;
+
+    /**
      * @param string $userKey
      * @param HttpClientInterface $httpClient
+     * @param ResponseToGameTransformer $responseToGameTransformer
      */
-    public function __construct(string $userKey, HttpClientInterface $httpClient)
+    public function __construct(string $userKey, HttpClientInterface $httpClient, ResponseToGameTransformer $responseToGameTransformer)
     {
         $this->userKey = $userKey;
         $this->httpClient = $httpClient;
+        $this->responseToGameTransformer = $responseToGameTransformer;
     }
 
     /**
@@ -50,9 +58,10 @@ class ApiConnector
 //        $response = $this->httpClient->request('POST', self::GAMES_URL, $this->buildOptions($requestBody));
 //        $code = $response->getStatusCode();
 //        $content = json_decode($response->getContent());
-        $content = json_decode(file_get_contents('../../game-request-response.json'));
+        $response = json_decode(file_get_contents('/home/emarkevicius/Documents/code/bakalauras/game-tracking-backend/game-request-response.json'));
 
+        $data = array_map([$this->responseToGameTransformer, 'transformGame'], $response);
 
-        $games = $content;
+        return $data;
     }
 }

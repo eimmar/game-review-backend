@@ -5,8 +5,9 @@ declare(strict_types=1);
 
 
 
-namespace App\Service\IGDB\DTO;
+namespace App\Service\IGDB\DTO\Game;
 
+use App\Service\IGDB\DTO\Game;
 use App\Traits\IdentifiableTrait;
 
 class TimeToBeat

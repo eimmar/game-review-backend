@@ -3,6 +3,15 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO;
 
+use App\Service\IGDB\DTO\Game\Cover;
+use App\Service\IGDB\DTO\Game\GameMode;
+use App\Service\IGDB\DTO\Game\Genre;
+use App\Service\IGDB\DTO\Game\InvolvedCompany;
+use App\Service\IGDB\DTO\Game\PlayerPerspective;
+use App\Service\IGDB\DTO\Game\Screenshot;
+use App\Service\IGDB\DTO\Game\Theme;
+use App\Service\IGDB\DTO\Game\TimeToBeat;
+use App\Service\IGDB\DTO\Game\Website;
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
 use App\Traits\IdentifiableTrait;
