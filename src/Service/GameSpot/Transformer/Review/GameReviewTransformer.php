@@ -21,17 +21,16 @@ declare(strict_types=1);
 
 namespace App\Service\GameSpot\Transformer\Review;
 
-use App\Service\GameSpot\DTO\DTO;
+use App\Service\GameSpot\DTO\Review\GameReview;
 use App\Service\GameSpot\Transformer\AbstractDTOTransformer;
 
 class GameReviewTransformer extends AbstractDTOTransformer
 {
-
     /**
      * @inheritDoc
      */
-    public function transform(\stdClass $response): DTO
+    public function transform(\stdClass $response): GameReview
     {
-        // TODO: Implement transform() method.
+        return new GameReview($response->id, $response->name, $response->api_detail_url, $response->site_detail_url);
     }
 }

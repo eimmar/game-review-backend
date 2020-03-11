@@ -35,8 +35,8 @@ class GameController extends BaseApiController
      */
     public function index(GameRepository $gameRepository, ApiConnector $connector): JsonResponse
     {
-        $response = $connector->reviews(new ApiRequest('json'));
-        return $this->apiResponseBuilder->buildResponse((array)$response);
+        $response = $connector->games(new ApiRequest('json'));
+        return $this->apiResponseBuilder->buildResponse($response);
     }
 
     /**

@@ -23,27 +23,27 @@ namespace App\Service\GameSpot\DTO\Review;
 
 use App\Service\GameSpot\DTO\DTO;
 
-class Game implements DTO
+class GameReview implements DTO
 {
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $apiDetailUrl;
+    private string $apiDetailUrl;
 
     /**
      * @var string
      */
-    private $siteDetailUrl;
+    private string $siteDetailUrl;
 
     /**
      * @param int $id

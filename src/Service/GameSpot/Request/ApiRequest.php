@@ -10,32 +10,32 @@ class ApiRequest
     /**
      * @var string
      */
-    private $format;
+    private string $format;
 
     /**
      * @var array|null
      */
-    private $fieldList;
+    private ?array $fieldList;
 
     /**
      * @var int|null
      */
-    private $limit;
+    private ?int $limit;
 
     /**
      * @var int|null
      */
-    private $offset;
+    private ?int $offset;
 
     /**
      * @var string|null
      */
-    private $sort;
+    private ?string $sort;
 
     /**
      * @var array|null
      */
-    private $filter;
+    private ?array $filter;
 
     /**
      * @param string $format

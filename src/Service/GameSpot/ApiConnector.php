@@ -26,6 +26,7 @@ use App\Service\GameSpot\DTO\Review;
 use App\Service\GameSpot\Request\ApiRequest;
 use App\Service\GameSpot\Transformer\GameTransformer;
 use App\Service\GameSpot\Transformer\ResponseTransformer;
+use App\Service\GameSpot\Transformer\ReviewTransformer;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -40,35 +41,47 @@ class ApiConnector
     /**
      * @var string
      */
-    private $userKey;
+    private string $userKey;
 
     /**
      * @var HttpClientInterface
      */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
     /**
      * @var GameTransformer
      */
-    private $responseToGameTransformer;
+    private GameTransformer $gameTransformer;
 
     /**
      * @var ResponseTransformer
      */
-    private $responseTransformer;
+    private ResponseTransformer $responseTransformer;
+
+    /**
+     * @var ReviewTransformer
+     */
+    private ReviewTransformer $reviewTransformer;
 
     /**
      * @param string $userKey
      * @param HttpClientInterface $httpClient
-     * @param GameTransformer $responseToGameTransformer
+     * @param GameTransformer $gameTransformer
      * @param ResponseTransformer $responseTransformer
+     * @param ReviewTransformer $reviewTransformer
      */
-    public function __construct(string $userKey, HttpClientInterface $httpClient, GameTransformer $responseToGameTransformer, ResponseTransformer $responseTransformer)
-    {
+    public function __construct(
+        string $userKey,
+        HttpClientInterface $httpClient,
+        GameTransformer $gameTransformer,
+        ResponseTransformer $responseTransformer,
+        ReviewTransformer $reviewTransformer
+    ) {
         $this->userKey = $userKey;
         $this->httpClient = $httpClient;
-        $this->responseToGameTransformer = $responseToGameTransformer;
+        $this->gameTransformer = $gameTransformer;
         $this->responseTransformer = $responseTransformer;
+        $this->reviewTransformer = $reviewTransformer;
     }
 
     /**
@@ -98,7 +111,7 @@ class ApiConnector
             )
         );
 
-        return array_map([$this->responseToGameTransformer, 'transformReview'], $response->getResults());
+        return array_map([$this->reviewTransformer, 'transform'], $response->getResults());
     }
 
     /**
@@ -119,6 +132,6 @@ class ApiConnector
             )
         );
 
-        return array_map([$this->responseToGameTransformer, 'transform'], $response->getResults());
+        return array_map([$this->gameTransformer, 'transform'], $response->getResults());
     }
 }

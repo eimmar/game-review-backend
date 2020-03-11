@@ -26,22 +26,22 @@ class Image implements DTO
     /**
      * @var string
      */
-    private $squareTiny;
+    private string $squareTiny;
 
     /**
      * @var string
      */
-    private $screenTiny;
+    private string $screenTiny;
 
     /**
      * @var string
      */
-    private $squareSmall;
+    private string $squareSmall;
 
     /**
      * @var string
      */
-    private $original;
+    private string $original;
 
     /**
      * @param string $squareTiny

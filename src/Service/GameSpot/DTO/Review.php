@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace App\Service\GameSpot\DTO;
 
+use App\Service\GameSpot\DTO\Review\GameReview;
 use App\Service\GameSpot\DTO\Review\Release;
 
 class Review implements DTO
@@ -28,17 +29,17 @@ class Review implements DTO
     /**
      * @var string|null
      */
-    private $publishDate;
+    private ?string $publishDate;
 
     /**
      * @var string|null
      */
-    private $updateDate;
+    private ?string $updateDate;
 
     /**
      * @var string|null
      */
-    private $reviewType;
+    private ?string $reviewType;
 
     /**
      * @var string|null
@@ -48,68 +49,68 @@ class Review implements DTO
     /**
      * @var string|null
      */
-    private $authors;
+    private ?string $authors;
 
     /**
      * @var string|null
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @var Image|null
      */
-    private $image;
+    private ?Image $image;
 
     /**
      * @var string|null
      */
-    private $score;
+    private ?string $score;
 
     /**
      * @var string|null
      */
-    private $deck;
+    private ?string $deck;
 
     /**
      * @var string|null
      */
-    private $good;
+    private ?string $good;
 
     /**
      * @var string|null
      */
-    private $bad;
+    private ?string $bad;
 
     /**
      * @var string|null
      */
-    private $body;
+    private ?string $body;
 
     /**
      * @var string|null
      */
-    private $lede;
+    private ?string $lede;
 
     /**
-     * @var \App\Service\GameSpot\DTO\Review\Game|null
+     * @var GameReview|null
      */
-    private $game;
+    private ?GameReview $game;
 
     /**
      * @var Release[]|array|null
      */
-    private $releases;
+    private ?array $releases;
 
     /**
      * @var string|null
      */
-    private $siteDetailUrl;
+    private ?string $siteDetailUrl;
 
     /**
      * @param string|null $publishDate
      * @param string|null $updateDate
      * @param string|null $reviewType
-     * @param string|null $id
+     * @param int|null $id
      * @param string|null $authors
      * @param string|null $title
      * @param Image|null $image
@@ -119,7 +120,7 @@ class Review implements DTO
      * @param string|null $bad
      * @param string|null $body
      * @param string|null $lede
-     * @param Review\Game|null $game
+     * @param GameReview|null $game
      * @param Release[]|array|null $releases
      * @param string|null $siteDetailUrl
      */
@@ -127,7 +128,7 @@ class Review implements DTO
         ?string $publishDate,
         ?string $updateDate,
         ?string $reviewType,
-        ?string $id,
+        ?int $id,
         ?string $authors,
         ?string $title,
         ?Image $image,
@@ -137,7 +138,7 @@ class Review implements DTO
         ?string $bad,
         ?string $body,
         ?string $lede,
-        ?Revew\Game $game,
+        ?GameReview $game,
         $releases,
         ?string $siteDetailUrl
     ) {
@@ -184,9 +185,9 @@ class Review implements DTO
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -264,9 +265,9 @@ class Review implements DTO
     }
 
     /**
-     * @return Review\Game|null
+     * @return GameReview|null
      */
-    public function getGame(): ?Review\Game
+    public function getGame(): ?GameReview
     {
         return $this->game;
     }

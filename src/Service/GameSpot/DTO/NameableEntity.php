@@ -26,10 +26,9 @@ class NameableEntity implements DTO
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
-     * NameableEntity constructor.
      * @param string $name
      */
     public function __construct(string $name)

@@ -53,13 +53,15 @@ class GameTransformer extends AbstractDTOTransformer
      */
     public function transform(\stdClass $response): Game
     {
+        $image = $this->getProperty($response, 'image');
+
         return new Game(
             $this->getProperty($response, 'release_date'),
             $this->getProperty($response, 'description'),
             $this->getProperty($response, 'id'),
             $this->getProperty($response, 'name'),
             $this->getProperty($response, 'deck'),
-            $this->imageTransformer->transform($this->getProperty($response, 'image')),
+            $image ? $this->imageTransformer->transform($image) : null,
             array_map([$this->nameableEntityTransformer, 'transform'], (array)$this->getProperty($response, 'genres')),
             array_map([$this->nameableEntityTransformer, 'transform'], (array)$this->getProperty($response, 'themes')),
             array_map([$this->nameableEntityTransformer, 'transform'], (array)$this->getProperty($response, 'franchises')),

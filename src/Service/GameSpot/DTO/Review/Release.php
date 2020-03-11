@@ -28,37 +28,37 @@ class Release implements DTO
     /**
      * @var string|null
      */
-    private $upc;
+    private ?string $upc;
 
     /**
      * @var string
      */
-    private $distributionType;
+    private string $distributionType;
 
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $region;
+    private string $region;
 
     /**
      * @var string
      */
-    private $platform;
+    private string $platform;
 
     /**
      * @var string
      */
-    private $apiDetailUrl;
+    private string $apiDetailUrl;
 
     /**
      * @param string|null $upc

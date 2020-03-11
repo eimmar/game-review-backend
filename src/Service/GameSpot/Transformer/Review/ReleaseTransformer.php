@@ -21,17 +21,24 @@ declare(strict_types=1);
 
 namespace App\Service\GameSpot\Transformer\Review;
 
-use App\Service\GameSpot\DTO\DTO;
+use App\Service\GameSpot\DTO\Review\Release;
 use App\Service\GameSpot\Transformer\AbstractDTOTransformer;
 
 class ReleaseTransformer extends AbstractDTOTransformer
 {
-
     /**
      * @inheritDoc
      */
-    public function transform(\stdClass $response): DTO
+    public function transform(\stdClass $response): Release
     {
-        // TODO: Implement transform() method.
+        return new Release(
+            $response->upc,
+            $response->distribution_type,
+            $response->id,
+            $response->name,
+            $response->region,
+            $response->platform,
+            $response->api_detail_url
+        );
     }
 }

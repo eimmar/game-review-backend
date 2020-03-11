@@ -28,42 +28,42 @@ class Response implements DTO
     /**
      * @var string
      */
-    private $error;
+    private string $error;
 
     /**
      * @var int
      */
-    private $limit;
+    private int $limit;
 
     /**
      * @var int
      */
-    private $offset;
+    private int $offset;
 
     /**
      * @var int
      */
-    private $numberOfPageResults;
+    private int $numberOfPageResults;
 
     /**
      * @var int
      */
-    private $numberOfTotalResults;
+    private int $numberOfTotalResults;
 
     /**
      * @var int
      */
-    private $statusCode;
+    private int $statusCode;
 
     /**
      * @var array
      */
-    private $results;
+    private array $results;
 
     /**
      * @var string
      */
-    private $version;
+    private string $version;
 
     /**
      * @param string $error

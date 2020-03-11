@@ -116,8 +116,8 @@ class Game
 
     //TODO: Implement similar games relations
 //    /**
-//     * @var Game[]|ArrayCollection
-//     * @ORM\ManyToMany(targetEntity="App\Entity\Game", inversedBy="similarGamesSource")
+//     * @var GameReview[]|ArrayCollection
+//     * @ORM\ManyToMany(targetEntity="App\Entity\GameReview", inversedBy="similarGamesSource")
 //     * @ORM\JoinTable(name="similar_games_relations",
 //     *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="external_id")},
 //     *      inverseJoinColumns={@ORM\JoinColumn(name="similar_game_id", referencedColumnName="external_id")}
@@ -126,8 +126,8 @@ class Game
 //    private $similarGames;
 //
 //    /**
-//     * @var Game[]|ArrayCollection
-//     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="similarGames")
+//     * @var GameReview[]|ArrayCollection
+//     * @ORM\ManyToMany(targetEntity="App\Entity\GameReview", mappedBy="similarGames")
 //     */
 //    protected $similarGamesSource;
 

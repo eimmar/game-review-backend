@@ -26,77 +26,77 @@ class Game implements DTO
     /**
      * @var string|null
      */
-    private $releaseDate;
+    private ?string $releaseDate;
 
     /**
      * @var string|null
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @var int|null
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @var string|null
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var string|null
      */
-    private $deck;
+    private ?string $deck;
 
     /**
      * @var Image|null
      */
-    private $image;
+    private ?Image $image;
 
     /**
      * @var NameableEntity[]|null
      */
-    private $genres;
+    private ?array $genres;
 
     /**
      * @var NameableEntity[]|null
      */
-    private $themes;
+    private ?array $themes;
 
     /**
      * @var NameableEntity[]|null
      */
-    private $franchises;
+    private ?array $franchises;
 
     /**
      * @var string|null
      */
-    private $imagesApiUrl;
+    private ?string $imagesApiUrl;
 
     /**
      * @var string|null
      */
-    private $reviewsApiUrl;
+    private ?string $reviewsApiUrl;
 
     /**
      * @var string|null
      */
-    private $articlesApiUrl;
+    private ?string $articlesApiUrl;
 
     /**
      * @var string|null
      */
-    private $videosApiUrl;
+    private ?string $videosApiUrl;
 
     /**
      * @var string|null
      */
-    private $releasesApiUrl;
+    private ?string $releasesApiUrl;
 
     /**
      * @var string|null
      */
-    private $siteDetailUrl;
+    private ?string $siteDetailUrl;
 
     /**
      * @param string|null $releaseDate

@@ -63,6 +63,9 @@ class ReviewTransformer extends AbstractDTOTransformer
      */
     public function transform(\stdClass $response): Review
     {
+        $image = $this->getProperty($response, 'image');
+        $game = $this->getProperty($response, 'game');
+
         return new Review(
             $this->getProperty($response, 'publish_date'),
             $this->getProperty($response, 'update_date'),
@@ -70,15 +73,15 @@ class ReviewTransformer extends AbstractDTOTransformer
             $this->getProperty($response, 'id'),
             $this->getProperty($response, 'authors'),
             $this->getProperty($response, 'title'),
-            $this->imageTransformer->transform($this->getProperty($response, 'image')),
+            $image ? $this->imageTransformer->transform($image) : null,
             $this->getProperty($response, 'score'),
             $this->getProperty($response, 'deck'),
             $this->getProperty($response, 'good'),
             $this->getProperty($response, 'bad'),
             $this->getProperty($response, 'body'),
             $this->getProperty($response, 'lede'),
-            $this->gameTransformer->transform($this->getProperty($response, 'game')),
-            array_map([$this->releaseTransformer, 'transform'], $this->getProperty($response, 'releases')),
+            $game ? $this->gameTransformer->transform($game) : null,
+            array_map([$this->releaseTransformer, 'transform'], (array)$this->getProperty($response, 'releases')),
             $this->getProperty($response, 'site_detail_url'),
         );
     }
