@@ -21,13 +21,12 @@ class ApiConnector
     /**
      * @var string
      */
-    private $userKey;
+    private string $userKey;
 
     /**
      * @var HttpClientInterface
      */
-    private $httpClient;
-
+    private HttpClientInterface $httpClient;
 
     /**
      * @param string $userKey

@@ -26,32 +26,32 @@ class GamePrices implements RequestInterface
     /**
      * @var array
      */
-    private $plains;
+    private array $plains;
 
     /**
      * @var string|null
      */
-    private $region;
+    private ?string $region;
 
     /**
      * @var string|null
      */
-    private $country;
+    private ?string $country;
 
     /**
      * @var array|null
      */
-    private $shops;
+    private ?array $shops;
 
     /**
      * @var array|null
      */
-    private $exclude;
+    private ?array $exclude;
 
     /**
      * @var int|null
      */
-    private $added;
+    private ?int $added;
 
     /**
      * @param array $plains

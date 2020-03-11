@@ -27,32 +27,32 @@ class Search implements RequestInterface
     /**
      * @var string
      */
-    private $query;
+    private string $query;
 
     /**
      * @var int|null
      */
-    private $offset;
+    private ?int $offset;
 
     /**
      * @var int|null
      */
-    private $limit;
+    private ?int $limit;
 
     /**
      * @var string|null
      */
-    private $region;
+    private ?string $region;
 
     /**
      * @var string|null
      */
-    private $country;
+    private ?string $country;
 
     /**
      * @var array|null
      */
-    private $shops;
+    private ?array $shops;
 
     /**
      * @param string $query

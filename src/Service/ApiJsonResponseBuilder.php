@@ -13,9 +13,9 @@ class ApiJsonResponseBuilder
     /**
      * @var array
      */
-    private $corsAllowedUrls;
+    private array $corsAllowedUrls;
 
-    private $serializer;
+    private SerializerInterface $serializer;
 
     public function __construct(SerializerInterface $serializer, array $corsAllowedUrls)
     {
