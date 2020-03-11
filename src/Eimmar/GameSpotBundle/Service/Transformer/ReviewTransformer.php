@@ -19,11 +19,11 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\Transformer;
+namespace App\Eimmar\GameSpotBundle\Service\Transformer;
 
-use App\Service\GameSpot\DTO\Review;
-use App\Service\GameSpot\Transformer\Review\GameReviewTransformer;
-use App\Service\GameSpot\Transformer\Review\ReleaseTransformer;
+use App\Eimmar\GameSpotBundle\DTO\Review;
+use App\Eimmar\GameSpotBundle\Service\Transformer\Review\GameReviewTransformer;
+use App\Eimmar\GameSpotBundle\Service\Transformer\Review\ReleaseTransformer;
 
 class ReviewTransformer extends AbstractDTOTransformer
 {

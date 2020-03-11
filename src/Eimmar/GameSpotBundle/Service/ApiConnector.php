@@ -19,14 +19,14 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot;
+namespace App\Eimmar\GameSpotBundle\Service;
 
-use App\Service\GameSpot\DTO\Game;
-use App\Service\GameSpot\DTO\Review;
-use App\Service\GameSpot\Request\ApiRequest;
-use App\Service\GameSpot\Transformer\GameTransformer;
-use App\Service\GameSpot\Transformer\ResponseTransformer;
-use App\Service\GameSpot\Transformer\ReviewTransformer;
+use App\Eimmar\GameSpotBundle\DTO\Game;
+use App\Eimmar\GameSpotBundle\DTO\Review;
+use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
+use App\Eimmar\GameSpotBundle\Service\Transformer\GameTransformer;
+use App\Eimmar\GameSpotBundle\Service\Transformer\ResponseTransformer;
+use App\Eimmar\GameSpotBundle\Service\Transformer\ReviewTransformer;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;

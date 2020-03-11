@@ -19,9 +19,9 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\Transformer;
+namespace App\Eimmar\GameSpotBundle\Service\Transformer;
 
-use App\Service\GameSpot\DTO\DTO;
+use App\Eimmar\GameSpotBundle\DTO\DTO;
 
 abstract class AbstractDTOTransformer
 {

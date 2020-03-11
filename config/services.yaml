@@ -46,6 +46,6 @@ services:
         arguments:
             $userKey: '%env(IS_THERE_ANY_DEAL_API_KEY)%'
 
-    App\Service\GameSpot\ApiConnector:
+    App\Eimmar\GameSpotBundle\Service\ApiConnector:
         arguments:
             $userKey: '%env(GAMESPOT_API_KEY)%'

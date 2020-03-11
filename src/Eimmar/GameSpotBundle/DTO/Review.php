@@ -19,10 +19,10 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\DTO;
+namespace App\Eimmar\GameSpotBundle\DTO;
 
-use App\Service\GameSpot\DTO\Review\GameReview;
-use App\Service\GameSpot\DTO\Review\Release;
+use App\Eimmar\GameSpotBundle\DTO\Review\GameReview;
+use App\Eimmar\GameSpotBundle\DTO\Review\Release;
 
 class Review implements DTO
 {

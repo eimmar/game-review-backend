@@ -19,23 +19,18 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\Transformer;
+namespace App\Eimmar\GameSpotBundle\Service\Transformer;
 
-use App\Service\GameSpot\DTO\Image;
+use App\Eimmar\GameSpotBundle\DTO\NameableEntity;
 
-class ImageTransformer extends AbstractDTOTransformer
+class NameableEntityTransformer extends AbstractDTOTransformer
 {
     /**
      * @param \stdClass $response
-     * @return Image
+     * @return NameableEntity
      */
-    public function transform(\stdClass $response): Image
+    public function transform(\stdClass $response): NameableEntity
     {
-        return new Image(
-            (string)$this->getProperty($response, 'square_tiny'),
-            (string)$this->getProperty($response, 'screen_tiny'),
-            (string)$this->getProperty($response, 'square_small'),
-            (string)$this->getProperty($response, 'original')
-        );
+        return new NameableEntity((string)$this->getProperty($response, 'name'));
     }
 }

@@ -19,18 +19,18 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\Transformer;
+namespace App\Eimmar\GameSpotBundle\Service\Transformer\Review;
 
-use App\Service\GameSpot\DTO\NameableEntity;
+use App\Eimmar\GameSpotBundle\DTO\Review\GameReview;
+use App\Eimmar\GameSpotBundle\Service\Transformer\AbstractDTOTransformer;
 
-class NameableEntityTransformer extends AbstractDTOTransformer
+class GameReviewTransformer extends AbstractDTOTransformer
 {
     /**
-     * @param \stdClass $response
-     * @return NameableEntity
+     * @inheritDoc
      */
-    public function transform(\stdClass $response): NameableEntity
+    public function transform(\stdClass $response): GameReview
     {
-        return new NameableEntity((string)$this->getProperty($response, 'name'));
+        return new GameReview($response->id, $response->name, $response->api_detail_url, $response->site_detail_url);
     }
 }

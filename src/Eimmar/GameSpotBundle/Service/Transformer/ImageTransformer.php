@@ -19,27 +19,23 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\Transformer;
+namespace App\Eimmar\GameSpotBundle\Service\Transformer;
 
-use App\Service\GameSpot\Response\Response;
+use App\Eimmar\GameSpotBundle\DTO\Image;
 
-class ResponseTransformer
+class ImageTransformer extends AbstractDTOTransformer
 {
     /**
      * @param \stdClass $response
-     * @return Response
+     * @return Image
      */
-    public function transform(\stdClass $response)
+    public function transform(\stdClass $response): Image
     {
-        return new Response(
-            $response->error,
-            $response->limit,
-            $response->offset,
-            $response->number_of_page_results,
-            $response->number_of_total_results,
-            $response->status_code,
-            $response->results,
-            $response->version
+        return new Image(
+            (string)$this->getProperty($response, 'square_tiny'),
+            (string)$this->getProperty($response, 'screen_tiny'),
+            (string)$this->getProperty($response, 'square_small'),
+            (string)$this->getProperty($response, 'original')
         );
     }
 }

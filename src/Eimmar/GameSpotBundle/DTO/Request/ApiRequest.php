@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace App\Service\GameSpot\Request;
+namespace App\Eimmar\GameSpotBundle\DTO\Request;
 
 class ApiRequest
 {

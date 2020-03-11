@@ -19,9 +19,9 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\Response;
+namespace App\Eimmar\GameSpotBundle\DTO\Response;
 
-use App\Service\GameSpot\DTO\DTO;
+use App\Eimmar\GameSpotBundle\DTO\DTO;
 
 class Response implements DTO
 {

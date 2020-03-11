@@ -19,9 +19,9 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\DTO\Review;
+namespace App\Eimmar\GameSpotBundle\DTO\Review;
 
-use App\Service\GameSpot\DTO\DTO;
+use App\Eimmar\GameSpotBundle\DTO\DTO;
 
 class Release implements DTO
 {

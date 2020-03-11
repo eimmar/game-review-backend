@@ -19,7 +19,7 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\GameSpot\DTO;
+namespace App\Eimmar\GameSpotBundle\DTO;
 
 class Image implements DTO
 {
