@@ -19,25 +19,14 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\IsThereAnyDeal\Request;
+namespace App\Eimmar\IsThereAnyDealBundle\DTO\Request;
 
-
-class Search implements RequestInterface
+class GamePricesRequest implements RequestInterface
 {
     /**
-     * @var string
+     * @var array
      */
-    private string $query;
-
-    /**
-     * @var int|null
-     */
-    private ?int $offset;
-
-    /**
-     * @var int|null
-     */
-    private ?int $limit;
+    private array $plains;
 
     /**
      * @var string|null
@@ -55,41 +44,51 @@ class Search implements RequestInterface
     private ?array $shops;
 
     /**
-     * @param string $query
-     * @param int|null $offset
-     * @param int|null $limit
+     * @var array|null
+     */
+    private ?array $exclude;
+
+    /**
+     * @var int|null
+     */
+    private ?int $added;
+
+    /**
+     * @param array $plains
      * @param string|null $region
      * @param string|null $country
      * @param array|null $shops
+     * @param array|null $exclude
+     * @param int|null $added
      */
     public function __construct(
-        string $query,
-        ?int $offset = null,
-        ?int $limit = null,
+        array $plains,
         ?string $region = null,
         ?string $country = null,
-        ?array $shops = null
+        ?array $shops = null,
+        ?array $exclude = null,
+        ?int $added = null
     ) {
-        $this->query = $query;
-        $this->offset = $offset;
-        $this->limit = $limit;
+        $this->plains = $plains;
         $this->region = $region;
         $this->country = $country;
         $this->shops = $shops;
+        $this->exclude = $exclude;
+        $this->added = $added;
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function unwrap(): array
     {
         return array_filter([
-            'q' => $this->query,
-            'offset' => $this->offset,
-            'limit' => $this->limit,
+            'plains' => $this->plains,
             'region' => $this->region,
             'country' => $this->country,
             'shops' => implode(',', (array)$this->shops),
+            'exclude' => implode(',', (array)$this->exclude),
+            'added' => $this->added,
         ]);
     }
 }

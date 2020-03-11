@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
-use App\Eimmar\IGDBBundle\Service\ApiConnector;
+use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
+use App\Eimmar\IsThereAnyDealBundle\DTO\Request\SearchRequest;
+use App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
@@ -35,7 +36,7 @@ class GameController extends BaseApiController
      */
     public function index(GameRepository $gameRepository, ApiConnector $connector): JsonResponse
     {
-        $response = $connector->games(new RequestBody());
+        $response = $connector->search(new SearchRequest('assassins creed odyssey', 0, 20, 'eu2', 'LT', ['steam', 'gog']));
         return $this->apiResponseBuilder->buildResponse($response);
     }
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Service\IsThereAnyDeal;
+namespace App\Eimmar\IsThereAnyDealBundle\Service;
 
-use App\Service\IsThereAnyDeal\Request\GamePrices;
-use App\Service\IsThereAnyDeal\Request\RequestInterface;
-use App\Service\IsThereAnyDeal\Request\Search;
+use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
+use App\Eimmar\IsThereAnyDealBundle\DTO\Request\RequestInterface;
+use App\Eimmar\IsThereAnyDealBundle\DTO\Request\SearchRequest;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -48,14 +48,14 @@ class ApiConnector
     }
 
     /**
-     * @param Search $requestBody
+     * @param SearchRequest $requestBody
      * @return array
      * @throws TransportExceptionInterface
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      */
-    public function search(Search $requestBody)
+    public function search(SearchRequest $requestBody)
     {
         return json_decode(
             $this->httpClient
@@ -66,14 +66,14 @@ class ApiConnector
     }
 
     /**
-     * @param GamePrices $requestBody
+     * @param GamePricesRequest $requestBody
      * @return array
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function gamePrices(GamePrices $requestBody)
+    public function gamePrices(GamePricesRequest $requestBody)
     {
         return json_decode(
             $this->httpClient

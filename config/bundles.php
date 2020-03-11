@@ -15,4 +15,5 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
     App\Eimmar\IGDBBundle\EimmarIGDBBundle::class => ['all' => true],
+    App\Eimmar\IsThereAnyDealBundle\EimmarIsThereAnyDealBundle::class => ['all' => true],
 ];

@@ -19,7 +19,7 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\IsThereAnyDeal\Request;
+namespace App\Eimmar\IsThereAnyDealBundle\DTO\Request;
 
 interface RequestInterface
 {

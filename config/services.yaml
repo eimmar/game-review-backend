@@ -42,7 +42,7 @@ services:
         arguments:
             $userKey: '%env(IDGB_API_KEY)%'
 
-    App\Service\IsThereAnyDeal\ApiConnector:
+    App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector:
         arguments:
             $userKey: '%env(IS_THERE_ANY_DEAL_API_KEY)%'
 
