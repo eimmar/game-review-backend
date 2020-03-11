@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-
-
-
 namespace App\Service\IGDB;
 
 use App\Service\IGDB\Transformer\ResponseToGameTransformer;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiConnector
@@ -53,15 +54,23 @@ class ApiConnector
         ];
     }
 
+    /**
+     * @param RequestBody $requestBody
+     * @return array
+     * @throws TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     */
     public function games(RequestBody $requestBody)
     {
-//        $response = $this->httpClient->request('POST', self::GAMES_URL, $this->buildOptions($requestBody));
-//        $code = $response->getStatusCode();
-//        $content = json_decode($response->getContent());
-        $response = json_decode(file_get_contents('/home/emarkevicius/Documents/code/bakalauras/game-tracking-backend/game-request-response.json'));
+        $response = json_decode(
+            $this->httpClient
+                ->request('POST', self::GAMES_URL, $this->buildOptions($requestBody))
+                ->getContent()
+        );
+//        $response = json_decode(file_get_contents('/home/emarkevicius/Documents/code/bakalauras/game-tracking-backend/game-request-response.json'));
 
-        $data = array_map([$this->responseToGameTransformer, 'transformGame'], $response);
-
-        return $data;
+        return array_map([$this->responseToGameTransformer, 'transformGame'], $response);
     }
 }

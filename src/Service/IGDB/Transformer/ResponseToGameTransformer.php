@@ -37,7 +37,6 @@ use App\Service\IGDB\DTO\Platform;
 
 class ResponseToGameTransformer
 {
-
     /**
      * @param \stdClass $object
      * @param string $propertyName

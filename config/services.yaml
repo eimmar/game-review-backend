@@ -42,3 +42,11 @@ services:
     App\Service\IGDB\ApiConnector:
         arguments:
             $userKey: '%env(IDGB_API_KEY)%'
+
+    App\Service\IsThereAnyDeal\ApiConnector:
+        arguments:
+            $userKey: '%env(IS_THERE_ANY_DEAL_API_KEY)%'
+
+    App\Service\GameSpot\ApiConnector:
+        arguments:
+            $userKey: '%env(GAMESPOT_API_KEY)%'

@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
-use App\Service\IGDB\ApiConnector;
-use App\Service\IGDB\RequestBody;
+use App\Service\GameSpot\ApiConnector;
+use App\Service\GameSpot\Request\ApiRequest;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,11 +35,8 @@ class GameController extends BaseApiController
      */
     public function index(GameRepository $gameRepository, ApiConnector $connector): JsonResponse
     {
-        $connector->games(new RequestBody(
-            'fields *, genres.*, cover.*, themes.*, time_to_beat.*, websites.*, release_dates.*, age_ratings.*, involved_companies.*, screenshots.*, similar_games.*, platforms.*, involved_companies.company.*, involved_companies.company.websites.*;',
-            'where name = "Counter-Strike: Global Offensive";'
-        ));
-        return $this->apiResponseBuilder->buildResponse('ok');
+        $response = $connector->reviews(new ApiRequest('json'));
+        return $this->apiResponseBuilder->buildResponse((array)$response);
     }
 
     /**
