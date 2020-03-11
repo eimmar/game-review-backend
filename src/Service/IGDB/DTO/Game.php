@@ -16,7 +16,7 @@ use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
 use App\Traits\IdentifiableTrait;
 
-class Game
+class Game implements ResponseDTO
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;
@@ -25,42 +25,42 @@ class Game
     /**
      * @var AgeRating[]|int[]|null
      */
-    private $ageRatings;
+    private ?array $ageRatings;
 
     /**
      * @var double|null
      */
-    private $aggregatedRating;
+    private ?float $aggregatedRating;
 
     /**
      * @var int|null
      */
-    private $aggregatedRatingCount;
+    private ?int $aggregatedRatingCount;
 
     /**
      * @var int[]|null
      */
-    private $alternativeNames;
+    private ?array $alternativeNames;
 
     /**
      * @var int[]|null
      */
-    private $artworks;
+    private ?array $artworks;
 
     /**
      * @var Game[]|int[]|null
      */
-    private $bundles;
+    private ?array $bundles;
 
     /**
      * @var int|null
      */
-    private $category;
+    private ?int $category;
 
     /**
      * @var int|null
      */
-    private $collection;
+    private ?int $collection;
 
     /**
      * @var Cover|int|null
@@ -70,72 +70,72 @@ class Game
     /**
      * @var Game[]|int[]|null
      */
-    private $dlcs;
+    private ?array $dlcs;
 
     /**
      * @var Game[]|int[]|null
      */
-    private $expansions;
+    private ?array $expansions;
 
     /**
      * @var Game[]|int[]|null
      */
-    private $externalGames;
+    private ?array $externalGames;
 
     /**
      * @var int|null
      */
-    private $firstReleaseDate;
+    private ?int $firstReleaseDate;
 
     /**
      * @var int|null
      */
-    private $follows;
+    private ?int $follows;
 
     /**
      * @var int|null
      */
-    private $franchise;
+    private ?int $franchise;
 
     /**
      * @var int[]|null
      */
-    private $franchises;
+    private ?array $franchises;
 
     /**
      * @var int[]|null
      */
-    private $gameEngines;
+    private ?array $gameEngines;
 
     /**
      * @var GameMode[]|int[]|null
      */
-    private $gameModes;
+    private ?array $gameModes;
 
     /**
      * @var Genre[]|int[]|null
      */
-    private $genres;
+    private ?array $genres;
 
     /**
      * @var int|null
      */
-    private $hypes;
+    private ?int $hypes;
 
     /**
      * @var InvolvedCompany[]|int[]|null
      */
-    private $involvedCompanies;
+    private ?array $involvedCompanies;
 
     /**
      * @var int[]|null
      */
-    private $keywords;
+    private ?array $keywords;
 
     /**
      * @var int[]|null
      */
-    private $multiplayerModes;
+    private ?array $multiplayerModes;
 
     /**
      * @var Game|int|null
@@ -145,77 +145,77 @@ class Game
     /**
      * @var Platform[]|int[]|null
      */
-    private $platforms;
+    private ?array $platforms;
 
     /**
      * @var PlayerPerspective[]|int[]|null
      */
-    private $playerPerspectives;
+    private ?array $playerPerspectives;
 
     /**
      * @var float|null
      */
-    private $popularity;
+    private ?float $popularity;
 
     /**
      * @var int|null
      */
-    private $pulseCount;
+    private ?int $pulseCount;
 
     /**
      * @var float|null
      */
-    private $rating;
+    private ?float $rating;
 
     /**
      * @var int|null
      */
-    private $ratingCount;
+    private ?int $ratingCount;
 
     /**
      * @var int[]|null
      */
-    private $releaseDates;
+    private ?array $releaseDates;
 
     /**
      * @var Screenshot[]|int[]|null
      */
-    private $screenshots;
+    private ?array $screenshots;
 
     /**
      * @var Game[]|int[]|null
      */
-    private $similarGames;
+    private ?array $similarGames;
 
     /**
      * @var Game[]|int[]|null
      */
-    private $standaloneExpansions;
+    private ?array $standaloneExpansions;
 
     /**
      * @var int|null
      */
-    private $status;
+    private ?int $status;
 
     /**
      * @var string|null
      */
-    private $storyline;
+    private ?string $storyline;
 
     /**
      * @var string|null
      */
-    private $summary;
+    private ?string $summary;
 
     /**
      * @var int[]|null
      */
-    private $tags;
+    private ?array $tags;
 
     /**
      * @var Theme[]|null
      */
-    private $themes;
+    private ?array $themes;
 
     /**
      * @var TimeToBeat|int|null
@@ -225,12 +225,12 @@ class Game
     /**
      * @var float|null
      */
-    private $totalRating;
+    private ?float $totalRating;
 
     /**
      * @var int|null
      */
-    private $totalRatingCount;
+    private ?int $totalRatingCount;
 
     /**
      * @var Game|int|null
@@ -240,17 +240,17 @@ class Game
     /**
      * @var string|null
      */
-    private $versionTitle;
+    private ?string $versionTitle;
 
     /**
      * @var int[]|null
      */
-    private $videos;
+    private ?array $videos;
 
     /**
      * @var Website[]|int[]|null
      */
-    private $websites;
+    private ?array $websites;
 
     /**
      * @param int $id

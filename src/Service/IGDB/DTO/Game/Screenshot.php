@@ -7,10 +7,11 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO\Game;
 
+use App\Service\IGDB\DTO\ResponseDTO;
 use App\Service\IGDB\Traits\ImageTrait;
 use App\Traits\IdentifiableTrait;
 
-class Screenshot
+class Screenshot implements ResponseDTO
 {
     use ImageTrait;
     use IdentifiableTrait;

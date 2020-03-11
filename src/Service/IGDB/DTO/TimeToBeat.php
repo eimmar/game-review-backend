@@ -5,19 +5,18 @@ declare(strict_types=1);
 
 
 
-namespace App\Service\IGDB\DTO\Game;
+namespace App\Service\IGDB\DTO;
 
-use App\Service\IGDB\DTO\Game;
 use App\Traits\IdentifiableTrait;
 
-class TimeToBeat
+class TimeToBeat implements ResponseDTO
 {
     use IdentifiableTrait;
 
     /**
      * @var int|null
      */
-    private $completely;
+    private ?int $completely;
 
     /**
      * @var Game|int|null
@@ -27,12 +26,12 @@ class TimeToBeat
     /**
      * @var int|null
      */
-    private $hastly;
+    private ?int $hastly;
 
     /**
      * @var int|null
      */
-    private $normally;
+    private ?int $normally;
 
     /**
      * @param int $id

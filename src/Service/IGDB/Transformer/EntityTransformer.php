@@ -19,33 +19,21 @@ declare(strict_types=1);
  */
 
 
-namespace App\Service\IGDB\Traits;
+namespace App\Service\IGDB\Transformer;
 
-trait TimestampableTrait
+use App\Service\IGDB\DTO\ResponseDTO;
+
+class EntityTransformer extends AbstractTransformer
 {
     /**
-     * @var int|null
+     * @inheritDoc
      */
-    protected ?int $createdAt;
-
-    /**
-     * @var int|null
-     */
-    protected ?int $updatedAt;
-
-    /**
-     * @return int|null
-     */
-    public function getCreatedAt(): ?int
+    public function transform($response)
     {
-        return $this->createdAt;
-    }
+        if ($this->isNotObject($response)) {
+            return $response;
+        }
 
-    /**
-     * @return int|null
-     */
-    public function getUpdatedAt(): ?int
-    {
-        return $this->updatedAt;
+        return $this->getProperty($response, 'id');
     }
 }

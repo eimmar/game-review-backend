@@ -11,7 +11,7 @@ use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
 use App\Traits\IdentifiableTrait;
 
-class Platform
+class Platform implements ResponseDTO
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;
@@ -20,47 +20,47 @@ class Platform
     /**
      * @var string|null
      */
-    private $abbreviation;
+    private ?string $abbreviation;
 
     /**
      * @var string|null
      */
-    private $alternativeName;
+    private ?string $alternativeName;
 
     /**
      * @var int|null
      */
-    private $category;
+    private ?int $category;
 
     /**
      * @var int|null
      */
-    private $generation;
+    private ?int $generation;
 
     /**
      * @var int|null
      */
-    private $platformLogo;
+    private ?int $platformLogo;
 
     /**
      * @var int|null
      */
-    private $productFamily;
+    private ?int $productFamily;
 
     /**
      * @var string|null
      */
-    private $summary;
+    private ?string $summary;
 
     /**
      * @var int[]|null
      */
-    private $versions;
+    private ?array $versions;
 
     /**
      * @var int[]|null
      */
-    private $websites;
+    private ?array $websites;
 
     /**
      * @param int $id

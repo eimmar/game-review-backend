@@ -8,16 +8,17 @@ declare(strict_types=1);
 namespace App\Service\IGDB\DTO\Game;
 
 use App\Service\IGDB\DTO\Game;
+use App\Service\IGDB\DTO\ResponseDTO;
 use App\Traits\IdentifiableTrait;
 
-class Website
+class Website implements ResponseDTO
 {
     use IdentifiableTrait;
 
     /**
      * @var int|null
      */
-    private $category;
+    private ?int $category;
 
     /**
      * @var Game|int|null
@@ -27,12 +28,12 @@ class Website
     /**
      * @var bool|null
      */
-    private $trusted;
+    private ?bool $trusted;
 
     /**
      * @var string|null
      */
-    private $url;
+    private ?string $url;
 
     /**
      * @param int $id

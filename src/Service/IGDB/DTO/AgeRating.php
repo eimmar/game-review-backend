@@ -6,34 +6,34 @@ namespace App\Service\IGDB\DTO;
 
 use App\Traits\IdentifiableTrait;
 
-class AgeRating
+class AgeRating implements ResponseDTO
 {
     use IdentifiableTrait;
 
     /**
      * @var int|null
      */
-    private $category;
+    private ?int $category;
 
     /**
      * @var int[]|null
      */
-    private $contentDescriptions;
+    private ?array $contentDescriptions;
 
     /**
      * @var int|null
      */
-    private $rating;
+    private ?int $rating;
 
     /**
      * @var string|null
      */
-    private $ratingCoverUrl;
+    private ?string $ratingCoverUrl;
 
     /**
      * @var string|null
      */
-    private $synopsis;
+    private ?string $synopsis;
 
     /**
      * @param int $id

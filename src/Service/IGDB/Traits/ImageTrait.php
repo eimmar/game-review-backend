@@ -26,32 +26,32 @@ trait ImageTrait
     /**
      * @var bool|null
      */
-    protected $alphaChannel;
+    protected ?bool $alphaChannel;
 
     /**
      * @var bool|null
      */
-    protected $animated;
+    protected ?bool $animated;
 
     /**
      * @var int|null
      */
-    protected $height;
+    protected ?int $height;
 
     /**
      * @var string|null
      */
-    protected $imageId;
+    protected ?string $imageId;
 
     /**
      * @var string|null
      */
-    protected $url;
+    protected ?string $url;
 
     /**
      * @var int|null
      */
-    protected $width;
+    protected ?int $width;
 
     /**
      * @return bool|null

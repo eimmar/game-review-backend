@@ -9,10 +9,11 @@ namespace App\Service\IGDB\DTO\Game;
 
 use App\Service\IGDB\DTO\Company;
 use App\Service\IGDB\DTO\Game;
+use App\Service\IGDB\DTO\ResponseDTO;
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Traits\IdentifiableTrait;
 
-class InvolvedCompany
+class InvolvedCompany implements ResponseDTO
 {
     use TimestampableTrait;
     use IdentifiableTrait;
@@ -25,7 +26,7 @@ class InvolvedCompany
     /**
      * @var bool|null
      */
-    private $developer;
+    private ?bool $developer;
 
     /**
      * @var Game|int|null
@@ -35,17 +36,17 @@ class InvolvedCompany
     /**
      * @var bool|null
      */
-    private $porting;
+    private ?bool $porting;
 
     /**
      * @var bool|null
      */
-    private $publisher;
+    private ?bool $publisher;
 
     /**
      * @var bool|null
      */
-    private $supporting;
+    private ?bool $supporting;
 
     /**
      * @param int $id

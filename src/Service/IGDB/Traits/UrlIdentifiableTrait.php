@@ -26,17 +26,17 @@ trait UrlIdentifiableTrait
     /**
      * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * @var string|null
      */
-    protected $slug;
+    protected ?string $slug;
 
     /**
      * @var string|null
      */
-    protected $url;
+    protected ?string $url;
 
     /**
      * @return string|null

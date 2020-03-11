@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
-use App\Service\GameSpot\ApiConnector;
-use App\Service\GameSpot\Request\ApiRequest;
+use App\Service\IGDB\ApiConnector;
+use App\Service\IGDB\RequestBody;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ class GameController extends BaseApiController
      */
     public function index(GameRepository $gameRepository, ApiConnector $connector): JsonResponse
     {
-        $response = $connector->games(new ApiRequest('json'));
+        $response = $connector->games(new RequestBody());
         return $this->apiResponseBuilder->buildResponse($response);
     }
 

@@ -12,32 +12,32 @@ class RequestBody
     /**
      * @var string|null
      */
-    private $fields;
+    private ?string $fields;
 
     /**
      * @var string|null
      */
-    private $where;
+    private ?string $where;
 
     /**
      * @var string|null
      */
-    private $sort;
+    private ?string $sort;
 
     /**
      * @var string|null
      */
-    private $search;
+    private ?string $search;
 
     /**
      * @var int|null
      */
-    private $limit;
+    private ?int $limit;
 
     /**
      * @var int|null
      */
-    private $offset;
+    private ?int $offset;
 
     /**
      * @param string $fields

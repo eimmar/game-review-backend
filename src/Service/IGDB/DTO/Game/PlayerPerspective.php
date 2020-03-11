@@ -7,11 +7,12 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO\Game;
 
+use App\Service\IGDB\DTO\ResponseDTO;
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
 use App\Traits\IdentifiableTrait;
 
-class PlayerPerspective
+class PlayerPerspective implements ResponseDTO
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;

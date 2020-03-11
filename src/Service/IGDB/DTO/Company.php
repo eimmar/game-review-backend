@@ -21,12 +21,12 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO;
 
-use App\Service\IGDB\DTO\Company\CompanyWebsite;
+use App\Service\IGDB\DTO\Company\Website;
 use App\Service\IGDB\Traits\TimestampableTrait;
 use App\Service\IGDB\Traits\UrlIdentifiableTrait;
 use App\Traits\IdentifiableTrait;
 
-class Company
+class Company implements ResponseDTO
 {
     use TimestampableTrait;
     use UrlIdentifiableTrait;
@@ -35,12 +35,12 @@ class Company
     /**
      * @var int|null
      */
-    private $changeDate;
+    private ?int $changeDate;
 
     /**
      * @var int|null
      */
-    private $changeDateCategory;
+    private ?int $changeDateCategory;
 
     /**
      * @var Company|int|null
@@ -50,17 +50,17 @@ class Company
     /**
      * @var int|null
      */
-    private $country;
+    private ?int $country;
 
     /**
      * @var string|null
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @var int|null
      */
-    private $logo;
+    private ?int $logo;
 
     /**
      * @var Company|int|null
@@ -70,17 +70,17 @@ class Company
     /**
      * @var Game[]|int[]|null
      */
-    private $published;
+    private ?array $published;
 
     /**
      * @var int|null
      */
-    private $startDate;
+    private ?int $startDate;
 
     /**
-     * @var CompanyWebsite[]|int[]|null
+     * @var Website[]|int[]|null
      */
-    private $websites;
+    private ?array $websites;
 
     /**
      * @param int $id
@@ -93,7 +93,7 @@ class Company
      * @param Company|int|null $parent
      * @param Game[]|int[]|null $published
      * @param int|null $startDate
-     * @param CompanyWebsite[]|int[]|null $websites
+     * @param Website[]|int[]|null $websites
      * @param string|null $name
      * @param string|null $url
      * @param string|null $slug
@@ -209,7 +209,7 @@ class Company
     }
 
     /**
-     * @return CompanyWebsite[]|int[]|null
+     * @return Website[]|int[]|null
      */
     public function getWebsites()
     {

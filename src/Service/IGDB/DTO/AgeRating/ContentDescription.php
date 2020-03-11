@@ -21,21 +21,22 @@ declare(strict_types=1);
 
 namespace App\Service\IGDB\DTO\AgeRating;
 
+use App\Service\IGDB\DTO\ResponseDTO;
 use App\Traits\IdentifiableTrait;
 
-class ContentDescription
+class ContentDescription implements ResponseDTO
 {
     use IdentifiableTrait;
 
     /**
      * @var int|null
      */
-    private $category;
+    private ?int $category;
 
     /**
      * @var string|null
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @param int $id
