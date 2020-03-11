@@ -25,16 +25,6 @@ use App\Service\IGDB\DTO\TimeToBeat;
 
 class TimeToBeatTransformer extends AbstractTransformer
 {
-    private GameTransformer $gameTransformer;
-
-    /**
-     * @param GameTransformer $gameTransformer
-     */
-    public function __construct(GameTransformer $gameTransformer)
-    {
-        $this->gameTransformer = $gameTransformer;
-    }
-
     /**
      * @inheritDoc
      */
@@ -44,10 +34,12 @@ class TimeToBeatTransformer extends AbstractTransformer
             return $response;
         }
 
+        $game = $this->getProperty($response, 'game');
+
         return new TimeToBeat(
             (int)$this->getProperty($response, 'id'),
             $this->getProperty($response, 'completely'),
-            $this->gameTransformer->transform($this->getProperty($response, 'game')),
+            $this->isNotObject($game) ? $game : $this->getProperty($game, 'id'),
             $this->getProperty($response, 'hastly'),
             $this->getProperty($response, 'normally')
         );

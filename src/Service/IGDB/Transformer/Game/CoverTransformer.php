@@ -24,21 +24,9 @@ namespace App\Service\IGDB\Transformer\Game;
 
 use App\Service\IGDB\DTO\Game\Cover;
 use App\Service\IGDB\Transformer\AbstractTransformer;
-use App\Service\IGDB\Transformer\GameTransformer;
 
 class CoverTransformer extends AbstractTransformer
 {
-    private GameTransformer $responseToGameTransformer;
-
-    /**
-     * CoverTransformer constructor.
-     * @param GameTransformer $responseToGameTransformer
-     */
-    public function __construct(GameTransformer $responseToGameTransformer)
-    {
-        $this->responseToGameTransformer = $responseToGameTransformer;
-    }
-
     /**
      * @inheritDoc
      */
@@ -48,9 +36,11 @@ class CoverTransformer extends AbstractTransformer
             return $response;
         }
 
+        $game = $this->getProperty($response, 'game');
+
         return new Cover(
             (int)$this->getProperty($response, 'id'),
-            $this->responseToGameTransformer->transform($this->getProperty($response, 'game')),
+            $this->isNotObject($game) ? $game : $this->getProperty($game, 'id'),
             $this->getProperty($response, 'alpha_channel'),
             $this->getProperty($response, 'animated'),
             $this->getProperty($response, 'height'),

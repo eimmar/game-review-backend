@@ -24,27 +24,19 @@ namespace App\Service\IGDB\Transformer\Game;
 use App\Service\IGDB\DTO\Game\InvolvedCompany;
 use App\Service\IGDB\Transformer\AbstractTransformer;
 use App\Service\IGDB\Transformer\CompanyTransformer;
-use App\Service\IGDB\Transformer\GameTransformer;
 
 class InvolvedCompanyTransformer extends AbstractTransformer
 {
-    /**
-     * @var GameTransformer
-     */
-    private GameTransformer $gameTransformer;
-
     /**
      * @var CompanyTransformer
      */
     private CompanyTransformer $companyTransformer;
 
     /**
-     * @param GameTransformer $gameTransformer
      * @param CompanyTransformer $companyTransformer
      */
-    public function __construct(GameTransformer $gameTransformer, CompanyTransformer $companyTransformer)
+    public function __construct(CompanyTransformer $companyTransformer)
     {
-        $this->gameTransformer = $gameTransformer;
         $this->companyTransformer = $companyTransformer;
     }
 
@@ -57,11 +49,13 @@ class InvolvedCompanyTransformer extends AbstractTransformer
             return $response;
         }
 
+        $game = $this->getProperty($response, 'game');
+
         return new InvolvedCompany(
             (int)$this->getProperty($response, 'id'),
             $this->companyTransformer->transform($this->getProperty($response, 'company')),
             $this->getProperty($response, 'developer'),
-            $this->gameTransformer->transform($this->getProperty($response, 'game')),
+            $this->isNotObject($game) ? $game : $this->getProperty($game, 'id'),
             $this->getProperty($response, 'porting'),
             $this->getProperty($response, 'publisher'),
             $this->getProperty($response, 'supporting'),
