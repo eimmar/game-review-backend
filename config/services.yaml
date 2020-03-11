@@ -38,8 +38,7 @@ services:
         arguments:
             $corsAllowedUrls: ['http://localhost:3000']
 
-
-    App\Service\IGDB\ApiConnector:
+    App\Eimmar\IGDBBundle\Service\ApiConnector:
         arguments:
             $userKey: '%env(IDGB_API_KEY)%'
 

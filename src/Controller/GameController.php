@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
+use App\Eimmar\IGDBBundle\Service\ApiConnector;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
-use App\Service\IGDB\ApiConnector;
-use App\Service\IGDB\RequestBody;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
