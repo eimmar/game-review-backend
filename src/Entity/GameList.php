@@ -37,6 +37,13 @@ class GameList
     private $privacyType;
 
     /**
+     * @var int
+     * @Assert\NotBlank
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $type;
+
+    /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
@@ -47,4 +54,31 @@ class GameList
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="gameLists", nullable=false)
+     *
+     */
+    private $user;
+
+    /**
+     * @param Game $game
+     */
+    public function addGame(Game $game)
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+        }
+    }
+
+    /**
+     * @param Game $game
+     */
+    public function removeGame(Game $game)
+    {
+        if ($this->games->contains($game)) {
+            $this->games->removeElement($game);
+        }
+    }
 }

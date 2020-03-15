@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,4 +17,18 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $id;
+
+    /**
+     * @var GameList[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="App\Entity\GameList", inversedBy="user")
+     */
+    private $gameLists;
+
+    /**
+     * @return GameList[]|ArrayCollection
+     */
+    public function getGameLists()
+    {
+        return $this->gameLists;
+    }
 }
