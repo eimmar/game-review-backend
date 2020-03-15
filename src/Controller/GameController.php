@@ -102,7 +102,7 @@ class GameController extends BaseApiController
 
     /**
      * @Route("/{id}", name="game_delete", methods={"DELETE"})
-     * @IsGranted({"ROLE_SUPER_ADMIN"})
+     * @IsGranted({"ROLE_ADMIN"})
      * @param Game $game
      * @return JsonResponse
      */

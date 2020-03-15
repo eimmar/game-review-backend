@@ -21,7 +21,7 @@ class GameList
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @var Game[]|ArrayCollection
@@ -34,33 +34,33 @@ class GameList
      * @Assert\NotBlank
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $privacyType;
+    private int $privacyType;
 
     /**
      * @var int
      * @Assert\NotBlank
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $type;
+    private int $type;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string|null
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User", inversedBy="gameLists", nullable=false)
      *
      */
-    private $user;
+    private User $user;
 
     /**
      * @param Game $game
@@ -80,5 +80,109 @@ class GameList
         if ($this->games->contains($game)) {
             $this->games->removeElement($game);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Game[]|ArrayCollection
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
+
+    /**
+     * @param Game[]|ArrayCollection $games
+     */
+    public function setGames($games): void
+    {
+        $this->games = $games;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrivacyType(): int
+    {
+        return $this->privacyType;
+    }
+
+    /**
+     * @param int $privacyType
+     */
+    public function setPrivacyType(int $privacyType): void
+    {
+        $this->privacyType = $privacyType;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType(int $type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 }

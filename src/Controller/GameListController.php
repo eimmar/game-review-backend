@@ -6,6 +6,7 @@ use App\Entity\GameList;
 use App\Entity\Game;
 use App\Entity\User;
 use App\Form\GameListType;
+use App\Security\GameListVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,10 @@ class GameListController extends BaseApiController
      */
     public function new(Request $request): JsonResponse
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $gameList = new GameList();
+        $gameList->setUser($user);
         $form = $this->createForm(GameListType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
@@ -71,6 +75,7 @@ class GameListController extends BaseApiController
      */
     public function show(GameList $gameList): JsonResponse
     {
+        $this->denyAccessUnlessGranted(GameListVoter::VIEW, $gameList);
         return $this->apiResponseBuilder->buildResponse($gameList);
     }
 
@@ -83,6 +88,8 @@ class GameListController extends BaseApiController
      */
     public function edit(Request $request, GameList $gameList): JsonResponse
     {
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
+
         $form = $this->createForm(GameListType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
@@ -107,8 +114,9 @@ class GameListController extends BaseApiController
      */
     public function addGame(GameList $gameList, Game $game): JsonResponse
     {
-        $gameList->addGame($game);
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
 
+        $gameList->addGame($game);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($gameList);
         $entityManager->flush();
@@ -125,8 +133,9 @@ class GameListController extends BaseApiController
      */
     public function removeGame(GameList $gameList, Game $game): JsonResponse
     {
-        $gameList->removeGame($game);
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
 
+        $gameList->removeGame($game);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($gameList);
         $entityManager->flush();
@@ -142,6 +151,8 @@ class GameListController extends BaseApiController
      */
     public function delete(GameList $gameList): JsonResponse
     {
+        $this->denyAccessUnlessGranted(GameListVoter::DELETE, $gameList);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($gameList);
         $entityManager->flush();

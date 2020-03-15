@@ -25,6 +25,7 @@ use App\DTO\ChangePasswordRequest;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
+use App\Security\UserVoter;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,7 +69,7 @@ class UserController extends BaseApiController
     }
 
     /**
-     * @Route("/{id}/change-password", name="user_change_password", methods={"PUT"})
+     * @Route("/{id}/change-password", name="user_change_password", methods={"POST"})
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @param User $user
@@ -77,6 +78,7 @@ class UserController extends BaseApiController
      */
     public function changePassword(Request $request, User $user, UserManagerInterface $userManager): JsonResponse
     {
+        $this->denyAccessUnlessGranted(UserVoter::CHANGE_PASSWORD, $user);
         $form = $this->createForm(ChangePasswordType::class, new ChangePasswordRequest());
         $form->submit(json_decode($request->getContent(), true));
 
