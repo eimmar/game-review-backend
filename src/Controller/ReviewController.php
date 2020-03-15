@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Entity\Game;
 use App\Form\ReviewType;
-use App\Repository\ReviewRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReviewController extends BaseApiController
 {
     /**
-     * @Route("/", name="review_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
-     * @Route("/vehicle/{vehicle}", name="vehicle_review_options", methods={"OPTIONS"})
+     * @Route("/game/{game}", name="game_review_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -28,26 +26,13 @@ class ReviewController extends BaseApiController
     }
 
     /**
-     * @Route("/", name="review_index", methods={"GET"})
-     * @param ReviewRepository $reviewRepository
+     * @Route("/game/{game}", name="reviews_by_game", methods={"GET"})
+     * @param Game $game
      * @return JsonResponse
      */
-    public function index(ReviewRepository $reviewRepository): JsonResponse
+    public function showByGame(Game $game): JsonResponse
     {
-        $reviews = $reviewRepository->findAll();
-        $serialized = [];
-        foreach ($reviews as $review) {
-            $serialized[] = $review->serialize();
-        }
-        return $this->apiResponseBuilder->buildResponse($serialized);
-    }
-
-    /**
-     * @Route("/vehicle/{vehicle}", name="reviews_by_vehicle", methods={"GET"})
-     */
-    public function showByVehicle(Game $vehicle): JsonResponse
-    {
-        return $this->apiResponseBuilder->buildResponse($vehicle->getReviews());
+        return $this->apiResponseBuilder->buildResponse($game->getReviews());
     }
 
     /**
@@ -70,7 +55,7 @@ class ReviewController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($review->serialize());
+            return $this->apiResponseBuilder->buildResponse($review);
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
@@ -83,7 +68,7 @@ class ReviewController extends BaseApiController
      */
     public function show(Review $review): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($review->serialize());
+        return $this->apiResponseBuilder->buildResponse($review);
     }
 
     /**
@@ -104,7 +89,7 @@ class ReviewController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($review->serialize());
+            return $this->apiResponseBuilder->buildResponse($review);
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
@@ -122,6 +107,6 @@ class ReviewController extends BaseApiController
         $entityManager->remove($review);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($review->serialize());
+        return $this->apiResponseBuilder->buildResponse($review);
     }
 }
