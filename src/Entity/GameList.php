@@ -57,10 +57,15 @@ class GameList
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="gameLists", nullable=false)
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="gameLists")
      *
      */
     private User $user;
+
+    public function __construct()
+    {
+        $this->games = new ArrayCollection();
+    }
 
     /**
      * @param Game $game
@@ -93,7 +98,7 @@ class GameList
     /**
      * @return Game[]|ArrayCollection
      */
-    public function getGames()
+    public function getGames(): ArrayCollection
     {
         return $this->games;
     }
@@ -101,7 +106,7 @@ class GameList
     /**
      * @param Game[]|ArrayCollection $games
      */
-    public function setGames($games): void
+    public function setGames(ArrayCollection $games): void
     {
         $this->games = $games;
     }

@@ -20,14 +20,20 @@ class User extends BaseUser
 
     /**
      * @var GameList[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\GameList", inversedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\GameList", mappedBy="user")
      */
     private $gameLists;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->gameLists = new ArrayCollection();
+    }
 
     /**
      * @return GameList[]|ArrayCollection
      */
-    public function getGameLists()
+    public function getGameLists(): ArrayCollection
     {
         return $this->gameLists;
     }

@@ -5,14 +5,15 @@ declare(strict_types=1);
 
 
 
-namespace App\Entity\Game;
+namespace App\Entity\Company;
 
-use App\Entity\Game;
+use App\Entity\Game\Company;
 use App\Traits\ExternalEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="company_website")
  */
 class Website
 {
@@ -45,10 +46,10 @@ class Website
     private int $category;
 
     /**
-     * @var Game
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="websites")
+     * @var Company
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game\Company", inversedBy="websites")
      */
-    private Game $game;
+    private Company $company;
 
     /**
      * @return string
@@ -115,18 +116,18 @@ class Website
     }
 
     /**
-     * @return Game
+     * @return Company
      */
-    public function getGame(): Game
+    public function getCompany(): Company
     {
-        return $this->game;
+        return $this->company;
     }
 
     /**
-     * @param Game $game
+     * @param Company $company
      */
-    public function setGame(Game $game): void
+    public function setCompany(Company $company): void
     {
-        $this->game = $game;
+        $this->company = $company;
     }
 }

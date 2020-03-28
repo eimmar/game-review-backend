@@ -40,7 +40,7 @@ trait TimestampableTrait
     }
 
     /**
-     * @param  \DateTimeImmutable $updatedAt
+     * @param \DateTimeImmutable $updatedAt
      */
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
     {

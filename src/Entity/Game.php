@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\Game\AgeRating;
-use App\Entity\Game\AggregatedRating;
 use App\Entity\Game\Company;
 use App\Entity\Game\GameMode;
 use App\Entity\Game\Genre;
@@ -11,6 +10,7 @@ use App\Entity\Game\Platform;
 use App\Entity\Game\Screenshot;
 use App\Entity\Game\Theme;
 use App\Entity\Game\Website;
+use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Game
 {
     use TimestampableTrait;
+    use ExternalEntityTrait;
 
     /**
      * @var string
@@ -28,49 +29,55 @@ class Game
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    private $externalId;
+    private string $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string|null
      * @ORM\Column(type="string", length=255)
      */
-    private $coverImage;
+    private ?string $coverImage;
 
     /**
      * @var string|null
      * @ORM\Column(type="string", length=255)
      */
-    private $summary;
+    private ?string $summary;
 
     /**
      * @var string|null
      * @ORM\Column(type="string", length=255)
      */
-    private $storyline;
+    private ?string $storyline;
 
     /**
      * @var string|null
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
-    private $releaseDate;
+    private ?string $releaseDate;
 
     /**
      * @var int|null
      * @ORM\Column(type="integer", length=255, nullable=true)
      */
-    private $category;
+    private ?int $category;
+
+    /**
+     * @var float|null
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private ?float $rating;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $ratingCount;
 
     /**
      * @var AgeRating[]|ArrayCollection
@@ -103,12 +110,6 @@ class Game
     private $platforms;
 
     /**
-     * @var AggregatedRating[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Game\AggregatedRating", mappedBy="game", orphanRemoval=true)
-     */
-    private $aggregatedRatings;
-
-    /**
      * @var GameMode[]|ArrayCollection
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\GameMode", inversedBy="games")
      */
@@ -131,23 +132,23 @@ class Game
 //     */
 //    protected $similarGamesSource;
 
-    /**
-     * @var int|null
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $timeToBeatCompletely;
-
-    /**
-     * @var int|null
-     * @ORM\Column(type="integer", nullable=false)
-     */
-    private $timeToBeatHastly;
-
-    /**
-     * @var int|null
-     * @ORM\Column(type="integer", nullable=false)
-     */
-    private $timeToBeatNormally;
+//    /**
+//     * @var int|null
+//     * @ORM\Column(type="integer", nullable=true)
+//     */
+//    private ?int $timeToBeatCompletely;
+//
+//    /**
+//     * @var int|null
+//     * @ORM\Column(type="integer", nullable=false)
+//     */
+//    private ?int $timeToBeatHastly;
+//
+//    /**
+//     * @var int|null
+//     * @ORM\Column(type="integer", nullable=false)
+//     */
+//    private ?int $timeToBeatNormally;
 
     /**
      * @var Website[]|ArrayCollection
@@ -175,7 +176,16 @@ class Game
 
     public function __construct()
     {
+        $this->ageRatings = new ArrayCollection();
+        $this->genres = new ArrayCollection();
+        $this->screenshots = new ArrayCollection();
+        $this->themes = new ArrayCollection();
+        $this->platforms = new ArrayCollection();
+        $this->gameModes = new ArrayCollection();
+        $this->websites = new ArrayCollection();
+        $this->companies = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->gameLists = new ArrayCollection();
     }
 
     /**
@@ -184,14 +194,6 @@ class Game
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExternalId(): string
-    {
-        return $this->externalId;
     }
 
     /**
@@ -245,7 +247,7 @@ class Game
     /**
      * @return AgeRating[]|ArrayCollection
      */
-    public function getAgeRatings()
+    public function getAgeRatings(): ArrayCollection
     {
         return $this->ageRatings;
     }
@@ -253,7 +255,7 @@ class Game
     /**
      * @return Genre[]|ArrayCollection
      */
-    public function getGenres()
+    public function getGenres(): ArrayCollection
     {
         return $this->genres;
     }
@@ -261,7 +263,7 @@ class Game
     /**
      * @return Screenshot[]|ArrayCollection
      */
-    public function getScreenshots()
+    public function getScreenshots(): ArrayCollection
     {
         return $this->screenshots;
     }
@@ -269,7 +271,7 @@ class Game
     /**
      * @return Theme[]|ArrayCollection
      */
-    public function getThemes()
+    public function getThemes(): ArrayCollection
     {
         return $this->themes;
     }
@@ -277,55 +279,47 @@ class Game
     /**
      * @return Platform[]|ArrayCollection
      */
-    public function getPlatforms()
+    public function getPlatforms(): ArrayCollection
     {
         return $this->platforms;
     }
 
     /**
-     * @return AggregatedRating[]|ArrayCollection
-     */
-    public function getAggregatedRatings()
-    {
-        return $this->aggregatedRatings;
-    }
-
-    /**
      * @return GameMode[]|ArrayCollection
      */
-    public function getGameModes()
+    public function getGameModes(): ArrayCollection
     {
         return $this->gameModes;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getTimeToBeatCompletely(): ?int
-    {
-        return $this->timeToBeatCompletely;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getTimeToBeatHastly(): ?int
-    {
-        return $this->timeToBeatHastly;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getTimeToBeatNormally(): ?int
-    {
-        return $this->timeToBeatNormally;
-    }
+//    /**
+//     * @return int|null
+//     */
+//    public function getTimeToBeatCompletely(): ?int
+//    {
+//        return $this->timeToBeatCompletely;
+//    }
+//
+//    /**
+//     * @return int|null
+//     */
+//    public function getTimeToBeatHastly(): ?int
+//    {
+//        return $this->timeToBeatHastly;
+//    }
+//
+//    /**
+//     * @return int|null
+//     */
+//    public function getTimeToBeatNormally(): ?int
+//    {
+//        return $this->timeToBeatNormally;
+//    }
 
     /**
      * @return Website[]|ArrayCollection
      */
-    public function getWebsites()
+    public function getWebsites(): ArrayCollection
     {
         return $this->websites;
     }
@@ -333,7 +327,7 @@ class Game
     /**
      * @return Company[]|ArrayCollection
      */
-    public function getCompanies()
+    public function getCompanies(): ArrayCollection
     {
         return $this->companies;
     }
@@ -341,7 +335,7 @@ class Game
     /**
      * @return Review[]|ArrayCollection
      */
-    public function getReviews()
+    public function getReviews(): ArrayCollection
     {
         return $this->reviews;
     }
@@ -349,8 +343,200 @@ class Game
     /**
      * @return GameList[]|ArrayCollection
      */
-    public function getGameLists()
+    public function getGameLists(): ArrayCollection
     {
         return $this->gameLists;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param string|null $coverImage
+     */
+    public function setCoverImage(?string $coverImage): void
+    {
+        $this->coverImage = $coverImage;
+    }
+
+    /**
+     * @param string|null $summary
+     */
+    public function setSummary(?string $summary): void
+    {
+        $this->summary = $summary;
+    }
+
+    /**
+     * @param string|null $storyline
+     */
+    public function setStoryline(?string $storyline): void
+    {
+        $this->storyline = $storyline;
+    }
+
+    /**
+     * @param string|null $releaseDate
+     */
+    public function setReleaseDate(?string $releaseDate): void
+    {
+        $this->releaseDate = $releaseDate;
+    }
+
+    /**
+     * @param int|null $category
+     */
+    public function setCategory(?int $category): void
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @param AgeRating[]|ArrayCollection $ageRatings
+     */
+    public function setAgeRatings(ArrayCollection $ageRatings): void
+    {
+        $this->ageRatings = $ageRatings;
+    }
+
+    /**
+     * @param Genre[]|ArrayCollection $genres
+     */
+    public function setGenres(ArrayCollection $genres): void
+    {
+        $this->genres = $genres;
+    }
+
+    /**
+     * @param Screenshot[]|ArrayCollection $screenshots
+     */
+    public function setScreenshots(ArrayCollection $screenshots): void
+    {
+        $this->screenshots = $screenshots;
+    }
+
+    /**
+     * @param Theme[]|ArrayCollection $themes
+     */
+    public function setThemes(ArrayCollection $themes): void
+    {
+        $this->themes = $themes;
+    }
+
+    /**
+     * @param Platform[]|ArrayCollection $platforms
+     */
+    public function setPlatforms(ArrayCollection $platforms): void
+    {
+        $this->platforms = $platforms;
+    }
+
+    /**
+     * @param GameMode[]|ArrayCollection $gameModes
+     */
+    public function setGameModes(ArrayCollection $gameModes): void
+    {
+        $this->gameModes = $gameModes;
+    }
+
+//    /**
+//     * @param int|null $timeToBeatCompletely
+//     */
+//    public function setTimeToBeatCompletely(?int $timeToBeatCompletely): void
+//    {
+//        $this->timeToBeatCompletely = $timeToBeatCompletely;
+//    }
+//
+//    /**
+//     * @param int|null $timeToBeatHastly
+//     */
+//    public function setTimeToBeatHastly(?int $timeToBeatHastly): void
+//    {
+//        $this->timeToBeatHastly = $timeToBeatHastly;
+//    }
+//
+//    /**
+//     * @param int|null $timeToBeatNormally
+//     */
+//    public function setTimeToBeatNormally(?int $timeToBeatNormally): void
+//    {
+//        $this->timeToBeatNormally = $timeToBeatNormally;
+//    }
+
+    /**
+     * @param Website[]|ArrayCollection $websites
+     */
+    public function setWebsites(ArrayCollection $websites): void
+    {
+        $this->websites = $websites;
+    }
+
+    /**
+     * @param Company[]|ArrayCollection $companies
+     */
+    public function setCompanies(ArrayCollection $companies): void
+    {
+        $this->companies = $companies;
+    }
+
+    /**
+     * @param Review[]|ArrayCollection $reviews
+     */
+    public function setReviews(ArrayCollection $reviews): void
+    {
+        $this->reviews = $reviews;
+    }
+
+    /**
+     * @param GameList[]|ArrayCollection $gameLists
+     */
+    public function setGameLists(ArrayCollection $gameLists): void
+    {
+        $this->gameLists = $gameLists;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param float|null $rating
+     */
+    public function setRating(?float $rating): void
+    {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRatingCount(): ?int
+    {
+        return $this->ratingCount;
+    }
+
+    /**
+     * @param int|null $ratingCount
+     */
+    public function setRatingCount(?int $ratingCount): void
+    {
+        $this->ratingCount = $ratingCount;
     }
 }
