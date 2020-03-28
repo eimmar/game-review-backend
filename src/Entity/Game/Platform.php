@@ -43,10 +43,10 @@ class Platform
     private string $abbreviation;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
+     * @var string|null
+     * @ORM\Column(type="string", length=10000, nullable=true)
      */
-    private string $summary;
+    private ?string $summary;
 
     /**
      * @var string
@@ -120,17 +120,17 @@ class Platform
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSummary(): string
+    public function getSummary(): ?string
     {
         return $this->summary;
     }
 
     /**
-     * @param string $summary
+     * @param string|null $summary
      */
-    public function setSummary(string $summary): void
+    public function setSummary(?string $summary): void
     {
         $this->summary = $summary;
     }

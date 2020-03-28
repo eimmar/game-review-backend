@@ -12,6 +12,7 @@ use App\Entity\Game\Theme;
 use App\Entity\Game\Website;
 use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,27 +41,27 @@ class Game
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $coverImage;
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10000, nullable=true)
      */
     private ?string $summary;
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $storyline;
 
     /**
-     * @var string|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
-    private ?string $releaseDate;
+    private ?DateTimeImmutable $releaseDate;
 
     /**
      * @var int|null
@@ -82,37 +83,37 @@ class Game
 
     /**
      * @var AgeRating[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\AgeRating", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\AgeRating", inversedBy="games", cascade={"merge"})
      */
     private $ageRatings;
 
     /**
      * @var Genre[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Genre", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Genre", inversedBy="games", cascade={"merge"})
      */
     private $genres;
 
     /**
      * @var Screenshot[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Game\Screenshot", mappedBy="game", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\Screenshot", mappedBy="game", orphanRemoval=true, cascade={"merge"})
      */
     private $screenshots;
 
     /**
      * @var Theme[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Theme", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Theme", inversedBy="games", cascade={"merge"})
      */
     private $themes;
 
     /**
      * @var Platform[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Platform", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Platform", inversedBy="games", cascade={"merge"})
      */
     private $platforms;
 
     /**
      * @var GameMode[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\GameMode", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\GameMode", inversedBy="games", cascade={"merge"})
      */
     private $gameModes;
 
@@ -153,25 +154,25 @@ class Game
 
     /**
      * @var Website[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Game\Website", mappedBy="game", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\Website", mappedBy="game", orphanRemoval=true, cascade={"merge"})
      */
     private $websites;
 
     /**
      * @var Company[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Company", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Game\Company", inversedBy="games", cascade={"merge"})
      */
     private $companies;
 
     /**
      * @var Review[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="game", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="game", orphanRemoval=true, cascade={"merge"})
      */
     private $reviews;
 
     /**
      * @var GameList[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\GameList", inversedBy="games")
+     * @ORM\ManyToMany(targetEntity="App\Entity\GameList", inversedBy="games", cascade={"merge"})
      */
     private $gameLists;
 
@@ -230,9 +231,9 @@ class Game
     }
 
     /**
-     * @return string|null
+     * @return DateTimeImmutable|null
      */
-    public function getReleaseDate(): ?string
+    public function getReleaseDate(): ?DateTimeImmutable
     {
         return $this->releaseDate;
     }
@@ -350,14 +351,6 @@ class Game
     }
 
     /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @param string $name
      */
     public function setName(string $name): void
@@ -390,9 +383,9 @@ class Game
     }
 
     /**
-     * @param string|null $releaseDate
+     * @param DateTimeImmutable|null $releaseDate
      */
-    public function setReleaseDate(?string $releaseDate): void
+    public function setReleaseDate(?DateTimeImmutable $releaseDate): void
     {
         $this->releaseDate = $releaseDate;
     }

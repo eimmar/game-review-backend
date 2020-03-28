@@ -29,9 +29,9 @@ class AgeRating
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $synopsis;
+    private ?string $synopsis;
 
     /**
      * @var int
@@ -73,17 +73,17 @@ class AgeRating
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSynopsis(): string
+    public function getSynopsis(): ?string
     {
         return $this->synopsis;
     }
 
     /**
-     * @param string $synopsis
+     * @param string|null $synopsis
      */
-    public function setSynopsis(string $synopsis): void
+    public function setSynopsis(?string $synopsis): void
     {
         $this->synopsis = $synopsis;
     }

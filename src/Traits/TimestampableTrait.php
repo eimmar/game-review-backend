@@ -62,6 +62,7 @@ trait TimestampableTrait
     public function prePersist()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = $this->createdAt;
     }
 
     /**

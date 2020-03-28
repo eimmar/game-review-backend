@@ -39,7 +39,7 @@ class Company
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=10000, nullable=true)
      */
     private ?string $description;
 
@@ -51,7 +51,7 @@ class Company
 
     /**
      * @var Website[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Company\Website", mappedBy="company", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Company\Website", mappedBy="company", orphanRemoval=true, cascade={"merge"})
      */
     private $websites;
 
