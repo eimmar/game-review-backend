@@ -40,6 +40,16 @@ class GameController extends BaseApiController
     }
 
     /**
+     * @Route("/{id}", name="game_show", methods={"GET"})
+     * @param Game $game
+     * @return JsonResponse
+     */
+    public function show(Game $game): JsonResponse
+    {
+        return $this->apiResponseBuilder->buildResponse($game);
+    }
+
+    /**
      * @Route("/", name="game_new", methods={"POST"})
      * @IsGranted({"ROLE_ADMIN"})
      * @param Request $request
@@ -63,17 +73,6 @@ class GameController extends BaseApiController
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
-    }
-
-    /**
-     * @Route("/{id}", name="game_show", methods={"GET"})
-     * @param Game $game
-     * @return JsonResponse
-     */
-    public function show(Game $game): JsonResponse
-    {
-        $game->getReviews();
-        return $this->apiResponseBuilder->buildResponse($game);
     }
 
     /**

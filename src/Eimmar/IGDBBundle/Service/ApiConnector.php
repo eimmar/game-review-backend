@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Eimmar\IGDBBundle\Service;
 
+use App\Eimmar\IGDBBundle\DTO\Game;
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\Transformer\GameTransformer;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -57,7 +58,7 @@ class ApiConnector
 
     /**
      * @param RequestBody $requestBody
-     * @return array
+     * @return Game[]
      * @throws TransportExceptionInterface
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface

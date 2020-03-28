@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReviewRepository")
  * @ORM\HasLifecycleCallbacks
- *
  */
 class Review
 {

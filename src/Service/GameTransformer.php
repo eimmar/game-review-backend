@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Transformer;
+namespace App\Service;
 
 use App\Eimmar\IGDBBundle\DTO\AgeRating as IGDBAgeRating;
 use App\Eimmar\IGDBBundle\DTO\Company as IGDBCompany;
@@ -35,7 +35,9 @@ class GameTransformer
         $game->setExternalId($igdbGame->getId());
         $game->setCategory($igdbGame->getCategory());
         $game->setCoverImage($igdbGame->getCover()->getUrl());
+
         $game->setReleaseDate($igdbGame->getFirstReleaseDate());
+
         $game->setStoryline($igdbGame->getStoryline());
         $game->setSummary($igdbGame->getSummary());
         $game->setRating($igdbGame->getTotalRating());

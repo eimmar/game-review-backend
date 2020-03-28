@@ -28,15 +28,15 @@ services:
 
     App\Service\ApiJsonResponseBuilder:
         arguments:
-            $corsAllowedUrls: ['http://localhost:3000']
+            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
 
     App\Security\Http\Authentication\CORSAuthenticationSuccessHandler:
         arguments:
-            $corsAllowedUrls: ['http://localhost:3000']
+            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
 
     App\Security\Http\Authentication\CORSAuthenticationFailureHandler:
         arguments:
-            $corsAllowedUrls: ['http://localhost:3000']
+            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
 
     App\Eimmar\IGDBBundle\Service\ApiConnector:
         arguments:
