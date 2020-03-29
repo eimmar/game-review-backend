@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Game;
 
+use App\Entity\ExternalEntityInterface;
 use App\Entity\Game;
 use App\Traits\ExternalEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class AgeRating
+class AgeRating implements ExternalEntityInterface
 {
     use ExternalEntityTrait;
 

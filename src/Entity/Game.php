@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Game
+class Game implements ExternalEntityInterface
 {
     use TimestampableTrait;
     use ExternalEntityTrait;

@@ -23,6 +23,7 @@ namespace App\Service;
 
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\ApiConnector;
+use App\Service\Transformer\IGDB\GameTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 
 class IGDBGameDataUpdater

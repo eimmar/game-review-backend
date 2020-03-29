@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Entity\ExternalEntityInterface;
 use App\Entity\Game\Company;
 use App\Traits\ExternalEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="company_website")
  */
-class Website
+class Website implements ExternalEntityInterface
 {
     use ExternalEntityTrait;
 

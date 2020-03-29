@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Game;
 
+use App\Entity\ExternalEntityInterface;
 use App\Entity\Game;
 use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Genre
+class Genre implements ExternalEntityInterface
 {
     use TimestampableTrait;
     use ExternalEntityTrait;
