@@ -6,5 +6,5 @@ namespace App\Eimmar\IGDBBundle\DTO;
 
 interface ResponseDTO
 {
-
+    public function getId(): int;
 }

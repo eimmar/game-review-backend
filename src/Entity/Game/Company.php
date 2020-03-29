@@ -51,7 +51,7 @@ class Company
 
     /**
      * @var Website[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Company\Website", mappedBy="company", orphanRemoval=true, cascade={"merge"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Company\Website", mappedBy="company", orphanRemoval=true, cascade={"persist"})
      */
     private $websites;
 
