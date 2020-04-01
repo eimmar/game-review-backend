@@ -20,14 +20,14 @@ class Review
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @var Game
      * @ORM\ManyToOne(targetEntity="Game", inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $game;
+    private Game $game;
 
     /**
      * @var string
@@ -35,7 +35,7 @@ class Review
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
-    private $comment;
+    private string $comment;
 
     /**
      * @var int
@@ -43,5 +43,5 @@ class Review
      * @Assert\Range(min="1", max="100")
      * @ORM\Column(type="integer")
      */
-    private $rating;
+    private int $rating;
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,9 +32,9 @@ class User extends BaseUser
     }
 
     /**
-     * @return GameList[]|ArrayCollection
+     * @return GameList[]|PersistentCollection
      */
-    public function getGameLists(): ArrayCollection
+    public function getGameLists(): PersistentCollection
     {
         return $this->gameLists;
     }

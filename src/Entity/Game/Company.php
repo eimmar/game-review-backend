@@ -14,6 +14,7 @@ use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -133,9 +134,9 @@ class Company implements ExternalEntityInterface
     }
 
     /**
-     * @return Website[]|ArrayCollection
+     * @return Website[]|PersistentCollection
      */
-    public function getWebsites(): ArrayCollection
+    public function getWebsites(): PersistentCollection
     {
         return $this->websites;
     }
@@ -149,9 +150,9 @@ class Company implements ExternalEntityInterface
     }
 
     /**
-     * @return Game[]|ArrayCollection
+     * @return Game[]|PersistentCollection
      */
-    public function getGames(): ArrayCollection
+    public function getGames(): PersistentCollection
     {
         return $this->games;
     }

@@ -12,6 +12,7 @@ use App\Entity\Game;
 use App\Traits\ExternalEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -122,9 +123,9 @@ class AgeRating implements ExternalEntityInterface
     }
 
     /**
-     * @return Game[]|ArrayCollection
+     * @return Game[]|PersistentCollection
      */
-    public function getGames(): ArrayCollection
+    public function getGames(): PersistentCollection
     {
         return $this->games;
     }

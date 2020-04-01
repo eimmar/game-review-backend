@@ -12,7 +12,7 @@ abstract class BaseApiController extends AbstractController
     /**
      * @var ApiJsonResponseBuilder
      */
-    protected $apiResponseBuilder;
+    protected ApiJsonResponseBuilder $apiResponseBuilder;
 
     public function __construct(ApiJsonResponseBuilder $builder)
     {

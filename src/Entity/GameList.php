@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -96,9 +97,9 @@ class GameList
     }
 
     /**
-     * @return Game[]|ArrayCollection
+     * @return Game[]|PersistentCollection
      */
-    public function getGames(): ArrayCollection
+    public function getGames(): PersistentCollection
     {
         return $this->games;
     }

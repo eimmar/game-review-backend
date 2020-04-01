@@ -15,6 +15,7 @@ use App\Traits\TimestampableTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
@@ -247,49 +248,49 @@ class Game implements ExternalEntityInterface
     }
 
     /**
-     * @return AgeRating[]|ArrayCollection
+     * @return AgeRating[]|PersistentCollection
      */
-    public function getAgeRatings(): ArrayCollection
+    public function getAgeRatings(): PersistentCollection
     {
         return $this->ageRatings;
     }
 
     /**
-     * @return Genre[]|ArrayCollection
+     * @return Genre[]|PersistentCollection
      */
-    public function getGenres(): ArrayCollection
+    public function getGenres(): PersistentCollection
     {
         return $this->genres;
     }
 
     /**
-     * @return Screenshot[]|ArrayCollection
+     * @return Screenshot[]|PersistentCollection
      */
-    public function getScreenshots(): ArrayCollection
+    public function getScreenshots(): PersistentCollection
     {
         return $this->screenshots;
     }
 
     /**
-     * @return Theme[]|ArrayCollection
+     * @return Theme[]|PersistentCollection
      */
-    public function getThemes(): ArrayCollection
+    public function getThemes(): PersistentCollection
     {
         return $this->themes;
     }
 
     /**
-     * @return Platform[]|ArrayCollection
+     * @return Platform[]|PersistentCollection
      */
-    public function getPlatforms(): ArrayCollection
+    public function getPlatforms(): PersistentCollection
     {
         return $this->platforms;
     }
 
     /**
-     * @return GameMode[]|ArrayCollection
+     * @return GameMode[]|PersistentCollection
      */
-    public function getGameModes(): ArrayCollection
+    public function getGameModes(): PersistentCollection
     {
         return $this->gameModes;
     }
@@ -319,33 +320,33 @@ class Game implements ExternalEntityInterface
 //    }
 
     /**
-     * @return Website[]|ArrayCollection
+     * @return Website[]|PersistentCollection
      */
-    public function getWebsites(): ArrayCollection
+    public function getWebsites(): PersistentCollection
     {
         return $this->websites;
     }
 
     /**
-     * @return Company[]|ArrayCollection
+     * @return Company[]|PersistentCollection
      */
-    public function getCompanies(): ArrayCollection
+    public function getCompanies(): PersistentCollection
     {
         return $this->companies;
     }
 
     /**
-     * @return Review[]|ArrayCollection
+     * @return Review[]|PersistentCollection
      */
-    public function getReviews(): ArrayCollection
+    public function getReviews(): PersistentCollection
     {
         return $this->reviews;
     }
 
     /**
-     * @return GameList[]|ArrayCollection
+     * @return GameList[]|PersistentCollection
      */
-    public function getGameLists(): ArrayCollection
+    public function getGameLists(): PersistentCollection
     {
         return $this->gameLists;
     }

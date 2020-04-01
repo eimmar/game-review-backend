@@ -13,6 +13,7 @@ use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -103,9 +104,9 @@ class Genre implements ExternalEntityInterface
     }
 
     /**
-     * @return Game[]|ArrayCollection
+     * @return Game[]|PersistentCollection
      */
-    public function getGames(): ArrayCollection
+    public function getGames(): PersistentCollection
     {
         return $this->games;
     }
