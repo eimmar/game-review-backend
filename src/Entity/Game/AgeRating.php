@@ -13,6 +13,7 @@ use App\Traits\ExternalEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -23,6 +24,7 @@ class AgeRating implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -31,18 +33,21 @@ class AgeRating implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $synopsis;
 
     /**
      * @var int
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", nullable=false)
      */
     private int $category;
 
     /**
      * @var int
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", nullable=false)
      */
     private int $rating;

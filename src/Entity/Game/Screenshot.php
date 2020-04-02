@@ -12,6 +12,7 @@ use App\Entity\Game;
 use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -24,6 +25,7 @@ class Screenshot implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -32,24 +34,28 @@ class Screenshot implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private string $imageId;
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private string $url;
 
     /**
      * @var int
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", nullable=false)
      */
     private int $height;
 
     /**
      * @var int
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", nullable=false)
      */
     private int $width;

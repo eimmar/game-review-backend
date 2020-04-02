@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
-use App\Eimmar\GameSpotBundle\Service\ApiConnector;
 use App\Entity\Game;
 use App\Form\GameType;
 use App\Repository\GameRepository;
@@ -46,7 +44,7 @@ class GameController extends BaseApiController
      */
     public function show(Game $game): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($game);
+        return $this->apiResponseBuilder->buildResponse($game, 200, [], ['groups' => 'gameLoaded']);
     }
 
     /**

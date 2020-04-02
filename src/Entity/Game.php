@@ -16,6 +16,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
@@ -28,6 +29,7 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -36,84 +38,98 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255)
      */
     private string $name;
 
     /**
      * @var string|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $coverImage;
 
     /**
      * @var string|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=10000, nullable=true)
      */
     private ?string $summary;
 
     /**
      * @var string|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $storyline;
 
     /**
      * @var DateTime|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private ?DateTime $releaseDate;
 
     /**
      * @var int|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private ?int $category;
 
     /**
      * @var float|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="float", nullable=true)
      */
     private ?float $rating;
 
     /**
      * @var int|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $ratingCount;
 
     /**
      * @var AgeRating[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\AgeRating", inversedBy="games", cascade={"persist"})
      */
     private $ageRatings;
 
     /**
      * @var Genre[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\Genre", inversedBy="games", cascade={"persist"})
      */
     private $genres;
 
     /**
      * @var Screenshot[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\OneToMany(targetEntity="App\Entity\Game\Screenshot", mappedBy="game", orphanRemoval=true, cascade={"persist"})
      */
     private $screenshots;
 
     /**
      * @var Theme[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\Theme", inversedBy="games", cascade={"persist"})
      */
     private $themes;
 
     /**
      * @var Platform[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\Platform", inversedBy="games", cascade={"persist"})
      */
     private $platforms;
 
     /**
      * @var GameMode[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\GameMode", inversedBy="games", cascade={"persist"})
      */
     private $gameModes;
@@ -155,12 +171,14 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var Website[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\OneToMany(targetEntity="App\Entity\Game\Website", mappedBy="game", orphanRemoval=true, cascade={"persist"})
      */
     private $websites;
 
     /**
      * @var Company[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Game\Company", inversedBy="games", cascade={"persist"})
      */
     private $companies;

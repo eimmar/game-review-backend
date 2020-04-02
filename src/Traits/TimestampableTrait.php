@@ -9,17 +9,20 @@ namespace App\Traits;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait TimestampableTrait
 {
     /**
      * @var DateTimeImmutable
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
      */
     protected DateTimeImmutable $createdAt;
 
     /**
      * @var DateTimeImmutable
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
      */
     protected DateTimeImmutable $updatedAt;

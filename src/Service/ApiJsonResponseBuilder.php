@@ -39,19 +39,25 @@ class ApiJsonResponseBuilder
      * @param mixed $data
      * @param array $headers
      * @param int $status
+     * @param array $serializerParams
      * @return JsonResponse
      */
-    public function buildResponse($data, $status = 200, $headers = [])
+    public function buildResponse($data, $status = 200, $headers = [], $serializerParams = [])
     {
         $headers = array_merge($headers, [
             'Access-Control-Allow-Origin' => implode(', ', $this->corsAllowedUrls)
         ]);
 
-        return new JsonResponse($this->serializer->serialize($data, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]), $status, $headers, true);
+        $serializerParams = array_merge(
+            [
+                'circular_reference_handler' => function ($object) {
+                    return $object->getId();
+                }
+            ],
+            $serializerParams
+        );
+
+        return new JsonResponse($this->serializer->serialize($data, 'json', $serializerParams), $status, $headers, true);
     }
 
     /**

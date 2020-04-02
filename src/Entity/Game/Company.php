@@ -15,6 +15,7 @@ use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -27,6 +28,7 @@ class Company implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -35,24 +37,28 @@ class Company implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private string $name;
 
     /**
      * @var string|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=10000, nullable=true)
      */
     private ?string $description;
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private string $url;
 
     /**
      * @var Website[]|ArrayCollection
+     * @Groups({"gameLoaded"})
      * @ORM\OneToMany(targetEntity="App\Entity\Company\Website", mappedBy="company", orphanRemoval=true, cascade={"persist"})
      */
     private $websites;

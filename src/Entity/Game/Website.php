@@ -11,6 +11,7 @@ use App\Entity\ExternalEntityInterface;
 use App\Entity\Game;
 use App\Traits\ExternalEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -21,6 +22,7 @@ class Website implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -29,18 +31,21 @@ class Website implements ExternalEntityInterface
 
     /**
      * @var bool
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="boolean", nullable=false)
      */
     private bool $trusted;
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255)
      */
     private string $url;
 
     /**
      * @var int
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer")
      */
     private int $category;

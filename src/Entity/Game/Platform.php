@@ -14,6 +14,7 @@ use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -26,6 +27,7 @@ class Platform implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -34,30 +36,35 @@ class Platform implements ExternalEntityInterface
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255)
      */
     private string $name;
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255)
      */
     private string $abbreviation;
 
     /**
      * @var string|null
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=10000, nullable=true)
      */
     private ?string $summary;
 
     /**
      * @var string
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255)
      */
     private string $url;
 
     /**
      * @var int
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer")
      */
     private int $category;

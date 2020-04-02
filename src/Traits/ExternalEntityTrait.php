@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 trait ExternalEntityTrait
 {
     /**
      * @var integer
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="integer", unique=true)
      */
     protected int $externalId;
