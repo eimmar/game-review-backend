@@ -74,4 +74,9 @@ class GamePricesRequest implements RequestInterface
             'added' => $this->added,
         ]);
     }
+
+    public function getCacheKey(): string
+    {
+        return 'isThereAnyDeal.gamePrices.' . str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', $this->plains);
+    }
 }

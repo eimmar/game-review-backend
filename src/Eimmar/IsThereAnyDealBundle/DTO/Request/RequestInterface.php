@@ -10,4 +10,6 @@ interface RequestInterface
      * @return array
      */
     public function unwrap(): array;
+
+    public function getCacheKey(): string;
 }

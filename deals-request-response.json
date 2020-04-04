@@ -1,0 +1,31 @@
+{
+    ".meta": {
+        "currency": "EUR"
+    },
+    "data": {
+        "list": [
+            {
+                "plain": "counterstrikesource",
+                "title": "Counter-Strike: Source",
+                "price_new": 8.19,
+                "price_old": 10.19,
+                "price_cut": 22,
+                "added": 1577989310,
+                "shop": {
+                    "id": "steam",
+                    "name": "Steam"
+                },
+                "drm": [
+                    "steam"
+                ],
+                "urls": {
+                    "buy": "https://store.steampowered.com/app/240/",
+                    "game": "https://isthereanydeal.com/game/counterstrikesource/info/"
+                }
+            }
+        ],
+        "urls": {
+            "deals": "https://isthereanydeal.com/"
+        }
+    }
+}

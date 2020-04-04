@@ -22,9 +22,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
+use App\Eimmar\IsThereAnyDealBundle\DTO\Request\SearchRequest;
 use App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -34,6 +34,7 @@ class GameDealApiController extends BaseApiController
 {
     /**
      * @Route("/game-prices", name="any_deal_game_prices_options", methods={"OPTIONS"})
+     * @Route("/search", name="any_deal_search_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -44,12 +45,22 @@ class GameDealApiController extends BaseApiController
     /**
      * @Route("/game-prices", name="any_deal_game_prices", methods={"POST"})
      * @param ApiConnector $apiConnector
-     * @param Request $request
+     * @param GamePricesRequest $request
      * @return JsonResponse
      */
     public function gamePrices(ApiConnector $apiConnector, GamePricesRequest $request): JsonResponse
     {
-        //TODO: Properly deserialize request as GamePricesRequest
         return $this->apiResponseBuilder->buildResponse($apiConnector->gamePrices($request));
+    }
+
+    /**
+     * @Route("/search", name="any_deal_search", methods={"POST"})
+     * @param ApiConnector $apiConnector
+     * @param SearchRequest $request
+     * @return JsonResponse
+     */
+    public function search(ApiConnector $apiConnector, SearchRequest $request): JsonResponse
+    {
+        return $this->apiResponseBuilder->buildResponse($apiConnector->search($request));
     }
 }
