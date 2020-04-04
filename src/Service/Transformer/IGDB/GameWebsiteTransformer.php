@@ -33,14 +33,12 @@ class GameWebsiteTransformer implements IGDBTransformerInterface
      */
     private array $gameWebsiteCache;
 
-    private EntityManagerInterface $entityManager;
-
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param Game\Screenshot[] $items
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function setCache($items)
     {
-        $this->entityManager = $entityManager;
+        $this->gameWebsiteCache = $items;
     }
 
     /**
@@ -52,14 +50,13 @@ class GameWebsiteTransformer implements IGDBTransformerInterface
         if (isset($this->gameWebsiteCache[$igdbWebsite->getId()])) {
             $website = $this->gameWebsiteCache[$igdbWebsite->getId()];
         } else {
-            $website = $this->entityManager->getRepository(Game\Website::class)->findOneBy(['externalId' => $igdbWebsite->getId()]) ?: new Game\Website();
-            $website->setUrl($igdbWebsite->getUrl());
-            $website->setExternalId($igdbWebsite->getId());
-            $website->setCategory($igdbWebsite->getCategory());
-            $website->setTrusted($igdbWebsite->getTrusted());
-
-            $this->gameWebsiteCache[$igdbWebsite->getId()] = $website;
+            $website = new Game\Website();
         }
+
+        $website->setUrl($igdbWebsite->getUrl());
+        $website->setExternalId($igdbWebsite->getId());
+        $website->setCategory($igdbWebsite->getCategory());
+        $website->setTrusted($igdbWebsite->getTrusted());
 
         return $website;
     }

@@ -10,9 +10,7 @@ namespace App\Entity\Game;
 use App\Entity\ExternalEntityInterface;
 use App\Entity\Game;
 use App\Traits\ExternalEntityTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -53,15 +51,10 @@ class AgeRating implements ExternalEntityInterface
     private int $rating;
 
     /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="ageRatings")
+     * @var Game
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="ageRatings")
      */
-    private $games;
-
-    public function __construct()
-    {
-        $this->games = new ArrayCollection();
-    }
+    private Game $game;
 
     /**
      * @return string
@@ -128,18 +121,18 @@ class AgeRating implements ExternalEntityInterface
     }
 
     /**
-     * @return Game[]|PersistentCollection
+     * @return Game
      */
-    public function getGames(): PersistentCollection
+    public function getGame(): Game
     {
-        return $this->games;
+        return $this->game;
     }
 
     /**
-     * @param ArrayCollection $games
+     * @param Game $game
      */
-    public function setGames(ArrayCollection $games): void
+    public function setGame(Game $game): void
     {
-        $this->games = $games;
+        $this->game = $game;
     }
 }

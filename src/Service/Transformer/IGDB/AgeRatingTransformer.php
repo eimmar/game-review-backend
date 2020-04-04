@@ -49,11 +49,12 @@ class AgeRatingTransformer implements IGDBTransformerInterface
             $ageRating = $this->ageRatingCache[$igdbAgeRating->getId()];
         } else {
             $ageRating = new Game\AgeRating();
-            $ageRating->setExternalId($igdbAgeRating->getId());
-            $ageRating->setSynopsis($igdbAgeRating->getSynopsis());
-            $ageRating->setCategory($igdbAgeRating->getCategory());
-            $ageRating->setRating($igdbAgeRating->getRating());
         }
+
+        $ageRating->setExternalId($igdbAgeRating->getId());
+        $ageRating->setSynopsis($igdbAgeRating->getSynopsis());
+        $ageRating->setCategory($igdbAgeRating->getCategory());
+        $ageRating->setRating($igdbAgeRating->getRating());
 
         return $ageRating;
     }

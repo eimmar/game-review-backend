@@ -106,6 +106,9 @@ class GameTransformer implements IGDBTransformerInterface
         $gameModes = new ArrayCollection(array_map([$this->gameModeTransformer, 'transform'], $igdbGame->getGameModes()));
         $platforms = new ArrayCollection(array_map([$this->platformTransformer, 'transform'], $igdbGame->getPlatforms()));
         $themes = new ArrayCollection(array_map([$this->themeTransformer, 'transform'], $igdbGame->getThemes()));
+
+        /** @noinspection PhpParamsInspection */
+        $this->gameWebsiteTransformer->setCache($this->loadExisting(Game\Website::class, $igdbGame->getWebsites()));
         $websites = new ArrayCollection(array_map([$this->gameWebsiteTransformer, 'transform'], $igdbGame->getWebsites()));
 
         /** @noinspection PhpParamsInspection */

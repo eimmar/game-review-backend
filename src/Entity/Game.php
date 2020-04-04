@@ -95,7 +95,7 @@ class Game implements ExternalEntityInterface
     /**
      * @var AgeRating[]|ArrayCollection
      * @Groups({"gameLoaded"})
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game\AgeRating", inversedBy="games", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\AgeRating", mappedBy="game", cascade={"persist"})
      */
     private $ageRatings;
 
@@ -422,7 +422,11 @@ class Game implements ExternalEntityInterface
      */
     public function setAgeRatings(ArrayCollection $ageRatings): void
     {
-        $this->ageRatings = $ageRatings;
+        $this->ageRatings = $ageRatings->map(function (AgeRating $it) {
+            $it->setGame($this);
+
+            return $it;
+        });
     }
 
     /**
@@ -438,7 +442,11 @@ class Game implements ExternalEntityInterface
      */
     public function setScreenshots(ArrayCollection $screenshots): void
     {
-        $this->screenshots = $screenshots;
+        $this->screenshots = $screenshots->map(function (Screenshot $it) {
+            $it->setGame($this);
+
+            return $it;
+        });
     }
 
     /**
@@ -494,7 +502,11 @@ class Game implements ExternalEntityInterface
      */
     public function setWebsites(ArrayCollection $websites): void
     {
-        $this->websites = $websites;
+        $this->websites = $websites->map(function (Website $it) {
+            $it->setGame($this);
+
+            return $it;
+        });
     }
 
     /**

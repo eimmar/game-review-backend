@@ -49,12 +49,13 @@ class ScreenshotTransformer implements IGDBTransformerInterface
             $screenshot = $this->screenshotCache[$igdbScreenshot->getId()];
         } else {
             $screenshot = new Game\Screenshot();
-            $screenshot->setUrl($igdbScreenshot->getUrl());
-            $screenshot->setExternalId($igdbScreenshot->getId());
-            $screenshot->setHeight($igdbScreenshot->getHeight());
-            $screenshot->setWidth($igdbScreenshot->getWidth());
-            $screenshot->setImageId($igdbScreenshot->getImageId());
         }
+
+        $screenshot->setUrl($igdbScreenshot->getUrl());
+        $screenshot->setExternalId($igdbScreenshot->getId());
+        $screenshot->setHeight($igdbScreenshot->getHeight());
+        $screenshot->setWidth($igdbScreenshot->getWidth());
+        $screenshot->setImageId($igdbScreenshot->getImageId());
 
         return $screenshot;
     }
