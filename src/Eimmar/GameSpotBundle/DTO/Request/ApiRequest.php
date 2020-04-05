@@ -70,7 +70,7 @@ class ApiRequest
     {
         $filter = [];
         foreach ((array)$this->filter as $field => $value) {
-            $filter[] = $field . ':' . urlencode($value);
+            $filter[] = $field . ':' . $value;
         }
 
         return array_filter([
@@ -79,7 +79,55 @@ class ApiRequest
             'limit' => $this->limit,
             'offset' => $this->offset,
             'sort' => $this->sort,
-            'filter' => $filter
+            'filter' => implode(',', (array)$filter)
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getFieldList(): ?array
+    {
+        return $this->fieldList;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLimit(): ?int
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getOffset(): ?int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSort(): ?string
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getFilter(): ?array
+    {
+        return $this->filter;
     }
 }

@@ -45,7 +45,7 @@ class ResponseTransformer
             $transformedKey = lcfirst(str_replace('_', '', ucwords((string)$key, ' /_')));
 
             if (is_array($value)) {
-                $this->transform($value);
+                $this->toCamelCase($value);
             }
 
             $response[$transformedKey] = $value;

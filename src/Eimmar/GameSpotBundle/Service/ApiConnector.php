@@ -79,11 +79,11 @@ class ApiConnector
 
     /**
      * @param ApiRequest $requestBody
-     * @return array
+     * @return string
      */
     private function buildOptions(ApiRequest $requestBody)
     {
-        return ['query' => array_merge(['api_key' => $this->userKey], $requestBody->unwrap())];
+        return '?' . http_build_query(array_merge(['api_key' => $this->userKey], $requestBody->unwrap()));
     }
 
     /**
@@ -99,7 +99,7 @@ class ApiConnector
         return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
-                    ->request('GET', self::REVIEWS_URL, $this->buildOptions($requestBody))
+                    ->request('GET', self::REVIEWS_URL . $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             ),
@@ -120,7 +120,7 @@ class ApiConnector
         return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
-                    ->request('GET', self::GAMES_URL, $this->buildOptions($requestBody))
+                    ->request('GET', self::GAMES_URL . $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             ),
@@ -141,7 +141,7 @@ class ApiConnector
         return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
-                    ->request('GET', self::ARTICLES_URL, $this->buildOptions($requestBody))
+                    ->request('GET', self::ARTICLES_URL . $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             )
@@ -161,7 +161,7 @@ class ApiConnector
         return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
-                    ->request('GET', self::VIDEOS_URL, $this->buildOptions($requestBody))
+                    ->request('GET', self::VIDEOS_URL . $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             )
@@ -181,7 +181,7 @@ class ApiConnector
         return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
-                    ->request('GET', self::IMAGES_URL, $this->buildOptions($requestBody))
+                    ->request('GET', self::IMAGES_URL . $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             )
