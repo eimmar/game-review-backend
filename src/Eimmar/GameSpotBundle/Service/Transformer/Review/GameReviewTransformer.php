@@ -12,8 +12,8 @@ class GameReviewTransformer extends AbstractDTOTransformer
     /**
      * @inheritDoc
      */
-    public function transform(\stdClass $response): GameReview
+    public function transform(array $response): GameReview
     {
-        return new GameReview($response->id, $response->name, $response->api_detail_url, $response->site_detail_url);
+        return new GameReview($response['id'], $response['name'], $response['api_detail_url'], $response['site_detail_url']);
     }
 }

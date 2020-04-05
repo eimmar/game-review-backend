@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Eimmar\GameSpotBundle\Service;
 
-use App\Eimmar\GameSpotBundle\DTO\Game;
-use App\Eimmar\GameSpotBundle\DTO\Review;
+use App\Eimmar\GameSpotBundle\DTO\Response\GamesResponse;
+use App\Eimmar\GameSpotBundle\DTO\Response\Response;
+use App\Eimmar\GameSpotBundle\DTO\Response\ReviewsResponse;
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
+use App\Eimmar\GameSpotBundle\Service\Transformer\DefaultTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\GameTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\ResponseTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\ReviewTransformer;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -20,6 +24,9 @@ class ApiConnector
 {
     const REVIEWS_URL = 'http://www.gamespot.com/api/reviews/';
     const GAMES_URL = 'http://www.gamespot.com/api/games/';
+    const ARTICLES_URL = 'http://www.gamespot.com/api/articles/';
+    const VIDEOS_URL = 'http://www.gamespot.com/api/videos/';
+    const IMAGES_URL = 'http://www.gamespot.com/api/images/';
 
     /**
      * @var string
@@ -46,6 +53,8 @@ class ApiConnector
      */
     private ReviewTransformer $reviewTransformer;
 
+    private TagAwareAdapter $cache;
+
     /**
      * @param string $userKey
      * @param HttpClientInterface $httpClient
@@ -65,6 +74,7 @@ class ApiConnector
         $this->gameTransformer = $gameTransformer;
         $this->responseTransformer = $responseTransformer;
         $this->reviewTransformer = $reviewTransformer;
+        $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
     }
 
     /**
@@ -78,7 +88,7 @@ class ApiConnector
 
     /**
      * @param ApiRequest $requestBody
-     * @return Review|array
+     * @return ReviewsResponse
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -86,35 +96,95 @@ class ApiConnector
      */
     public function reviews(ApiRequest $requestBody)
     {
-        $response = $this->responseTransformer->transform(
+        return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
                     ->request('GET', self::REVIEWS_URL, $this->buildOptions($requestBody))
-                    ->getContent()
-            )
+                    ->getContent(),
+                true
+            ),
+            $this->reviewTransformer
         );
-
-        return array_map([$this->reviewTransformer, 'transform'], $response->getResults());
     }
 
     /**
      * @param ApiRequest $requestBody
-     * @return Game[]|array
+     * @return GamesResponse
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function games(ApiRequest $requestBody): array
+    public function games(ApiRequest $requestBody)
     {
-        $response = $this->responseTransformer->transform(
+        return $this->responseTransformer->transform(
             json_decode(
                 $this->httpClient
                     ->request('GET', self::GAMES_URL, $this->buildOptions($requestBody))
-                    ->getContent()
+                    ->getContent(),
+                true
+            ),
+            $this->gameTransformer
+        );
+    }
+
+    /**
+     * @param ApiRequest $requestBody
+     * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function articles(ApiRequest $requestBody)
+    {
+        return $this->responseTransformer->transform(
+            json_decode(
+                $this->httpClient
+                    ->request('GET', self::ARTICLES_URL, $this->buildOptions($requestBody))
+                    ->getContent(),
+                true
             )
         );
+    }
 
-        return array_map([$this->gameTransformer, 'transform'], $response->getResults());
+    /**
+     * @param ApiRequest $requestBody
+     * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function videos(ApiRequest $requestBody)
+    {
+        return $this->responseTransformer->transform(
+            json_decode(
+                $this->httpClient
+                    ->request('GET', self::VIDEOS_URL, $this->buildOptions($requestBody))
+                    ->getContent(),
+                true
+            )
+        );
+    }
+
+    /**
+     * @param ApiRequest $requestBody
+     * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function images(ApiRequest $requestBody)
+    {
+        return $this->responseTransformer->transform(
+            json_decode(
+                $this->httpClient
+                    ->request('GET', self::IMAGES_URL, $this->buildOptions($requestBody))
+                    ->getContent(),
+                true
+            )
+        );
     }
 }

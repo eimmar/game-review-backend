@@ -12,16 +12,16 @@ class ReleaseTransformer extends AbstractDTOTransformer
     /**
      * @inheritDoc
      */
-    public function transform(\stdClass $response): Release
+    public function transform(array $response): Release
     {
         return new Release(
-            $response->upc,
-            $response->distribution_type,
-            $response->id,
-            $response->name,
-            $response->region,
-            $response->platform,
-            $response->api_detail_url
+            $response['upc'],
+            $response['distribution_type'],
+            $response['id'],
+            $response['name'],
+            $response['region'],
+            $response['platform'],
+            $response['api_detail_url']
         );
     }
 }

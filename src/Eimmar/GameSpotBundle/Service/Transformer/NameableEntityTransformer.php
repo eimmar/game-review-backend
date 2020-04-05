@@ -9,10 +9,10 @@ use App\Eimmar\GameSpotBundle\DTO\NameableEntity;
 class NameableEntityTransformer extends AbstractDTOTransformer
 {
     /**
-     * @param \stdClass $response
+     * @param array $response
      * @return NameableEntity
      */
-    public function transform(\stdClass $response): NameableEntity
+    public function transform(array $response): NameableEntity
     {
         return new NameableEntity((string)$this->getProperty($response, 'name'));
     }

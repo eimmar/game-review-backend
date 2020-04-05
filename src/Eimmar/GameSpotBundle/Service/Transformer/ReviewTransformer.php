@@ -44,7 +44,7 @@ class ReviewTransformer extends AbstractDTOTransformer
     /**
      * @inheritDoc
      */
-    public function transform(\stdClass $response): Review
+    public function transform(array $response): Review
     {
         $image = $this->getProperty($response, 'image');
         $game = $this->getProperty($response, 'game');

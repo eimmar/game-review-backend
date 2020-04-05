@@ -134,6 +134,13 @@ class Game implements ExternalEntityInterface
      */
     private $gameModes;
 
+    /**
+     * @var string|null
+     * @Groups({"gameLoaded"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $gameSpotAssociation;
+
     //TODO: Implement similar games relations
 //    /**
 //     * @var GameReview[]|ArrayCollection
@@ -563,5 +570,21 @@ class Game implements ExternalEntityInterface
     public function setRatingCount(?int $ratingCount): void
     {
         $this->ratingCount = $ratingCount;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGameSpotAssociation(): ?string
+    {
+        return $this->gameSpotAssociation;
+    }
+
+    /**
+     * @param string|null $gameSpotAssociation
+     */
+    public function setGameSpotAssociation(?string $gameSpotAssociation): void
+    {
+        $this->gameSpotAssociation = $gameSpotAssociation;
     }
 }

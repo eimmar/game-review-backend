@@ -9,10 +9,10 @@ use App\Eimmar\GameSpotBundle\DTO\Image;
 class ImageTransformer extends AbstractDTOTransformer
 {
     /**
-     * @param \stdClass $response
+     * @param array $response
      * @return Image
      */
-    public function transform(\stdClass $response): Image
+    public function transform(array $response): Image
     {
         return new Image(
             (string)$this->getProperty($response, 'square_tiny'),

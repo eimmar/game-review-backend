@@ -1,0 +1,57 @@
+{
+    "error": "OK",
+    "limit": 100,
+    "offset": 0,
+    "number_of_page_results": 1,
+    "number_of_total_results": 1,
+    "status_code": 1,
+    "results": [
+        {
+            "release_date": "2004-10-07 12:00:00",
+            "description": "THE NEXT INSTALLMENT OF THE WORLD'S # 1 ONLINE ACTION GAME\r\nCounter-Strike: Source blends Counter-Strike's award-winning teamplay action with the advanced technology of Source™ technology. Featuring state of the art graphics, all new sounds, and introducing physics, Counter-Strike: Source is a must-have for every action gamer.",
+            "id": 21307,
+            "name": "Counter-Strike: Source",
+            "deck": "Counter-Strike: Source uses the highly-anticipated Source Engine to remake the original Counter-Strike. The game is available through Valve's Steam downloading service and will be distributed with Half-Life 2.",
+            "image": {
+                "square_tiny": "https://gamespot1.cbsistatic.com/uploads/square_tiny/mig/4/5/4/6/2214546-counterstrikesourceboxart.jpg",
+                "screen_tiny": "https://gamespot1.cbsistatic.com/uploads/screen_tiny/mig/4/5/4/6/2214546-counterstrikesourceboxart.jpg",
+                "square_small": "https://gamespot1.cbsistatic.com/uploads/square_small/mig/4/5/4/6/2214546-counterstrikesourceboxart.jpg",
+                "original": "https://gamespot1.cbsistatic.com/uploads/original/mig/4/5/4/6/2214546-counterstrikesourceboxart.jpg"
+            },
+            "genres": [
+                {
+                    "name": "Action"
+                },
+                {
+                    "name": "First-Person"
+                },
+                {
+                    "name": "Shooter"
+                },
+                {
+                    "name": "Tactical"
+                }
+            ],
+            "themes": [
+                {
+                    "name": "Modern"
+                }
+            ],
+            "franchises": [
+                {
+                    "name": "Half-Life"
+                },
+                {
+                    "name": "Counter-Strike"
+                }
+            ],
+            "images_api_url": "https://www.gamespot.com/api/images/?filter=association%3A5000-21307",
+            "reviews_api_url": "https://www.gamespot.com/api/reviews/?filter=association%3A5000-21307",
+            "articles_api_url": "https://www.gamespot.com/api/articles/?filter=association%3A5000-21307",
+            "videos_api_url": "https://www.gamespot.com/api/videos/?filter=association%3A5000-21307",
+            "releases_api_url": "https://www.gamespot.com/api/releases/?filter=association%3A5000-21307",
+            "site_detail_url": "https://www.gamespot.com/counter-strike-source/"
+        }
+    ],
+    "version": "1.0"
+}

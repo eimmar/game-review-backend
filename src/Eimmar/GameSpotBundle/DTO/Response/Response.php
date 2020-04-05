@@ -41,7 +41,7 @@ class Response implements DTO
     /**
      * @var array
      */
-    private array $results;
+    protected array $results;
 
     /**
      * @var string

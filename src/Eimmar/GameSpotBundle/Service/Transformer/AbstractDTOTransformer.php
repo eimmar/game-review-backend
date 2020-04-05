@@ -9,18 +9,18 @@ use App\Eimmar\GameSpotBundle\DTO\DTO;
 abstract class AbstractDTOTransformer
 {
     /**
-     * @param \stdClass $object
+     * @param array $data
      * @param string $propertyName
      * @return mixed|null
      */
-    protected function getProperty(\stdClass $object, string $propertyName)
+    protected function getProperty(array $data, string $propertyName)
     {
-        return isset($object->$propertyName) ? $object->$propertyName : null;
+        return isset($data[$propertyName]) ? $data[$propertyName] : null;
     }
 
     /**
-     * @param \stdClass $response
+     * @param array $response
      * @return DTO
      */
-    public abstract function transform(\stdClass $response): DTO;
+    public abstract function transform(array $response): DTO;
 }

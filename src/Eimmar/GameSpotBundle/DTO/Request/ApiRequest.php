@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace App\Eimmar\GameSpotBundle\DTO\Request;
 
+use App\Eimmar\GameSpotBundle\Service\ApiConnector;
+
 class ApiRequest
 {
     /**
@@ -67,9 +69,8 @@ class ApiRequest
     public function unwrap(): array
     {
         $filter = [];
-
         foreach ((array)$this->filter as $field => $value) {
-            $filter[] = $field . ':' . $value;
+            $filter[] = $field . ':' . urlencode($value);
         }
 
         return array_filter([

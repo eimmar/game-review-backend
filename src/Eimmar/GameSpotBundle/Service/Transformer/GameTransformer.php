@@ -31,10 +31,10 @@ class GameTransformer extends AbstractDTOTransformer
     }
 
     /**
-     * @param \stdClass $response
+     * @param array $response
      * @return Game
      */
-    public function transform(\stdClass $response): Game
+    public function transform(array $response): Game
     {
         $image = $this->getProperty($response, 'image');
 
