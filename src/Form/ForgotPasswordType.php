@@ -1,38 +1,34 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\DTO\ChangePasswordRequest;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class ForgotPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', null, [
+            ->add('email', EmailType::class, [
                 'constraints' => [new NotBlank(), new Email()]
             ])
-            ->add('firstName')
-            ->add('lastName')
-            ->add('password', PasswordType::class, [
-                'constraints' => [new NotBlank(), new Length(array('min' => 4))]
-            ]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => ChangePasswordRequest::class,
             'csrf_protection' => false,
-            'allow_extra_fields' => true
+            'allow_extra_fields' => false
         ]);
     }
 }

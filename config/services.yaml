@@ -49,3 +49,8 @@ services:
     App\Eimmar\GameSpotBundle\Service\ApiConnector:
         arguments:
             $userKey: '%env(GAMESPOT_API_KEY)%'
+
+    App\EventListener\JWTCreatedListener:
+        arguments: [ '@request_stack',  '%env(JWT_REMEMBER_ME_DURATION)%']
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
