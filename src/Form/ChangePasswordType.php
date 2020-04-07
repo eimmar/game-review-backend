@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\DTO\ChangePasswordRequest;
+use App\DTO\ForgotPasswordRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +26,7 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ChangePasswordRequest::class,
+            'data_class' => ForgotPasswordRequest::class,
             'csrf_protection' => false,
             'allow_extra_fields' => false
         ]);

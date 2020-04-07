@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\DTO\ChangePasswordRequest;
+use App\DTO\ForgotPasswordRequest;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
@@ -62,13 +62,13 @@ class UserController extends BaseApiController
     public function changePassword(Request $request, User $user, UserManagerInterface $userManager): JsonResponse
     {
         $this->denyAccessUnlessGranted(UserVoter::CHANGE_PASSWORD, $user);
-        $form = $this->createForm(ChangePasswordType::class, new ChangePasswordRequest());
+        $form = $this->createForm(ChangePasswordType::class, new ForgotPasswordRequest());
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isValid()) {
-            /** @var ChangePasswordRequest $request */
+            /** @var ForgotPasswordRequest $request */
             $request = $form->getData();
-            $user->setPlainPassword($request->getPassword());
+            $user->setPlainPassword($request->getEmail());
             try {
                 $userManager->updateUser($user);
             } catch (\Exception $e) {

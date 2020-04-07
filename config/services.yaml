@@ -54,3 +54,13 @@ services:
         arguments: [ '@request_stack',  '%env(JWT_REMEMBER_ME_DURATION)%']
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    FOS\UserBundle\Mailer\MailerInterface: '@fos_user.mailer.twig_swift'
+
+    App\Mailer\TwigSwiftMailer:
+        arguments:
+            $mailer: '@swiftmailer.mailer'
+            $router: '@router'
+            $twig: '@twig'
+            $params: '@parameter_bag'
+            $frontendUrl: '%env(FRONTEND_URL)%'
