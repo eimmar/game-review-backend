@@ -15,14 +15,14 @@ trait TimestampableTrait
 {
     /**
      * @var DateTimeImmutable
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "review", "user", "game"})
      * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
      */
     protected DateTimeImmutable $createdAt;
 
     /**
      * @var DateTimeImmutable
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "review", "user", "game"})
      * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
      */
     protected DateTimeImmutable $updatedAt;

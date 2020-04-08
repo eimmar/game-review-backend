@@ -4,6 +4,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User extends BaseUser
 {
     /**
+     * @Groups({"user"})
      * @var string
      * @ORM\Id
      * @ORM\Column(type="guid")
@@ -33,6 +35,7 @@ class User extends BaseUser
     private $reviews;
 
     /**
+     * @Groups({"user"})
      * @var string
      * @Assert\NotBlank
      * @Assert\Length(max="255")
@@ -41,11 +44,22 @@ class User extends BaseUser
     private string $firstName;
 
     /**
+     * @Groups({"user"})
      * @var string|null
      * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastName;
+
+    /**
+     * @Groups({"user"})
+     */
+    protected $email;
+
+    /**
+     * @Groups({"user"})
+     */
+    protected $roles;
 
     public function __construct()
     {

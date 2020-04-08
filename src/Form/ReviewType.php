@@ -12,17 +12,17 @@ class ReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('game')
+            ->add('user')
+            ->add('title')
             ->add('comment')
             ->add('rating')
-            ->add('vehicle');
+            ->add('cons')
+            ->add('pros');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Review::class,
-            'csrf_protection' => false,
-            'allow_extra_fields' => true
-        ]);
+        $resolver->setDefaults(['data_class' => Review::class]);
     }
 }

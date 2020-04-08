@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\DTO\PaginationResponse;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -58,6 +59,21 @@ class ApiJsonResponseBuilder
         );
 
         return new JsonResponse($this->serializer->serialize($data, 'json', $serializerParams), $status, $headers, true);
+    }
+
+    public function buildPaginationResponse(PaginationResponse $paginationResponse, $serializerParams = [])
+    {
+        return $this->buildResponse(
+            [
+                'page' => $paginationResponse->getPage(),
+                'totalResults' => $paginationResponse->getTotalResults(),
+                'pageSize' => $paginationResponse->getPageSize(),
+                'items' => $paginationResponse->getItems()
+            ],
+            200,
+            [],
+            $serializerParams
+        );
     }
 
     /**

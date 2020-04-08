@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\DTO\PaginationRequest;
+use App\DTO\PaginationResponse;
 use App\Entity\Review;
 use App\Entity\Game;
 use App\Form\ReviewType;
+use App\Repository\ReviewRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReviewController extends BaseApiController
 {
     /**
+     * @Route("/", name="new_review_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
      * @Route("/game/{game}", name="game_review_options", methods={"OPTIONS"})
      * @return JsonResponse
@@ -26,13 +30,20 @@ class ReviewController extends BaseApiController
     }
 
     /**
-     * @Route("/game/{game}", name="reviews_by_game", methods={"GET"})
+     * @Route("/game/{game}", name="reviews_by_game", methods={"POST"})
+     * @param ReviewRepository $repository
      * @param Game $game
+     * @param PaginationRequest $request
      * @return JsonResponse
      */
-    public function showByGame(Game $game): JsonResponse
+    public function showByGame(ReviewRepository $repository, Game $game, PaginationRequest $request): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($game->getReviews());
+        $reviews = $repository->findBy(['game' => $game], ['createdAt' => 'DESC'], $request->getPageSize(), $request->getFirstResult());
+
+        return $this->apiResponseBuilder->buildPaginationResponse(
+            new PaginationResponse(1, $repository->count(['game' => $game]), $request->getPageSize(), $reviews),
+            ['groups' => ['review', 'user', 'game']]
+        );
     }
 
     /**
@@ -47,7 +58,7 @@ class ReviewController extends BaseApiController
         $form = $this->createForm(ReviewType::class, $review);
         $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($review);
             try {
@@ -55,7 +66,7 @@ class ReviewController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($review);
+            return $this->apiResponseBuilder->buildResponse($review, 200, [], ['groups' => ['review', 'user', 'game']]);
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);

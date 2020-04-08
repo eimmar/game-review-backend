@@ -29,7 +29,7 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var string
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
@@ -38,56 +38,56 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var string
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255)
      */
     private string $name;
 
     /**
      * @var string|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $coverImage;
 
     /**
      * @var string|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=10000, nullable=true)
      */
     private ?string $summary;
 
     /**
      * @var string|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $storyline;
 
     /**
      * @var DateTime|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private ?DateTime $releaseDate;
 
     /**
      * @var int|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private ?int $category;
 
     /**
      * @var float|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="float", nullable=true)
      */
     private ?float $rating;
 
     /**
      * @var int|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $ratingCount;
@@ -136,7 +136,7 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var string|null
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $gameSpotAssociation;

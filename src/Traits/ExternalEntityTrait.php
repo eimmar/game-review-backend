@@ -10,7 +10,7 @@ trait ExternalEntityTrait
 {
     /**
      * @var integer
-     * @Groups({"gameLoaded"})
+     * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="integer", unique=true)
      */
     protected int $externalId;
