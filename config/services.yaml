@@ -30,6 +30,10 @@ services:
         arguments:
             $corsAllowedUrls: ['%env(FRONTEND_URL)%']
 
+    app.api_json_response_builder:
+            alias: App\Service\ApiJsonResponseBuilder
+            public: true
+
     App\Security\Http\Authentication\CORSAuthenticationSuccessHandler:
         arguments:
             $corsAllowedUrls: ['%env(FRONTEND_URL)%']
@@ -64,3 +68,6 @@ services:
             $twig: '@twig'
             $params: '@parameter_bag'
             $frontendUrl: '%env(FRONTEND_URL)%'
+
+    App\Controller\AuthController:
+        arguments: ['@fos_user.user_manager', '@app.api_json_response_builder', '@fos_user.resetting.form.factory']

@@ -6,7 +6,6 @@ namespace App\Controller;
 use App\DTO\ForgotPasswordRequest;
 use App\Form\UserType;
 use App\Service\ApiJsonResponseBuilder;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
@@ -17,7 +16,6 @@ use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,22 +29,26 @@ class AuthController extends BaseApiController
 {
     private UserManagerInterface $userManager;
 
+    private FactoryInterface $resettingFormFactory;
+
     /**
      * @param UserManagerInterface $userManager
      * @param ApiJsonResponseBuilder $builder
+     * @param FactoryInterface $resettingFormFactory
      */
-    public function __construct(UserManagerInterface $userManager, ApiJsonResponseBuilder $builder)
+    public function __construct(UserManagerInterface $userManager, ApiJsonResponseBuilder $builder, FactoryInterface $resettingFormFactory)
     {
         parent::__construct($builder);
 
         $this->userManager = $userManager;
+        $this->resettingFormFactory = $resettingFormFactory;
     }
 
     /**
      * @Route("/login", name="login_options", methods={"OPTIONS"})
      * @Route("/register", name="register_options", methods={"OPTIONS"})
      * @Route("/forgot-password", name="forgot_password_options", methods={"OPTIONS"})
-     * @Route("/reset-password", name="reset_password_options", methods={"OPTIONS"})
+     * @Route("/reset-password/{token}", name="reset_password_options", methods={"OPTIONS"})
      * @Route("/reset-password-check/{token}", name="reset_password_check_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
@@ -105,9 +107,9 @@ class AuthController extends BaseApiController
             return $this->apiResponseBuilder->buildMessageResponse('', Response::HTTP_OK);
         }
 
-//        if ($user->isPasswordRequestNonExpired($params->get('fos_user.resetting.token_ttl'))) {
-//            return $this->apiResponseBuilder->buildMessageResponse('Password change already requested', Response::HTTP_BAD_REQUEST);
-//        }
+        if ($user->isPasswordRequestNonExpired($params->get('fos_user.resetting.token_ttl'))) {
+            return $this->apiResponseBuilder->buildMessageResponse('Password change already requested', Response::HTTP_BAD_REQUEST);
+        }
 
         if ($user->getConfirmationToken() === null) {
             $user->setConfirmationToken($tokenGenerator->generateToken());
@@ -119,7 +121,6 @@ class AuthController extends BaseApiController
 
         return $this->apiResponseBuilder->buildMessageResponse('', Response::HTTP_OK);
     }
-
 
     /**
      * @Route("/reset-password-check/{token}", name="reset_password_check", methods={"POST"})
@@ -143,10 +144,9 @@ class AuthController extends BaseApiController
      * @param Request $request
      * @param string $token
      * @param EventDispatcherInterface $eventDispatcher
-     * @param FactoryInterface $formFactory
      * @return JsonResponse
      */
-    public function resetAction(Request $request, string $token, EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory)
+    public function resetAction(Request $request, string $token, EventDispatcherInterface $eventDispatcher)
     {
         $user = $this->userManager->findUserByConfirmationToken($token);
 
@@ -161,25 +161,16 @@ class AuthController extends BaseApiController
             return $event->getResponse();
         }
 
-        $form = $formFactory->createForm();
+        $form = $this->resettingFormFactory->createForm();
         $form->setData($user);
-
-        $form->handleRequest($request);
+        $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event = new FormEvent($form, $request);
             $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_SUCCESS, $event);
-
             $this->userManager->updateUser($user);
 
-            if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('fos_user_profile_show');
-                $response = new RedirectResponse($url);
-            }
-
-            $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-
-            return $response;
+            return $this->apiResponseBuilder->buildMessageResponse('', Response::HTTP_OK);
         }
 
         return $this->apiResponseBuilder->buildMessageResponse('Bad Request', Response::HTTP_BAD_REQUEST);
