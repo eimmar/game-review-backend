@@ -26,12 +26,21 @@ use App\Eimmar\GameSpotBundle\DTO\Response\Response;
 use App\Eimmar\GameSpotBundle\Service\ApiConnector;
 use App\Entity\Game;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class GameSpotAdapter
 {
+    const CACHE_TAG = 'gameSpot';
+
+    const CACHE_LIFETIME = 86400;
+
     private ApiConnector $apiConnector;
 
     private EntityManagerInterface $entityManager;
+
+    private TagAwareAdapter $cache;
 
     /**
      * @param ApiConnector $apiConnector
@@ -41,6 +50,7 @@ class GameSpotAdapter
     {
         $this->apiConnector = $apiConnector;
         $this->entityManager = $entityManager;
+        $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
     }
 
     private function getAssociation(\App\Eimmar\GameSpotBundle\DTO\Game $game): ?string
@@ -55,36 +65,63 @@ class GameSpotAdapter
         return null;
     }
 
+    private function getCacheKey(string $apiCallbackFunc, ApiRequest $apiRequest)
+    {
+        return self::CACHE_TAG . '.' . $apiCallbackFunc . '' . implode("_", $apiRequest->unwrap());
+    }
+
     private function getCriteria(string $apiCallbackFunc, Game $game): array
     {
-//        return $apiCallbackFunc === 'review' ? ['title' => $game->getName() . ' Review'] : ['association' => $game->getGameSpotAssociation()];
-        return $apiCallbackFunc === 'review' ? ['title' => 'Black'] : ['association' => $game->getGameSpotAssociation()];
+        return $apiCallbackFunc === 'reviews' ? ['title' => $game->getName() . ' Review'] : ['association' => $game->getGameSpotAssociation()];
+    }
+
+    private function setGameSpotAssociation(Game $game)
+    {
+        $apiRequest = new ApiRequest('json', ['name' => $game->getName()]);
+
+        $response =  $this->cache->get(
+            $this->getCacheKey('games', $apiRequest),
+            function (ItemInterface $item) use ($apiRequest, $game) {
+                $item->expiresAfter(self::CACHE_LIFETIME);
+                $item->tag([self::CACHE_TAG . 'games']);
+
+                return $this->apiConnector->games(new ApiRequest('json', ['name' => $game->getName()]));
+            }
+        );
+
+        foreach ($response->getResults() as $result) {
+            if ($result->getName() === $game->getName()) {
+                $game->setGameSpotAssociation($this->getAssociation($result));
+                $this->entityManager->persist($game);
+                $this->entityManager->flush();
+                break;
+            }
+        }
     }
 
     public function get(string $apiCallbackFunc, Game $game, ApiRequest $apiRequest): Response
     {
         if (!$game->getGameSpotAssociation()) {
-            $response = $this->apiConnector->games(new ApiRequest('json', ['name' => $game->getName()]));
-
-            foreach ($response->getResults() as $result) {
-                if ($result->getName() === $game->getName()) {
-                    $game->setGameSpotAssociation($this->getAssociation($result));
-                    $this->entityManager->persist($game);
-                    $this->entityManager->flush();
-                    break;
-                }
-            }
+            $this->setGameSpotAssociation($game);
         }
 
         if ($game->getGameSpotAssociation()) {
-            $response = $this->apiConnector->$apiCallbackFunc(new ApiRequest(
-                $apiRequest->getFormat(),
-                $this->getCriteria($apiCallbackFunc, $game),
-                $apiRequest->getFieldList(),
-                $apiRequest->getLimit(),
-                $apiRequest->getOffset(),
-                $apiRequest->getSort()
-            ));
+            $response = $this->cache->get(
+                $this->getCacheKey($apiCallbackFunc, $apiRequest),
+                function (ItemInterface $item) use ($apiRequest, $apiCallbackFunc, $game) {
+                    $item->expiresAfter(self::CACHE_LIFETIME);
+                    $item->tag([self::CACHE_TAG . $apiCallbackFunc]);
+
+                    return $this->apiConnector->$apiCallbackFunc(new ApiRequest(
+                        $apiRequest->getFormat(),
+                        $this->getCriteria($apiCallbackFunc, $game),
+                        $apiRequest->getFieldList(),
+                        $apiRequest->getLimit(),
+                        $apiRequest->getOffset(),
+                        $apiRequest->getSort()
+                    ));
+                }
+            );
         } else {
             $response = new Response(
                 'OK',
