@@ -2,8 +2,15 @@
 
 namespace App\Controller;
 
+use App\DTO\PaginationResponse;
+use App\DTO\SearchRequest;
 use App\Entity\Game;
 use App\Form\GameType;
+use App\Repository\Game\CompanyRepository;
+use App\Repository\Game\GameModeRepository;
+use App\Repository\Game\GenreRepository;
+use App\Repository\Game\PlatformRepository;
+use App\Repository\Game\ThemeRepository;
 use App\Repository\GameRepository;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,6 +26,7 @@ class GameController extends BaseApiController
     /**
      * @Route("/", name="game_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_game_options", methods={"OPTIONS"})
+     * @Route("/entity-filter-values", name="game_entity_filter_values_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -27,16 +35,51 @@ class GameController extends BaseApiController
     }
 
     /**
-     * @Route("/", name="game_index", methods={"GET"})
-     * @param GameRepository $gameRepository
+     * @Route("/", name="game_index", methods={"POST"})
+     * @param GameRepository $repository
+     * @param SearchRequest $request
      * @return JsonResponse
      */
-    public function index(GameRepository $gameRepository): JsonResponse
+    public function index(GameRepository $repository, SearchRequest $request): JsonResponse
     {
-        $games = $gameRepository->findAll();
-        return $this->apiResponseBuilder->buildResponse($games);
+        $games = $repository->findBy($request->getFilters(), ['createdAt' => 'DESC'], $request->getPageSize(), $request->getFirstResult());
+
+        return $this->apiResponseBuilder->buildPaginationResponse(
+            new PaginationResponse(1, $repository->count([]), $request->getPageSize(), $games),
+            ['groups' => ['game']]
+        );
     }
 
+    /**
+     * @Route("/entity-filter-values", name="game_entity_filter_values", methods={"POST"})
+     * @param GenreRepository $genreRepository
+     * @param ThemeRepository $themeRepository
+     * @param PlatformRepository $platformRepository
+     * @param GameModeRepository $gameModeRepository
+     * @param CompanyRepository $companyRepository
+     * @return JsonResponse
+     */
+    public function entityFilterValues(
+        GenreRepository $genreRepository,
+        ThemeRepository $themeRepository,
+        PlatformRepository $platformRepository,
+        GameModeRepository $gameModeRepository,
+        CompanyRepository $companyRepository
+    ): JsonResponse
+    {
+        return $this->apiResponseBuilder->buildResponse(
+            [
+                'genres' => $genreRepository->findAll(),
+                'themes' => $themeRepository->findAll(),
+                'platforms' => $platformRepository->findAll(),
+                'gameModes' => $gameModeRepository->findAll(),
+                'companies' => $companyRepository->findAll(),
+            ],
+            200,
+            [],
+            ['groups' => ['gameLoaded']]
+        );
+    }
     /**
      * @Route("/{id}", name="game_show", methods={"GET"})
      * @param Game $game

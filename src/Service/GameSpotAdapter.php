@@ -67,7 +67,7 @@ class GameSpotAdapter
 
     private function getCacheKey(string $apiCallbackFunc, ApiRequest $apiRequest)
     {
-        return self::CACHE_TAG . '.' . $apiCallbackFunc . '' . implode("_", $apiRequest->unwrap());
+        return str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', self::CACHE_TAG . '.' . $apiCallbackFunc . '' . implode("_", $apiRequest->unwrap()));
     }
 
     private function getCriteria(string $apiCallbackFunc, Game $game): array
