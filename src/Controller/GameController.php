@@ -42,10 +42,10 @@ class GameController extends BaseApiController
      */
     public function index(GameRepository $repository, SearchRequest $request): JsonResponse
     {
-        $games = $repository->findBy($request->getFilters(), ['createdAt' => 'DESC'], $request->getPageSize(), $request->getFirstResult());
+        $games = $repository->filter($request);
 
         return $this->apiResponseBuilder->buildPaginationResponse(
-            new PaginationResponse(1, $repository->count([]), $request->getPageSize(), $games),
+            new PaginationResponse(1, $repository->countWithFilter($request), $request->getPageSize(), $games),
             ['groups' => ['game']]
         );
     }
