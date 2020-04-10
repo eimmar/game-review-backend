@@ -41,7 +41,7 @@ class SearchRequest extends PaginationRequest
     {
         parent::__construct($page, $totalResults, $pageSize);
         $this->filters = $filters;
-        $this->orderBy = $orderBy ? $orderBy : 'createdAt';
+        $this->orderBy = $orderBy ? $orderBy : 'releaseDate';
         $this->order = $order ? $order : 'DESC';
     }
 

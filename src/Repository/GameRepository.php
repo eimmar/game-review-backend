@@ -57,7 +57,9 @@ class GameRepository extends ServiceEntityRepository
     public function filter(SearchRequest $request)
     {
         return $this->filterQueryBuilder($request, 'g')
+            ->addSelect("CASE WHEN g.{$request->getOrderBy()} IS NULL THEN 1 ELSE 0 END as HIDDEN sortIsNull")
             ->orderBy('g.' . $request->getOrderBy(), $request->getOrder())
+            ->addOrderBy('sortIsNull', 'ASC')
             ->setFirstResult($request->getFirstResult())
             ->setMaxResults($request->getPageSize())
             ->getQuery()
