@@ -2,21 +2,24 @@
 
 namespace App\Entity;
 
+use App\Enum\GameListPrivacyType;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\GameListRepository")
  */
 class GameList
 {
     use TimestampableTrait;
 
     /**
+     * @Groups({"gameList"})
      * @var string
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
@@ -31,6 +34,7 @@ class GameList
     private $games;
 
     /**
+     * @Groups({"gameList"})
      * @var int
      * @Assert\NotBlank
      * @ORM\Column(type="integer", nullable=false)
@@ -38,6 +42,7 @@ class GameList
     private int $privacyType;
 
     /**
+     * @Groups({"gameList"})
      * @var int
      * @Assert\NotBlank
      * @ORM\Column(type="integer", nullable=false)
@@ -45,12 +50,14 @@ class GameList
     private int $type;
 
     /**
+     * @Groups({"gameList"})
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private string $name;
 
     /**
+     * @Groups({"gameList"})
      * @var string|null
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -63,9 +70,14 @@ class GameList
      */
     private User $user;
 
-    public function __construct()
+    public function __construct(int $type, string $name, $user)
     {
         $this->games = new ArrayCollection();
+        $this->description = null;
+        $this->privacyType = GameListPrivacyType::PRIVATE;
+        $this->type = $type;
+        $this->name = $name;
+        $this->user = $user;
     }
 
     /**
@@ -75,6 +87,7 @@ class GameList
     {
         if (!$this->games->contains($game)) {
             $this->games[] = $game;
+            $game->addGameList($this);
         }
     }
 
@@ -85,6 +98,7 @@ class GameList
     {
         if ($this->games->contains($game)) {
             $this->games->removeElement($game);
+            $game->removeGameList($this);
         }
     }
 

@@ -7,6 +7,7 @@ use App\Entity\Game;
 use App\Entity\User;
 use App\Form\GameListType;
 use App\Security\GameListVoter;
+use App\Service\GameListService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,9 @@ class GameListController extends BaseApiController
      * @Route("/game/{game}", name="game_gameList_options", methods={"OPTIONS"})
      * @Route("/{id}/add/{game}", name="game_gameList_add_options", methods={"OPTIONS"})
      * @Route("/{id}/remove/{game}", name="game_gameList_remove_options", methods={"OPTIONS"})
+     * @Route("/add/{type}/{game}", name="add_game_to_predefined_list_options", methods={"OPTIONS"})
+     * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list_options", methods={"OPTIONS"})
+     * @Route("/containing/{game}", name="lists_containing_game_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -36,7 +40,7 @@ class GameListController extends BaseApiController
      */
     public function showByUser(User $user): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($user->getGameLists());
+        return $this->apiResponseBuilder->buildResponse($user->getGameLists(), 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -62,7 +66,7 @@ class GameListController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($gameList);
+            return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
@@ -76,7 +80,7 @@ class GameListController extends BaseApiController
     public function show(GameList $gameList): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::VIEW, $gameList);
-        return $this->apiResponseBuilder->buildResponse($gameList);
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -99,10 +103,61 @@ class GameListController extends BaseApiController
             } catch (\Exception $e) {
                 return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
             }
-            return $this->apiResponseBuilder->buildResponse($gameList);
+            return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
         }
 
         return $this->apiResponseBuilder->buildFormErrorResponse($form);
+    }
+
+    /**
+     * @Route("/add/{type}/{game}", name="add_game_to_predefined_list", methods={"POST"})
+     * @IsGranted({"ROLE_USER"})
+     * @param Game $game
+     * @param int $type
+     * @param GameListService $service
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function addGameToPredefinedList(Game $game, int $type, GameListService $service): JsonResponse
+    {
+        $gameList = $service->getPredefinedTypeList($type);
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
+        $service->addToList($gameList, $game);
+
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+    }
+
+
+    /**
+     * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list", methods={"POST"})
+     * @IsGranted({"ROLE_USER"})
+     * @param Game $game
+     * @param int $type
+     * @param GameListService $service
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function removeGameFromPredefinedList(Game $game, int $type, GameListService $service): JsonResponse
+    {
+        $gameList = $service->getPredefinedTypeList($type);
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
+        $service->removeFromList($gameList, $game);
+
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+    }
+
+    /**
+     * @Route("/containing/{game}", name="lists_containing_game", methods={"GET"})
+     * @param Game $game
+     * @param GameListService $service
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function listsContainingGame(Game $game, GameListService $service): JsonResponse
+    {
+        $gameLists = $service->getUserListsContaining($game);
+
+        return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -112,7 +167,7 @@ class GameListController extends BaseApiController
      * @param Game $game
      * @return JsonResponse
      */
-    public function addGame(GameList $gameList, Game $game): JsonResponse
+    public function addGameToCustom(GameList $gameList, Game $game): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
 
@@ -121,7 +176,7 @@ class GameListController extends BaseApiController
         $entityManager->persist($gameList);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($gameList);
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -140,7 +195,7 @@ class GameListController extends BaseApiController
         $entityManager->persist($gameList);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($gameList);
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -157,6 +212,6 @@ class GameListController extends BaseApiController
         $entityManager->remove($gameList);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($gameList);
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }
 }

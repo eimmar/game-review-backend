@@ -533,11 +533,25 @@ class Game implements ExternalEntityInterface
     }
 
     /**
-     * @param GameList[]|ArrayCollection $gameLists
+     * @param GameList $gameList
      */
-    public function setGameLists(ArrayCollection $gameLists): void
+    public function addGameList(GameList $gameList)
     {
-        $this->gameLists = $gameLists;
+        if (!$this->gameLists->contains($gameList)) {
+            $this->gameLists[] = $gameList;
+            $gameList->addGame($this);
+        }
+    }
+
+    /**
+     * @param GameList $gameList
+     */
+    public function removeGameList(GameList $gameList)
+    {
+        if ($this->gameLists->contains($gameList)) {
+            $this->gameLists->removeElement($gameList);
+            $gameList->removeGame($this);
+        }
     }
 
     /**

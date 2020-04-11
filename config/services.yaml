@@ -59,6 +59,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
+    App\EventListener\JWTNotFoundEventListener:
+        arguments: [['%env(FRONTEND_URL)%']]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
+
     FOS\UserBundle\Mailer\MailerInterface: '@fos_user.mailer.twig_swift'
 
     App\Mailer\TwigSwiftMailer:

@@ -15,7 +15,7 @@ class CORSAuthenticationFailureHandler extends AuthenticationFailureHandler
     /**
      * @var array
      */
-    private $corsAllowedUrls;
+    private array $corsAllowedUrls;
 
     public function __construct(EventDispatcherInterface $dispatcher, array $corsAllowedUrls)
     {
