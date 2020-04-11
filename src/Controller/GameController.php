@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\DTO\PaginationRequest;
 use App\DTO\PaginationResponse;
 use App\DTO\SearchRequest;
 use App\Entity\Game;
+use App\Entity\GameList;
 use App\Form\GameType;
 use App\Repository\Game\CompanyRepository;
 use App\Repository\Game\GameModeRepository;
@@ -12,6 +14,7 @@ use App\Repository\Game\GenreRepository;
 use App\Repository\Game\PlatformRepository;
 use App\Repository\Game\ThemeRepository;
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\Criteria;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +30,7 @@ class GameController extends BaseApiController
      * @Route("/", name="game_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_game_options", methods={"OPTIONS"})
      * @Route("/entity-filter-values", name="game_entity_filter_values_options", methods={"OPTIONS"})
+     * @Route("/list/{gameList}", name="games_for_list_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -46,6 +50,26 @@ class GameController extends BaseApiController
 
         return $this->apiResponseBuilder->buildPaginationResponse(
             new PaginationResponse(1, $repository->countWithFilter($request), $request->getPageSize(), $games),
+            ['groups' => ['game']]
+        );
+    }
+
+    /**
+     * @Route("/list/{gameList}", name="games_for_list", methods={"POST"})
+     * @param PaginationRequest $request
+     * @param GameList $gameList
+     * @return JsonResponse
+     */
+    public function listGames(PaginationRequest $request, GameList $gameList): JsonResponse
+    {
+        $criteria = Criteria::create()
+            ->orderBy(['createdAt' => 'DESC'])
+            ->setFirstResult($request->getFirstResult())
+            ->setMaxResults($request->getPageSize());
+        $games = $gameList->getGames()->matching($criteria)->toArray();
+
+        return $this->apiResponseBuilder->buildPaginationResponse(
+            new PaginationResponse($request->getPage(), $gameList->getGames()->count(), $request->getPageSize(), $games),
             ['groups' => ['game']]
         );
     }

@@ -20,12 +20,12 @@ class GameListController extends BaseApiController
 {
     /**
      * @Route("/{id}", name="individual_gameList_options", methods={"OPTIONS"})
-     * @Route("/game/{game}", name="game_gameList_options", methods={"OPTIONS"})
      * @Route("/{id}/add/{game}", name="game_gameList_add_options", methods={"OPTIONS"})
      * @Route("/{id}/remove/{game}", name="game_gameList_remove_options", methods={"OPTIONS"})
      * @Route("/add/{type}/{game}", name="add_game_to_predefined_list_options", methods={"OPTIONS"})
      * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list_options", methods={"OPTIONS"})
      * @Route("/containing/{game}", name="lists_containing_game_options", methods={"OPTIONS"})
+     * @Route("/user/{user}", name="gameLists_by_user_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -38,7 +38,7 @@ class GameListController extends BaseApiController
      * @param User $user
      * @return JsonResponse
      */
-    public function showByUser(User $user): JsonResponse
+    public function allForUser(User $user): JsonResponse
     {
         return $this->apiResponseBuilder->buildResponse($user->getGameLists(), 200, [], ['groups' => 'gameList']);
     }

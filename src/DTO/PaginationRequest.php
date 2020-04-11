@@ -25,19 +25,15 @@ class PaginationRequest
 {
     private int $page;
 
-    private int $totalResults;
-
     private int $pageSize;
 
     /**
      * @param int $page
-     * @param int $totalResults
      * @param int $pageSize
      */
-    public function __construct(int $page, int $totalResults, int $pageSize)
+    public function __construct(int $page, int $pageSize)
     {
         $this->page = $page;
-        $this->totalResults = $totalResults;
         $this->pageSize = $pageSize;
     }
 
@@ -47,14 +43,6 @@ class PaginationRequest
     public function getPage(): int
     {
         return $this->page;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalResults(): int
-    {
-        return $this->totalResults;
     }
 
     /**

@@ -23,6 +23,8 @@ namespace App\DTO;
 
 class PaginationResponse extends PaginationRequest
 {
+    private int $totalResults;
+
     private array $items;
 
     /**
@@ -33,8 +35,9 @@ class PaginationResponse extends PaginationRequest
      */
     public function __construct(int $page, int $totalResults, int $pageSize, array $items)
     {
-        parent::__construct($page, $totalResults, $pageSize);
+        parent::__construct($page, $pageSize);
         $this->items = $items;
+        $this->totalResults = $totalResults;
     }
 
     /**
@@ -43,5 +46,13 @@ class PaginationResponse extends PaginationRequest
     public function getItems(): array
     {
         return $this->items;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalResults(): int
+    {
+        return $this->totalResults;
     }
 }

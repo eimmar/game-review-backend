@@ -31,15 +31,14 @@ class SearchRequest extends PaginationRequest
 
     /**
      * @param int $page
-     * @param int $totalResults
      * @param int $pageSize
      * @param array $filters
      * @param string|null $orderBy
      * @param string|null $order
      */
-    public function __construct(int $page, int $totalResults, int $pageSize, array $filters, ?string $orderBy = null, ?string $order = null)
+    public function __construct(int $page, int $pageSize, array $filters, ?string $orderBy = null, ?string $order = null)
     {
-        parent::__construct($page, $totalResults, $pageSize);
+        parent::__construct($page, $pageSize);
         $this->filters = $filters;
         $this->orderBy = $orderBy ? $orderBy : 'releaseDate';
         $this->order = $order ? $order : 'DESC';

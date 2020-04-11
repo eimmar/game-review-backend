@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -9,10 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
 {
+    use TimestampableTrait;
+
     /**
      * @Groups({"user"})
      * @var string

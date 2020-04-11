@@ -34,11 +34,11 @@ class PaginationRequestConverter implements ParamConverterInterface
     public function apply(Request $request, ParamConverter $configuration)
     {
         $content = json_decode($request->getContent(), true);
-        if (!$content || !isset($content['page']) || !isset($content['totalResults']) || !isset($content['pageSize'])) {
+        if (!$content || !isset($content['page']) || !isset($content['pageSize'])) {
             throw new \InvalidArgumentException('Invalid request parameters.');
         }
 
-        $request->attributes->set($configuration->getName(), new PaginationRequest($content['page'], $content['totalResults'], $content['pageSize']));
+        $request->attributes->set($configuration->getName(), new PaginationRequest($content['page'], $content['pageSize']));
     }
 
     /**
