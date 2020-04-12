@@ -6,8 +6,10 @@ use App\DTO\PaginationRequest;
 use App\DTO\PaginationResponse;
 use App\Entity\Review;
 use App\Entity\Game;
+use App\Entity\User;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +24,7 @@ class ReviewController extends BaseApiController
      * @Route("/", name="new_review_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
      * @Route("/game/{game}", name="game_review_options", methods={"OPTIONS"})
+     * @Route("/user/{user}", name="reviews_by_user_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -42,6 +45,26 @@ class ReviewController extends BaseApiController
 
         return $this->apiResponseBuilder->buildPaginationResponse(
             new PaginationResponse(1, $repository->count(['game' => $game]), $request->getPageSize(), $reviews),
+            ['groups' => ['review', 'user', 'game']]
+        );
+    }
+
+    /**
+     * @Route("/user/{user}", name="reviews_by_user", methods={"POST"})
+     * @param PaginationRequest $request
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function showByUser(PaginationRequest $request, User $user): JsonResponse
+    {
+        $criteria = Criteria::create()
+            ->orderBy(['createdAt' => 'DESC'])
+            ->setFirstResult($request->getFirstResult())
+            ->setMaxResults($request->getPageSize());
+        $reviews = $user->getReviews()->matching($criteria)->toArray();
+
+        return $this->apiResponseBuilder->buildPaginationResponse(
+            new PaginationResponse($request->getPage(), $user->getReviews()->count(), $request->getPageSize(), $reviews),
             ['groups' => ['review', 'user', 'game']]
         );
     }

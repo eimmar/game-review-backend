@@ -52,7 +52,7 @@ class GameListService
     public function validate(GameList $gameList)
     {
         if (
-            !in_array($gameList->getType(), [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYED, GameListType::CUSTOM])
+            !in_array($gameList->getType(), [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYING, GameListType::CUSTOM])
             || !in_array($gameList->getPrivacyType(), [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY, GameListPrivacyType::PUBLIC])
         ) {
             throw new \Exception();
@@ -67,7 +67,7 @@ class GameListService
     {
         $user = $this->security->getUser();
 
-        if (!$user instanceof UserInterface || !in_array($type, [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYED])) {
+        if (!$user instanceof UserInterface || !in_array($type, [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYING])) {
             throw new \Exception();
         }
 
