@@ -22,7 +22,7 @@ class UserController extends BaseApiController
 {
     /**
      * @Route("/", name="user_options", methods={"OPTIONS"})
-     * @Route("/{id}", name="individual_user_options", methods={"OPTIONS"})
+     * @Route("/{id}", name="user_show_options", methods={"OPTIONS"})
      * @Route("/{id}/change-password", name="change_password_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
@@ -48,7 +48,7 @@ class UserController extends BaseApiController
      */
     public function show(User $user): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($user);
+        return $this->apiResponseBuilder->buildResponse($user, 200, [], ['groups' => ['user']]);
     }
 
     /**
