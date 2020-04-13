@@ -23,11 +23,8 @@ class GameListType extends AbstractType
                     GameListPrivacyType::FRIENDS_ONLY
                 ]])]
             ])
-            ->add('type', null, [
-                'constraints' => [new NotBlank(), new EqualTo(['value' => \App\Enum\GameListType::CUSTOM])]
-            ])
-            ->add('description')
             ->add('user')
+            ->add('games')
             ->add('name');
     }
 
@@ -36,7 +33,6 @@ class GameListType extends AbstractType
         $resolver->setDefaults([
             'data_class' => GameList::class,
             'csrf_protection' => false,
-            'allow_extra_fields' => true
         ]);
     }
 }

@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameListController extends BaseApiController
 {
     /**
+     * @Route("/new", name="gameList_new_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_gameList_options", methods={"OPTIONS"})
      * @Route("/{id}/add/{game}", name="game_gameList_add_options", methods={"OPTIONS"})
      * @Route("/{id}/remove/{game}", name="game_gameList_remove_options", methods={"OPTIONS"})
@@ -44,21 +45,24 @@ class GameListController extends BaseApiController
     }
 
     /**
-     * @Route("/", name="gameList_new", methods={"POST"})
+     * @Route("/new", name="gameList_new", methods={"POST"})
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
+     * @param GameListService $service
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function new(Request $request): JsonResponse
+    public function new(Request $request, GameListService $service): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
-        $gameList = new GameList();
-        $gameList->setUser($user);
+        $gameList = new GameList(\App\Enum\GameListType::CUSTOM, $user);
         $form = $this->createForm(GameListType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $service->validate($form->getData(), false);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($gameList);
             try {
@@ -127,7 +131,6 @@ class GameListController extends BaseApiController
         return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }
 
-
     /**
      * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list", methods={"POST"})
      * @IsGranted({"ROLE_USER"})
@@ -149,13 +152,12 @@ class GameListController extends BaseApiController
     /**
      * @Route("/containing/{game}", name="lists_containing_game", methods={"GET"})
      * @param Game $game
-     * @param GameListService $service
      * @return JsonResponse
      * @throws \Exception
      */
-    public function listsContainingGame(Game $game, GameListService $service): JsonResponse
+    public function listsContainingGame(Game $game): JsonResponse
     {
-        $gameLists = $service->getUserListsContaining($game);
+        $gameLists = $game->getGameLists();
 
         return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
     }
@@ -165,16 +167,13 @@ class GameListController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param GameList $gameList
      * @param Game $game
+     * @param GameListService $service
      * @return JsonResponse
      */
-    public function addGameToCustom(GameList $gameList, Game $game): JsonResponse
+    public function addGameToCustom(GameList $gameList, Game $game, GameListService $service): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-
-        $gameList->addGame($game);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($gameList);
-        $entityManager->flush();
+        $service->addToList($gameList, $game);
 
         return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }
@@ -184,16 +183,13 @@ class GameListController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param GameList $gameList
      * @param Game $game
+     * @param GameListService $service
      * @return JsonResponse
      */
-    public function removeGame(GameList $gameList, Game $game): JsonResponse
+    public function removeGame(GameList $gameList, Game $game, GameListService $service): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-
-        $gameList->removeGame($game);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($gameList);
-        $entityManager->flush();
+        $service->removeFromList($gameList, $game);
 
         return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
     }

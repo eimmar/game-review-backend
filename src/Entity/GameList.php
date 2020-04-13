@@ -57,26 +57,18 @@ class GameList
     private string $name;
 
     /**
-     * @Groups({"gameList"})
-     * @var string|null
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $description;
-
-    /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User", inversedBy="gameLists")
      *
      */
     private User $user;
 
-    public function __construct(int $type, string $name, $user)
+    public function __construct(int $type, $user)
     {
         $this->games = new ArrayCollection();
-        $this->description = null;
         $this->privacyType = GameListPrivacyType::PRIVATE;
         $this->type = $type;
-        $this->name = $name;
+        $this->name = '';
         $this->user = $user;
     }
 
@@ -113,17 +105,19 @@ class GameList
     /**
      * @return Game[]|PersistentCollection
      */
-    public function getGames(): PersistentCollection
+    public function getGames()
     {
         return $this->games;
     }
 
     /**
-     * @param Game[]|ArrayCollection $games
+     * @param Game[]|PersistentCollection $games
      */
-    public function setGames(ArrayCollection $games): void
+    public function setGames(PersistentCollection $games): void
     {
-        $this->games = $games;
+        foreach ($games as $game) {
+            $this->addGame($game);
+        }
     }
 
     /**
@@ -172,22 +166,6 @@ class GameList
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
     }
 
     /**

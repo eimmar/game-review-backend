@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Entity\GameList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\AbstractQuery;
 
 /**
  * @method GameList|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,13 +25,14 @@ class GameListRepository extends ServiceEntityRepository
      * @param $user
      * @return GameList[]
      */
-    public function getGameListsContaining(Game $game, $user)
+    public function getGameListsWithContainingInfo(Game $game, $user)
     {
         return $this->createQueryBuilder('gl')
             ->where(':game MEMBER OF gl.games')
+            ->addSelect("CASE WHEN :game MEMBER OF gl.games IS NULL THEN 1 ELSE 0 END as gameInList")
             ->andWhere('gl.user = :user')
             ->setParameters(['game' => $game, 'user' => $user])
             ->getQuery()
-            ->getResult();
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 }

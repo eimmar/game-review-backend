@@ -25,6 +25,7 @@ use App\Entity\Game;
 use App\Entity\GameList;
 use App\Enum\GameListPrivacyType;
 use App\Enum\GameListType;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Security;
@@ -47,13 +48,24 @@ class GameListService
 
     /**
      * @param GameList $gameList
+     * @param bool $initialized
      * @throws \Exception
      */
-    public function validate(GameList $gameList)
+    public function validate(GameList $gameList, bool $initialized = true)
     {
+        $expr = Criteria::expr();
+        $duplicateNameCriteria = Criteria::create()->where($expr->andX(
+            ...array_filter([
+                $expr->eq('type', GameListType::CUSTOM),
+                $expr->eq('name', $gameList->getName()),
+                $initialized ? $expr->neq('id', $gameList->getId()) : null
+            ])
+        ));
+
         if (
             !in_array($gameList->getType(), [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYING, GameListType::CUSTOM])
             || !in_array($gameList->getPrivacyType(), [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY, GameListPrivacyType::PUBLIC])
+            || $gameList->getUser()->getGameLists()->matching($duplicateNameCriteria)->count()
         ) {
             throw new \Exception();
         }
@@ -74,7 +86,7 @@ class GameListService
         $list = $this->entityManager->getRepository(GameList::class)->findOneBy(['type' => $type, 'user' => $user]);
 
         if (!$list) {
-            $list = new GameList($type, '', $user);
+            $list = new GameList($type, $user);
         }
 
         return $list;
@@ -107,16 +119,5 @@ class GameListService
         $this->entityManager->flush();
 
         return $gameList;
-    }
-
-    public function getUserListsContaining(Game $game)
-    {
-        $user = $this->security->getUser();
-
-        if (!$user instanceof UserInterface) {
-            return [];
-        }
-
-        return $this->entityManager->getRepository(GameList::class)->getGameListsContaining($game, $user);
     }
 }
