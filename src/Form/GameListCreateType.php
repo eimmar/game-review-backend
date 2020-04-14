@@ -8,10 +8,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class GameListType extends AbstractType
+class GameListCreateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

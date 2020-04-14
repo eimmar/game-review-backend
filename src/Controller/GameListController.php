@@ -5,7 +5,8 @@ namespace App\Controller;
 use App\Entity\GameList;
 use App\Entity\Game;
 use App\Entity\User;
-use App\Form\GameListType;
+use App\Form\GameListCreateType;
+use App\Form\GameListUpdateType;
 use App\Security\GameListVoter;
 use App\Service\GameListService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -27,6 +28,7 @@ class GameListController extends BaseApiController
      * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list_options", methods={"OPTIONS"})
      * @Route("/containing/{game}", name="lists_containing_game_options", methods={"OPTIONS"})
      * @Route("/user/{user}", name="gameLists_by_user_options", methods={"OPTIONS"})
+     * @Route("/edit/{id}", name="gameList_edit_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -57,7 +59,7 @@ class GameListController extends BaseApiController
         /** @var User $user */
         $user = $this->getUser();
         $gameList = new GameList(\App\Enum\GameListType::CUSTOM, $user);
-        $form = $this->createForm(GameListType::class, $gameList);
+        $form = $this->createForm(GameListCreateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -88,20 +90,22 @@ class GameListController extends BaseApiController
     }
 
     /**
-     * @Route("/{id}", name="gameList_edit", methods={"PUT"})
+     * @Route("/edit/{id}", name="gameList_edit", methods={"POST"})
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @param GameList $gameList
+     * @param GameListService $service
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function edit(Request $request, GameList $gameList): JsonResponse
+    public function edit(Request $request, GameList $gameList,  GameListService $service): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-
-        $form = $this->createForm(GameListType::class, $gameList);
+        $form = $this->createForm(GameListUpdateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isValid()) {
+            $service->validate($form->getData());
             try {
                 $this->getDoctrine()->getManager()->flush();
             } catch (\Exception $e) {
@@ -208,6 +212,6 @@ class GameListController extends BaseApiController
         $entityManager->remove($gameList);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+        return $this->apiResponseBuilder->buildResponse('OK', 200);
     }
 }
