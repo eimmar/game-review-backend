@@ -25,9 +25,9 @@ class SearchRequest extends PaginationRequest
 {
     private array $filters;
 
-    private string $orderBy;
+    private ?string $orderBy;
 
-    private string $order;
+    private ?string $order;
 
     /**
      * @param int $page
@@ -40,8 +40,8 @@ class SearchRequest extends PaginationRequest
     {
         parent::__construct($page, $pageSize);
         $this->filters = $filters;
-        $this->orderBy = $orderBy ? $orderBy : 'releaseDate';
-        $this->order = $order ? $order : 'DESC';
+        $this->orderBy = $orderBy;
+        $this->order = $order;
     }
 
     /**
@@ -55,7 +55,7 @@ class SearchRequest extends PaginationRequest
     /**
      * @return string
      */
-    public function getOrderBy(): string
+    public function getOrderBy(): ?string
     {
         return $this->orderBy;
     }
@@ -63,7 +63,7 @@ class SearchRequest extends PaginationRequest
     /**
      * @return string
      */
-    public function getOrder(): string
+    public function getOrder(): ?string
     {
         return $this->order;
     }

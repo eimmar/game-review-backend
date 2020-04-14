@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="fos_user", indexes={@ORM\Index(columns={"first_name", "last_name", "email"}, flags={"fulltext"})})
  */
 class User extends BaseUser
 {

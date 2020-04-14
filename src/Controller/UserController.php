@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DTO\ForgotPasswordRequest;
+use App\DTO\PaginationResponse;
+use App\DTO\SearchRequest;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
@@ -32,15 +34,20 @@ class UserController extends BaseApiController
     }
 
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/", name="user_index", methods={"POST"})
      * @param UserRepository $userRepository
+     * @param SearchRequest $request
      * @return JsonResponse
      */
-    public function index(UserRepository $userRepository): JsonResponse
+    public function index(UserRepository $userRepository, SearchRequest $request): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($userRepository->findAll());
-    }
+        $users = $userRepository->filter($request);
 
+        return $this->apiResponseBuilder->buildPaginationResponse(
+            new PaginationResponse(1, $userRepository->countWithFilter($request), $request->getPageSize(), $users),
+            ['groups' => ['user']]
+        );
+    }
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      * @param User $user
