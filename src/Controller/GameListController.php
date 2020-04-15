@@ -9,6 +9,7 @@ use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
 use App\Security\GameListVoter;
 use App\Service\GameListService;
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -161,6 +162,10 @@ class GameListController extends BaseApiController
      */
     public function listsContainingGame(Game $game): JsonResponse
     {
+        $criteria = Criteria::create()
+            ->orderBy(['createdAt' => 'DESC'])
+            ->setFirstResult($request->getFirstResult())
+            ->setMaxResults($request->getPageSize());
         $gameLists = $game->getGameLists();
 
         return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);

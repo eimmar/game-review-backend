@@ -80,5 +80,4 @@ class GameListVoter extends Voter
     {
         return $gameList->getUser() === $user && $gameList->getType() === GameListType::CUSTOM;
     }
-
 }
