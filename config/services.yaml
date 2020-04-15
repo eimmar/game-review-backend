@@ -76,3 +76,6 @@ services:
 
     App\Controller\AuthController:
         arguments: ['@fos_user.user_manager', '@app.api_json_response_builder', '@fos_user.resetting.form.factory']
+
+    App\Controller\UserController:
+        arguments: ['@fos_user.user_manager', '@app.api_json_response_builder', '@fos_user.change_password.form.factory']

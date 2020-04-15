@@ -9,7 +9,6 @@ use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
 use App\Security\GameListVoter;
 use App\Service\GameListService;
-use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,11 +39,13 @@ class GameListController extends BaseApiController
     /**
      * @Route("/user/{user}", name="gameLists_by_user", methods={"GET"})
      * @param User $user
+     * @param GameListService $service
      * @return JsonResponse
      */
-    public function allForUser(User $user): JsonResponse
+    public function allForUser(User $user, GameListService $service): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($user->getGameLists(), 200, [], ['groups' => 'gameList']);
+        $gameLists = $service->getListsByUser($user);
+        return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -157,16 +158,12 @@ class GameListController extends BaseApiController
     /**
      * @Route("/containing/{game}", name="lists_containing_game", methods={"GET"})
      * @param Game $game
+     * @param GameListService $service
      * @return JsonResponse
-     * @throws \Exception
      */
-    public function listsContainingGame(Game $game): JsonResponse
+    public function listsContainingGame(Game $game, GameListService $service): JsonResponse
     {
-        $criteria = Criteria::create()
-            ->orderBy(['createdAt' => 'DESC'])
-            ->setFirstResult($request->getFirstResult())
-            ->setMaxResults($request->getPageSize());
-        $gameLists = $game->getGameLists();
+        $gameLists = $service->getListsByGame($game);
 
         return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
     }
@@ -217,6 +214,6 @@ class GameListController extends BaseApiController
         $entityManager->remove($gameList);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse('OK', 200);
+        return $this->apiResponseBuilder->buildResponse('OK');
     }
 }

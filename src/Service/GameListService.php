@@ -6,10 +6,14 @@ namespace App\Service;
 
 use App\Entity\Game;
 use App\Entity\GameList;
+use App\Entity\User;
 use App\Enum\GameListPrivacyType;
 use App\Enum\GameListType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\LazyCriteriaCollection;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -102,5 +106,36 @@ class GameListService
         $this->entityManager->flush();
 
         return $gameList;
+    }
+
+    private function privacyTypeCriteria()
+    {
+        $user = $this->security->getUser();
+        $expr = Criteria::expr();
+
+        return Criteria::create()
+            ->where($expr->eq('privacyType', GameListPrivacyType::PUBLIC))
+            ->orWhere($expr->andX(
+                $expr->in('privacyType', [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY]),
+                $expr->eq('user', $user)
+            ));
+    }
+
+    /**
+     * @param Game $game
+     * @return ArrayCollection|Collection|LazyCriteriaCollection
+     */
+    public function getListsByGame(Game $game)
+    {
+       return $game->getGameLists()->matching($this->privacyTypeCriteria());
+    }
+
+    /**
+     * @param User $user
+     * @return ArrayCollection|Collection|LazyCriteriaCollection
+     */
+    public function getListsByUser(User $user)
+    {
+        return $user->getGameLists()->matching($this->privacyTypeCriteria());
     }
 }

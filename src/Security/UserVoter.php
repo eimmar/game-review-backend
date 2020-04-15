@@ -12,12 +12,14 @@ class UserVoter extends Voter
 {
     const CHANGE_PASSWORD = 'changePassword';
 
+    const EDIT = 'edit';
+
     /**
      * @inheritDoc
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::CHANGE_PASSWORD]) || !$subject instanceof User) {
+        if (!in_array($attribute, [self::CHANGE_PASSWORD, self::EDIT]) || !$subject instanceof User) {
             return false;
         }
 
@@ -35,6 +37,7 @@ class UserVoter extends Voter
 
         switch ($attribute) {
             case self::CHANGE_PASSWORD:
+            case self::EDIT:
                 return $user === $currentUser;
         }
 

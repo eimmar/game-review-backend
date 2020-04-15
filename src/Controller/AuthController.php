@@ -158,7 +158,7 @@ class AuthController extends BaseApiController
         $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_INITIALIZE, $event);
 
         if ($event->getResponse() !== null) {
-            return $event->getResponse();
+            return $this->apiResponseBuilder->buildMessageResponse('Bad Request', Response::HTTP_BAD_REQUEST);
         }
 
         $form = $this->resettingFormFactory->createForm();
