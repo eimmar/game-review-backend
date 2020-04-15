@@ -17,3 +17,5 @@ framework:
 
     csrf_protection:
         enabled:   false
+
+    translator: { fallbacks: ['%env(LOCALE)%'] }

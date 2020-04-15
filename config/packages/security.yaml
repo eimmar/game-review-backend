@@ -10,13 +10,7 @@ security:
     providers:
         chain_provider:
             chain:
-                providers: [in_memory, fos_userbundle]
-        in_memory:
-            memory:
-                users:
-                    superMemoryAdmin:
-                        password: 'superadminpw'
-                        roles: ['ROLE_SUPER_ADMIN']
+                providers: [fos_userbundle]
         fos_userbundle:
             id: fos_user.user_provider.username
 
@@ -54,16 +48,3 @@ security:
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
-#        main:
-#            pattern: ^/
-#            form_login:
-#                provider: chain_provider
-#                csrf_token_generator: security.csrf.token_manager
-#                login_path: fos_user_security_login
-#                check_path: fos_user_security_check
-#                always_use_default_target_path: false
-#                default_target_path: admin_admin_index
-#            logout:
-#                path:   fos_user_security_logout
-#                target: fos_user_security_login
-#            anonymous:    true
