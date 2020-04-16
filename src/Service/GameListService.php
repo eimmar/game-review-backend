@@ -12,9 +12,9 @@ use App\Enum\GameListType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ExpressionBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\LazyCriteriaCollection;
-use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Security;
 
 class GameListService
@@ -31,6 +31,29 @@ class GameListService
     {
         $this->entityManager = $entityManager;
         $this->security = $security;
+    }
+
+    /**
+     * @param ExpressionBuilder[] $filterExpressions
+     * @return Criteria
+     */
+    private function privacyTypeCriteria(array $filterExpressions = [])
+    {
+        $user = $this->security->getUser();
+        $expr = Criteria::expr();
+        $criteria = Criteria::create()->where($expr->andX(
+            $expr->eq('privacyType', GameListPrivacyType::PUBLIC),
+            ...$filterExpressions
+        ));
+
+        if ($user) {
+            $criteria->orWhere($expr->andX(
+                $expr->in('privacyType', [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY]),
+                $expr->eq('user', $user)
+            ));
+        }
+
+        return $criteria;
     }
 
     /**
@@ -56,27 +79,6 @@ class GameListService
         ) {
             throw new \Exception();
         }
-    }
-
-    /**
-     * @param int $type
-     * @return GameList
-     */
-    public function getPredefinedTypeList(int $type): GameList
-    {
-        $user = $this->security->getUser();
-
-        if (!$user instanceof UserInterface || !in_array($type, [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYING])) {
-            throw new \Exception();
-        }
-
-        $list = $this->entityManager->getRepository(GameList::class)->findOneBy(['type' => $type, 'user' => $user]);
-
-        if (!$list) {
-            $list = new GameList($type, $user);
-        }
-
-        return $list;
     }
 
     /**
@@ -108,28 +110,6 @@ class GameListService
         return $gameList;
     }
 
-    private function privacyTypeCriteria()
-    {
-        $user = $this->security->getUser();
-        $expr = Criteria::expr();
-
-        return Criteria::create()
-            ->where($expr->eq('privacyType', GameListPrivacyType::PUBLIC))
-            ->orWhere($expr->andX(
-                $expr->in('privacyType', [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY]),
-                $expr->eq('user', $user)
-            ));
-    }
-
-    /**
-     * @param Game $game
-     * @return ArrayCollection|Collection|LazyCriteriaCollection
-     */
-    public function getListsByGame(Game $game)
-    {
-       return $game->getGameLists()->matching($this->privacyTypeCriteria());
-    }
-
     /**
      * @param User $user
      * @return ArrayCollection|Collection|LazyCriteriaCollection
@@ -137,5 +117,17 @@ class GameListService
     public function getListsByUser(User $user)
     {
         return $user->getGameLists()->matching($this->privacyTypeCriteria());
+    }
+
+    /**
+     * @param User $user
+     * @param Game $game
+     * @return ArrayCollection|Collection|LazyCriteriaCollection
+     */
+    public function getUserListsContainingGame(User $user, Game $game)
+    {
+        $privacyWithGameCriteria = $this->privacyTypeCriteria([Criteria::expr()->eq('game', $game)]);
+
+        return $user->getGameLists()->matching($privacyWithGameCriteria);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\GameList;
 use App\Entity\Game;
 use App\Entity\User;
+use App\Enum\GameListType;
 use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
 use App\Security\GameListVoter;
@@ -24,9 +25,7 @@ class GameListController extends BaseApiController
      * @Route("/{id}", name="individual_gameList_options", methods={"OPTIONS"})
      * @Route("/{id}/add/{game}", name="game_gameList_add_options", methods={"OPTIONS"})
      * @Route("/{id}/remove/{game}", name="game_gameList_remove_options", methods={"OPTIONS"})
-     * @Route("/add/{type}/{game}", name="add_game_to_predefined_list_options", methods={"OPTIONS"})
-     * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list_options", methods={"OPTIONS"})
-     * @Route("/containing/{game}", name="lists_containing_game_options", methods={"OPTIONS"})
+     * @Route("/containing/game/{game}/user/{user}", name="user_lists_containing_game_options", methods={"OPTIONS"})
      * @Route("/user/{user}", name="gameLists_by_user_options", methods={"OPTIONS"})
      * @Route("/edit/{id}", name="gameList_edit_options", methods={"OPTIONS"})
      * @return JsonResponse
@@ -60,7 +59,7 @@ class GameListController extends BaseApiController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $gameList = new GameList(\App\Enum\GameListType::CUSTOM, $user);
+        $gameList = new GameList(GameListType::CUSTOM, $user);
         $form = $this->createForm(GameListCreateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
@@ -120,50 +119,15 @@ class GameListController extends BaseApiController
     }
 
     /**
-     * @Route("/add/{type}/{game}", name="add_game_to_predefined_list", methods={"POST"})
-     * @IsGranted({"ROLE_USER"})
+     * @Route("/containing/game/{game}/user/{user}", name="user_lists_containing_game", methods={"GET"})
      * @param Game $game
-     * @param int $type
-     * @param GameListService $service
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function addGameToPredefinedList(Game $game, int $type, GameListService $service): JsonResponse
-    {
-        $gameList = $service->getPredefinedTypeList($type);
-        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-        $service->addToList($gameList, $game);
-
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
-    }
-
-    /**
-     * @Route("/remove/{type}/{game}", name="remove_game_to_predefined_list", methods={"POST"})
-     * @IsGranted({"ROLE_USER"})
-     * @param Game $game
-     * @param int $type
-     * @param GameListService $service
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function removeGameFromPredefinedList(Game $game, int $type, GameListService $service): JsonResponse
-    {
-        $gameList = $service->getPredefinedTypeList($type);
-        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-        $service->removeFromList($gameList, $game);
-
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
-    }
-
-    /**
-     * @Route("/containing/{game}", name="lists_containing_game", methods={"GET"})
-     * @param Game $game
+     * @param User $user
      * @param GameListService $service
      * @return JsonResponse
      */
-    public function listsContainingGame(Game $game, GameListService $service): JsonResponse
+    public function listsContainingGame(Game $game, User $user, GameListService $service): JsonResponse
     {
-        $gameLists = $service->getListsByGame($game);
+        $gameLists = $service->getUserListsContainingGame($user, $game);
 
         return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
     }

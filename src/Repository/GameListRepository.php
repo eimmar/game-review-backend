@@ -19,20 +19,4 @@ class GameListRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, GameList::class);
     }
-
-    /**
-     * @param Game $game
-     * @param $user
-     * @return GameList[]
-     */
-    public function getGameListsWithContainingInfo(Game $game, $user)
-    {
-        return $this->createQueryBuilder('gl')
-            ->where(':game MEMBER OF gl.games')
-            ->addSelect("CASE WHEN :game MEMBER OF gl.games IS NULL THEN 1 ELSE 0 END as gameInList")
-            ->andWhere('gl.user = :user')
-            ->setParameters(['game' => $game, 'user' => $user])
-            ->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_ARRAY);
-    }
 }

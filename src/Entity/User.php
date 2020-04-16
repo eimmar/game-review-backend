@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use App\Enum\GameListType;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
@@ -68,7 +69,14 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->gameLists = new ArrayCollection();
+        $favorites = new GameList(GameListType::FAVORITES, $this);
+        $wishlist = new GameList(GameListType::WISHLIST, $this);
+        $played = new GameList(GameListType::PLAYING, $this);
+        $favorites->setName('Favorites');
+        $wishlist->setName('Wishlist');
+        $played->setName('Played');
+
+        $this->gameLists = new ArrayCollection([$favorites, $wishlist, $played]);
         $this->firstName = '';
     }
 
