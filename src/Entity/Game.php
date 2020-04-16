@@ -219,6 +219,14 @@ class Game implements ExternalEntityInterface
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @return string
+     */
     public function getId(): string
     {
         return $this->id;

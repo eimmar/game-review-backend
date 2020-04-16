@@ -10,3 +10,22 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+
+services:
+    admin.user:
+        class: App\Admin\UserAdmin
+        arguments: [~, App\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: User }
+
+    admin.review:
+        class: App\Admin\ReviewAdmin
+        arguments: [~, App\Entity\Review, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Review }
+
+    admin.game:
+        class: App\Admin\GameAdmin
+        arguments: [~, App\Entity\Game, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Game }

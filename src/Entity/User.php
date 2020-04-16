@@ -83,6 +83,11 @@ class User extends BaseUser
         $this->firstName = '';
     }
 
+    public function __toString()
+    {
+        return implode(' ', [$this->getFirstName(), $this->getLastName()]);
+    }
+
     /**
      * @return GameList[]|Collection
      */
