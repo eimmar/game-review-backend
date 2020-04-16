@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/any-deal")
+ * @Route("/api/any-deal")
  */
 class GameDealApiController extends BaseApiController
 {

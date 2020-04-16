@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/game")
+ * @Route("/api/game")
  */
 class GameController extends BaseApiController
 {

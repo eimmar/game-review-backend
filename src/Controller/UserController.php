@@ -31,7 +31,7 @@ class UserController extends BaseApiController
     /**
      * @param UserManagerInterface $userManager
      * @param ApiJsonResponseBuilder $builder
-     * @param FactoryInterface $resettingFormFactory
+     * @param FactoryInterface $changePasswordFormFactory
      */
     public function __construct(UserManagerInterface $userManager, ApiJsonResponseBuilder $builder, FactoryInterface $changePasswordFormFactory)
     {

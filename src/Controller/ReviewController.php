@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/review")
+ * @Route("/api/review")
  */
 class ReviewController extends BaseApiController
 {
@@ -41,7 +41,12 @@ class ReviewController extends BaseApiController
      */
     public function showByGame(ReviewRepository $repository, Game $game, PaginationRequest $request): JsonResponse
     {
-        $reviews = $repository->findBy(['game' => $game], ['createdAt' => 'DESC'], $request->getPageSize(), $request->getFirstResult());
+        $reviews = $repository->findBy(
+            ['game' => $game, 'approved' => true],
+            ['createdAt' => 'DESC'],
+            $request->getPageSize(),
+            $request->getFirstResult()
+        );
 
         return $this->apiResponseBuilder->buildPaginationResponse(
             new PaginationResponse(1, $repository->count(['game' => $game]), $request->getPageSize(), $reviews),
@@ -58,6 +63,7 @@ class ReviewController extends BaseApiController
     public function showByUser(PaginationRequest $request, User $user): JsonResponse
     {
         $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('approved', true))
             ->orderBy(['createdAt' => 'DESC'])
             ->setFirstResult($request->getFirstResult())
             ->setMaxResults($request->getPageSize());

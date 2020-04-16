@@ -84,6 +84,13 @@ class Review
     private int $rating;
 
     /**
+     * @Groups({"review"})
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private bool $approved;
+
+    /**
      * Review constructor.
      */
     public function __construct()
@@ -92,9 +99,9 @@ class Review
         $this->title = '';
         $this->pros = null;
         $this->cons = null;
+        $this->approved = false;
         $this->rating = 0;
     }
-
 
     /**
      * @return string
@@ -214,5 +221,21 @@ class Review
     public function setRating(int $rating): void
     {
         $this->rating = $rating;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApproved(): bool
+    {
+        return $this->approved;
+    }
+
+    /**
+     * @param bool $approved
+     */
+    public function setApproved(bool $approved): void
+    {
+        $this->approved = $approved;
     }
 }

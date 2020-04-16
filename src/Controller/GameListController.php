@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/game-list")
+ * @Route("/api/game-list")
  */
 class GameListController extends BaseApiController
 {
