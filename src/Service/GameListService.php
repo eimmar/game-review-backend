@@ -126,8 +126,10 @@ class GameListService
      */
     public function getUserListsContainingGame(User $user, Game $game)
     {
-        $privacyWithGameCriteria = $this->privacyTypeCriteria([Criteria::expr()->eq('game', $game)]);
+        $gameLists =  $this->entityManager
+            ->getRepository(GameList::class)
+            ->getGameListsWithContainingInfo($game, $user);
 
-        return $user->getGameLists()->matching($privacyWithGameCriteria);
+        return (new ArrayCollection($gameLists))->matching($this->privacyTypeCriteria());
     }
 }

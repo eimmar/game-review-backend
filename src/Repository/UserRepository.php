@@ -23,11 +23,11 @@ class UserRepository extends ServiceEntityRepository
     private function filterQueryBuilder(SearchRequest $request, string $alias)
     {
         $queryBuilder = $this->createQueryBuilder($alias);
-        if (strlen($request->filter('query')) !== 0) {
+        if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
                 ->addSelect("MATCH_AGAINST (u.firstName, u.lastName, u.email, :query 'IN NATURAL MODE') AS HIDDEN score")
                 ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0')
-                ->setParameter('query', $request->filter('query'))
+                ->setParameter('query', $request->getFilter('query'))
                 ->orderBy('score', 'DESC');
         } else {
             $orderBy = $request->getOrderBy() ?: 'createdAt';

@@ -3,7 +3,7 @@ namespace App\Entity;
 use App\Enum\GameListType;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -12,7 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="fos_user", indexes={@ORM\Index(columns={"first_name", "last_name", "email"}, flags={"fulltext"})})
+ * @ORM\Table(
+ *     name="fos_user",
+ *     indexes={@ORM\Index(columns={"first_name", "last_name", "email"}, flags={"fulltext"})}
+ *     )
  */
 class User extends BaseUser
 {
@@ -29,13 +32,13 @@ class User extends BaseUser
 
     /**
      * @var GameList[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\GameList", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\GameList", mappedBy="user", cascade={"persist", "remove"})
      */
     private $gameLists;
 
     /**
      * @var Review[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="user", cascade={"persist", "remove"})
      */
     private $reviews;
 
@@ -81,9 +84,9 @@ class User extends BaseUser
     }
 
     /**
-     * @return GameList[]|PersistentCollection
+     * @return GameList[]|Collection
      */
-    public function getGameLists(): PersistentCollection
+    public function getGameLists(): Collection
     {
         return $this->gameLists;
     }

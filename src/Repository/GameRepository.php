@@ -33,15 +33,15 @@ class GameRepository extends ServiceEntityRepository
         $expr = Criteria::expr();
         $query = $this->createQueryBuilder($alias);
         $conditions = array_filter([
-            $request->filter('category') !== null ? $expr->in('category', (array)$request->filter('category')) : null,
-            $request->filter('releaseDateFrom') ? $expr->gte('releaseDate', $request->filter('releaseDateFrom')) : null,
-            $request->filter('releaseDateTo') ? $expr->lte('releaseDate', $request->filter('releaseDateTo')) : null,
-            $request->filter('ratingFrom') ? $expr->gte('rating', $request->filter('ratingFrom')) : null,
-            $request->filter('ratingTo') ? $expr->lte('rating', $request->filter('ratingTo')) : null,
+            $request->getFilter('category') !== null ? $expr->in('category', (array)$request->getFilter('category')) : null,
+            $request->getFilter('releaseDateFrom') ? $expr->gte('releaseDate', $request->getFilter('releaseDateFrom')) : null,
+            $request->getFilter('releaseDateTo') ? $expr->lte('releaseDate', $request->getFilter('releaseDateTo')) : null,
+            $request->getFilter('ratingFrom') ? $expr->gte('rating', $request->getFilter('ratingFrom')) : null,
+            $request->getFilter('ratingTo') ? $expr->lte('rating', $request->getFilter('ratingTo')) : null,
         ]);
 
         foreach (self::JOIN_FILTERS as $field => $entity) {
-            if ($value = $request->filter($entity)) {
+            if ($value = $request->getFilter($entity)) {
                 $conditions[] = $expr->in($entity . '.id', (array)$value);
                 $query->leftJoin("$alias.$field", $entity);
             }

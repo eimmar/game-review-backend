@@ -51,7 +51,7 @@ class SearchRequest extends PaginationRequest
         return $this->order;
     }
 
-    public function filter(string $key)
+    public function getFilter(string $key)
     {
         return array_key_exists($key, $this->filters) ? $this->filters[$key] : null;
     }
