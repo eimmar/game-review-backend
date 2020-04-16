@@ -1,0 +1,35 @@
+game:
+    main: Žaidimas
+    cover_image: Viršelis
+    name: Pavadinimas
+    rating: Įvertinimas
+    rating_count: Įvertinta kartų
+    release_date: Išleista
+    game_spot_association: Game Spot asociacija
+    summary: Aprašymas
+    storyline: Siužetas
+
+review:
+    main: Atsiliepimas
+    approved: Patvirtintas
+    game: Žaidimas
+    user: Parašė
+    title: Pavadinimas
+    rating: Įvertinimas
+    comment: Komentaras
+    pros: Privalumai
+    cons: Trūkumai
+
+user:
+    main: Naudotojas
+    enabled: Aktyvus
+    first_name: Vardas
+    last_name: Pavardė
+    email: El. paštas
+    password: Slaptažodis
+    repeat_passowrd: Pakartoti slaptažodį
+    roles: Rolės
+    role:
+        user: Naudotojas
+        admin: Administratorius
+        super_admin: Super administratorius

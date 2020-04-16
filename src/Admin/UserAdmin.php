@@ -39,6 +39,10 @@ final class UserAdmin extends AbstractAdmin
      */
     public function prePersist($object)
     {
+        if ($object->hasRole('ROLE_SUPER_ADMIN')) {
+            $object->setSuperAdmin(true);
+        }
+
         $this->getConfigurationPool()->getContainer()->get('fos_user.user_manager')->updateUser($object);
     }
 
@@ -48,18 +52,19 @@ final class UserAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class, ['required' => false])
-            ->add('email', EmailType::class)
-            ->add('enabled', CheckboxType::class, ['required' => false])
+            ->add('firstName', TextType::class, ['label' => 'user.first_name'])
+            ->add('lastName', TextType::class, ['required' => false, 'label' => 'user.last_name'])
+            ->add('email', EmailType::class, ['label' => 'user.email'])
+            ->add('enabled', CheckboxType::class, ['required' => false, 'label' => 'user.enabled'])
             ->add(
                 'roles',
                 ChoiceType::class,
                 [
+                    'label' => 'user.roles',
                     'choices' => [
-                        'User' => 'ROLE_USER',
-                        'Admin' => 'ROLE_ADMIN',
-                        'Super Admin' => 'ROLE_SUPER_ADMIN',
+                        'user.role.user' => 'ROLE_USER',
+                        'user.role.admin' => 'ROLE_ADMIN',
+                        'user.role.super_admin' => 'ROLE_SUPER_ADMIN',
                     ],
                     'multiple'=>true
                 ]
@@ -68,8 +73,8 @@ final class UserAdmin extends AbstractAdmin
         if ($this->getSubject()->getId() === null) {
             $formMapper->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Password confirmation']
+                'first_options' => ['label' => 'user.password'],
+                'second_options' => ['label' => 'user.repeat_password']
             ]);
         }
     }
@@ -80,10 +85,10 @@ final class UserAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('enabled')
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email');
+            ->add('enabled', null, ['label' => 'user.enabled'])
+            ->add('firstName', null, ['label' => 'user.first_name'])
+            ->add('lastName', null, ['label' => 'user.last_name'])
+            ->add('email', null, ['label' => 'user.email']);
     }
 
     /**
@@ -92,9 +97,9 @@ final class UserAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('enabled')
-            ->addIdentifier('firstName')
-            ->addIdentifier('lastName')
-            ->addIdentifier('email');
+            ->addIdentifier('enabled', null, ['label' => 'user.enabled'])
+            ->addIdentifier('firstName', null, ['label' => 'user.first_name'])
+            ->addIdentifier('lastName', null, ['label' => 'user.last_name'])
+            ->addIdentifier('email', null, ['label' => 'user.email']);
     }
 }

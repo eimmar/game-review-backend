@@ -39,34 +39,35 @@ final class GameAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', TextType::class)
-            ->add('gameSpotAssociation', TextType::class, ['required' => false])
-            ->add('summary', TextareaType::class, ['required' => false])
-            ->add('storyline', TextareaType::class, ['required' => false])
-            ->add('releaseDate', DateTimeType::class, ['years' => range(1958, date('Y') + 10), 'required' => false]);
+            ->add('name', TextType::class, ['label' => 'game.name'])
+            ->add('gameSpotAssociation', TextType::class, ['required' => false, 'label' => 'game.game_spot_association'])
+            ->add('summary', TextareaType::class, ['required' => false, 'label' => 'game.summary'])
+            ->add('storyline', TextareaType::class, ['required' => false, 'label' => 'game.storyline'])
+            ->add('releaseDate', DateTimeType::class, [
+                'years' => range(1958, date('Y') + 10),
+                'required' => false,
+                'label' => 'game.release_date'
+            ]);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('coverImage')
-            ->add('name')
-            ->add('category')
-            ->add('rating')
-            ->add('ratingCount')
-            ->add('releaseDate')
-            ->add('gameSpotAssociation');
+            ->add('name', null, ['label' => 'game.name'])
+            ->add('rating', null, ['label' => 'game.rating'])
+            ->add('ratingCount', null, ['label' => 'game.rating_count'])
+            ->add('releaseDate', null, ['label' => 'game.release_date'])
+            ->add('gameSpotAssociation', null, ['label' => 'game.game_spot_association']);
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('coverImage', null, ['template' => 'Admin/list_image.html.twig'])
-            ->addIdentifier('name')
-            ->addIdentifier('category', 'trans')
-            ->addIdentifier('rating')
-            ->addIdentifier('ratingCount')
-            ->addIdentifier('releaseDate')
-            ->addIdentifier('gameSpotAssociation');
+            ->addIdentifier('coverImage', null, ['template' => 'Admin/list_image.html.twig', 'label' => 'game.cover_image'])
+            ->addIdentifier('name', null, ['label' => 'game.name'])
+            ->addIdentifier('rating', null, ['label' => 'game.rating'])
+            ->addIdentifier('ratingCount', null, ['label' => 'game.rating_count'])
+            ->addIdentifier('releaseDate', null, ['label' => 'game.release_date'])
+            ->addIdentifier('gameSpotAssociation', null, ['label' => 'game.game_spot_association']);
     }
 }
