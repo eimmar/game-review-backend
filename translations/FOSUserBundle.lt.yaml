@@ -1,0 +1,9 @@
+resetting:
+    request:
+        invalid_username: Naudotojas su šiuo el. paštu neegzistuoja
+        username: Naudotojo el. paštas
+    check_email: |
+        El. laiškas buvo nusiųstas šiuo adresu. Jame esanti nuoroda leis jums susikurti naują slaptažodį.
+        Pastaba: Slaptažodžio atkūrimo užklausa yra galima tik kas %tokenLifetime% valandas.
+
+        Jeigu negavote el. laiško patikrinkite savo slamšto skyrių arba bandykite dar kartą.

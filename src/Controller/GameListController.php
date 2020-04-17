@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Enum\GameListType;
 use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
-use App\Security\GameListVoter;
+use App\Security\Voter\GameListVoter;
 use App\Service\GameListService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;

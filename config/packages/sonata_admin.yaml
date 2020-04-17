@@ -1,8 +1,17 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: Žaisk
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
+        groups:
+            main:
+                label: Pagrindinis
+                keep_open: true
+                items:
+                    - admin.user
+                    - admin.review
+                    - admin.game
+
     options:
         legacy_twig_text_extension: false
 

@@ -53,6 +53,7 @@ security:
         admin:
             pattern:            /admin(.*)
             context:            user
+            user_checker:       App\Security\Checker\AdminChecker
             form_login:
                 provider:       fos_userbundle
                 login_path:     /admin/login

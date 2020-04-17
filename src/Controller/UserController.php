@@ -9,7 +9,7 @@ use App\DTO\SearchRequest;
 use App\Entity\User;
 use App\Form\UserEditType;
 use App\Repository\UserRepository;
-use App\Security\UserVoter;
+use App\Security\Voter\UserVoter;
 use App\Service\ApiJsonResponseBuilder;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\Model\UserManagerInterface;

@@ -83,3 +83,7 @@ services:
     sonata.user.admin.group:
         abstract: true
         public: false
+
+    sonata.user.admin.user:
+        abstract: true
+        public: false
