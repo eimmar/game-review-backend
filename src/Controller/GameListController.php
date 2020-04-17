@@ -87,7 +87,7 @@ class GameListController extends BaseApiController
     public function show(GameList $gameList): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::VIEW, $gameList);
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => ['gameList', 'user']]);
     }
 
     /**

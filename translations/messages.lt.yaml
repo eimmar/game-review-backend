@@ -1,5 +1,5 @@
 game:
-    main: Žaidimas
+    main: Žaidimai
     cover_image: Viršelis
     name: Pavadinimas
     rating: Įvertinimas
@@ -10,7 +10,7 @@ game:
     storyline: Siužetas
 
 review:
-    main: Atsiliepimas
+    main: Atsiliepimai
     approved: Patvirtintas
     game: Žaidimas
     user: Parašė
@@ -21,7 +21,7 @@ review:
     cons: Trūkumai
 
 user:
-    main: Naudotojas
+    main: Naudotojai
     enabled: Aktyvus
     first_name: Vardas
     last_name: Pavardė

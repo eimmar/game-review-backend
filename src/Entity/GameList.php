@@ -57,6 +57,7 @@ class GameList
     private string $name;
 
     /**
+     * @Groups({"gameList"})
      * @var User
      * @ORM\ManyToOne(targetEntity="User", inversedBy="gameLists")
      *
