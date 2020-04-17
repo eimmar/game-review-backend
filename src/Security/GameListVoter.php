@@ -36,7 +36,7 @@ class GameListVoter extends Voter
     {
         /** @var GameList $gameList */
         $gameList = $subject;
-        /** @var User $currentUser */
+        /** @var User|string $currentUser */
         $currentUser = $token->getUser();
 
         switch ($attribute) {
@@ -53,30 +53,30 @@ class GameListVoter extends Voter
 
     /**
      * @param GameList $gameList
-     * @param User $user
+     * @param User|string $user
      * @return bool
      */
-    private function canView(GameList $gameList, User $user)
+    private function canView(GameList $gameList, $user)
     {
         return $gameList->getPrivacyType() === GameListPrivacyType::PUBLIC || $gameList->getUser() === $user;
     }
 
     /**
      * @param GameList $gameList
-     * @param User $user
+     * @param User|string $user
      * @return bool
      */
-    private function canUpdate(GameList $gameList, User $user)
+    private function canUpdate(GameList $gameList, $user)
     {
         return $gameList->getUser() === $user;
     }
 
     /**
      * @param GameList $gameList
-     * @param User $user
+     * @param User|string $user
      * @return bool
      */
-    private function canDelete(GameList $gameList, User $user)
+    private function canDelete(GameList $gameList, $user)
     {
         return $gameList->getUser() === $user && $gameList->getType() === GameListType::CUSTOM;
     }
