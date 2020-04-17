@@ -9,6 +9,9 @@ fos_user:
     registration:
         confirmation:
             enabled: false
+
+    group:
+        group_class:   FOS\UserBundle\Model\Group
         #        form:
         #            type: AppBundle\Form\UserRegisterType
     #    confirmation:

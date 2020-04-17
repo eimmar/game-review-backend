@@ -203,8 +203,14 @@
     "sonata-project/doctrine-orm-admin-bundle": {
         "version": "3.17.0"
     },
+    "sonata-project/easy-extends-bundle": {
+        "version": "2.5.0"
+    },
     "sonata-project/exporter": {
         "version": "2.2.0"
+    },
+    "sonata-project/user-bundle": {
+        "version": "4.5.2"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.1"

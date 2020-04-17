@@ -11,6 +11,7 @@
         "sensio/framework-extra-bundle": "^5.4",
         "sonata-project/admin-bundle": "^3.64",
         "sonata-project/doctrine-orm-admin-bundle": "^3.17",
+        "sonata-project/user-bundle": "^4.5",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
