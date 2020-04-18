@@ -38,6 +38,7 @@ class GameModeTransformer implements IGDBTransformerInterface
             $gameMode->setUrl($igdbGameMode->getUrl());
             $gameMode->setName($igdbGameMode->getName());
             $gameMode->setExternalId($igdbGameMode->getId());
+            $gameMode->setSlug($igdbGameMode->getSlug() ?? (string)$igdbGameMode->getId());
 
             $this->gameModeCache[$igdbGameMode->getId()] = $gameMode;
         }

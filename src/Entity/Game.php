@@ -44,6 +44,13 @@ class Game implements ExternalEntityInterface
     private string $name;
 
     /**
+     * @var string
+     * @Groups({"gameLoaded", "game"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $slug;
+
+    /**
      * @var string|null
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -140,41 +147,6 @@ class Game implements ExternalEntityInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $gameSpotAssociation;
-
-    //TODO: Implement similar games relations
-//    /**
-//     * @var GameReview[]|ArrayCollection
-//     * @ORM\ManyToMany(targetEntity="App\Entity\GameReview", inversedBy="similarGamesSource")
-//     * @ORM\JoinTable(name="similar_games_relations",
-//     *      joinColumns={@ORM\JoinColumn(name="game_id", referencedColumnName="external_id")},
-//     *      inverseJoinColumns={@ORM\JoinColumn(name="similar_game_id", referencedColumnName="external_id")}
-//     *      )
-//     */
-//    private $similarGames;
-//
-//    /**
-//     * @var GameReview[]|ArrayCollection
-//     * @ORM\ManyToMany(targetEntity="App\Entity\GameReview", mappedBy="similarGames")
-//     */
-//    protected $similarGamesSource;
-
-//    /**
-//     * @var int|null
-//     * @ORM\Column(type="integer", nullable=true)
-//     */
-//    private ?int $timeToBeatCompletely;
-//
-//    /**
-//     * @var int|null
-//     * @ORM\Column(type="integer", nullable=false)
-//     */
-//    private ?int $timeToBeatHastly;
-//
-//    /**
-//     * @var int|null
-//     * @ORM\Column(type="integer", nullable=false)
-//     */
-//    private ?int $timeToBeatNormally;
 
     /**
      * @var Website[]|ArrayCollection
@@ -328,30 +300,6 @@ class Game implements ExternalEntityInterface
         return $this->gameModes;
     }
 
-//    /**
-//     * @return int|null
-//     */
-//    public function getTimeToBeatCompletely(): ?int
-//    {
-//        return $this->timeToBeatCompletely;
-//    }
-//
-//    /**
-//     * @return int|null
-//     */
-//    public function getTimeToBeatHastly(): ?int
-//    {
-//        return $this->timeToBeatHastly;
-//    }
-//
-//    /**
-//     * @return int|null
-//     */
-//    public function getTimeToBeatNormally(): ?int
-//    {
-//        return $this->timeToBeatNormally;
-//    }
-
     /**
      * @return Website[]|PersistentCollection
      */
@@ -488,30 +436,6 @@ class Game implements ExternalEntityInterface
         $this->gameModes = $gameModes;
     }
 
-//    /**
-//     * @param int|null $timeToBeatCompletely
-//     */
-//    public function setTimeToBeatCompletely(?int $timeToBeatCompletely): void
-//    {
-//        $this->timeToBeatCompletely = $timeToBeatCompletely;
-//    }
-//
-//    /**
-//     * @param int|null $timeToBeatHastly
-//     */
-//    public function setTimeToBeatHastly(?int $timeToBeatHastly): void
-//    {
-//        $this->timeToBeatHastly = $timeToBeatHastly;
-//    }
-//
-//    /**
-//     * @param int|null $timeToBeatNormally
-//     */
-//    public function setTimeToBeatNormally(?int $timeToBeatNormally): void
-//    {
-//        $this->timeToBeatNormally = $timeToBeatNormally;
-//    }
-
     /**
      * @param Website[]|ArrayCollection $websites
      */
@@ -608,5 +532,21 @@ class Game implements ExternalEntityInterface
     public function setGameSpotAssociation(?string $gameSpotAssociation): void
     {
         $this->gameSpotAssociation = $gameSpotAssociation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 }

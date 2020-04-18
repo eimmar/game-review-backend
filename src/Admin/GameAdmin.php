@@ -1,21 +1,5 @@
 <?php
 
-/**
- * @copyright C UAB NFQ Technologies
- *
- * This Software is the property of NFQ Technologies
- * and is protected by copyright law – it is NOT Freeware.
- *
- * Any unauthorized use of this software without a valid license key
- * is a violation of the license agreement and will be prosecuted by
- * civil and criminal law.
- *
- * Contact UAB NFQ Technologies:
- * E-mail: info@nfq.lt
- * http://www.nfq.lt
- *
- */
-
 declare(strict_types=1);
 
 namespace App\Admin;
@@ -40,6 +24,7 @@ final class GameAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('name', TextType::class, ['label' => 'game.name'])
+            ->add('slug', TextType::class, ['label' => 'game.slug'])
             ->add('gameSpotAssociation', TextType::class, ['required' => false, 'label' => 'game.game_spot_association'])
             ->add('summary', TextareaType::class, ['required' => false, 'label' => 'game.summary'])
             ->add('storyline', TextareaType::class, ['required' => false, 'label' => 'game.storyline'])
@@ -54,6 +39,7 @@ final class GameAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name', null, ['label' => 'game.name'])
+            ->add('slug', null, ['label' => 'game.slug'])
             ->add('rating', null, ['label' => 'game.rating'])
             ->add('ratingCount', null, ['label' => 'game.rating_count'])
             ->add('releaseDate', null, ['label' => 'game.release_date'])
@@ -65,6 +51,7 @@ final class GameAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('coverImage', null, ['template' => 'Admin/list_image.html.twig', 'label' => 'game.cover_image'])
             ->addIdentifier('name', null, ['label' => 'game.name'])
+            ->addIdentifier('slug', null, ['label' => 'game.slug'])
             ->addIdentifier('rating', null, ['label' => 'game.rating'])
             ->addIdentifier('ratingCount', null, ['label' => 'game.rating_count'])
             ->addIdentifier('releaseDate', null, ['label' => 'game.release_date'])

@@ -46,6 +46,13 @@ class Platform implements ExternalEntityInterface
      * @Groups({"gameLoaded"})
      * @ORM\Column(type="string", length=255)
      */
+    private string $slug;
+
+    /**
+     * @var string
+     * @Groups({"gameLoaded"})
+     * @ORM\Column(type="string", length=255)
+     */
     private string $abbreviation;
 
     /**
@@ -190,5 +197,21 @@ class Platform implements ExternalEntityInterface
     public function setGames(ArrayCollection $games): void
     {
         $this->games = $games;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 }

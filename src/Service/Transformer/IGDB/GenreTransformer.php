@@ -38,6 +38,7 @@ class GenreTransformer implements IGDBTransformerInterface
             $genre->setExternalId($igdbGenre->getId());
             $genre->setName($igdbGenre->getName());
             $genre->setUrl($igdbGenre->getUrl());
+            $genre->setSlug($igdbGenre->getSlug() ?? (string)$igdbGenre->getId());
 
             $this->genreCache[$igdbGenre->getId()] = $genre;
         }

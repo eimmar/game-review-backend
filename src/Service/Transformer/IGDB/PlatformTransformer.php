@@ -41,6 +41,7 @@ class PlatformTransformer implements IGDBTransformerInterface
             $platform->setCategory($igdbPlatform->getCategory());
             $platform->setSummary($igdbPlatform->getSummary());
             $platform->setAbbreviation($igdbPlatform->getAbbreviation());
+            $platform->setSlug($igdbPlatform->getSlug() ?? (string)$igdbPlatform->getId());
 
             $this->platformCache[$igdbPlatform->getId()] = $platform;
         }

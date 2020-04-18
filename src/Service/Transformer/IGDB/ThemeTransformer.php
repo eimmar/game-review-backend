@@ -39,6 +39,7 @@ class ThemeTransformer implements IGDBTransformerInterface
             $theme->setExternalId($igdbTheme->getId());
             $theme->setUrl($igdbTheme->getUrl());
             $theme->setName($igdbTheme->getName());
+            $theme->setSlug($igdbTheme->getSlug() ?? (string)$igdbTheme->getId());
 
             $this->themeCache[$igdbTheme->getId()] = $theme;
         }

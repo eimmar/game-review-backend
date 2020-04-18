@@ -2,6 +2,7 @@ game:
     main: Žaidimai
     cover_image: Viršelis
     name: Pavadinimas
+    slug: URL dalis
     rating: Įvertinimas
     rating_count: Įvertinta kartų
     release_date: Išleista

@@ -100,6 +100,7 @@ class GameTransformer implements IGDBTransformerInterface
         $game->setSummary($igdbGame->getSummary());
         $game->setRating($igdbGame->getTotalRating());
         $game->setRatingCount($igdbGame->getTotalRatingCount());
+        $game->setSlug($igdbGame->getSlug() ?? (string)$igdbGame->getId());
 
         $companies = new ArrayCollection(array_map([$this->companyTransformer, 'transform'], $igdbGame->getInvolvedCompanies()));
         $genres = new ArrayCollection(array_map([$this->genreTransformer, 'transform'], $igdbGame->getGenres()));
@@ -135,9 +136,6 @@ class GameTransformer implements IGDBTransformerInterface
         if ($igdbGame->getCover() instanceof IGDBGame\Cover) {
             $game->setCoverImage($igdbGame->getCover()->getUrl());
         }
-//        $game->setTimeToBeatCompletely($igdbGame->getTimeToBeat());
-//        $game->setTimeToBeatNormally($igdbGame->getTimeToBeat());
-//        $game->setTimeToBeatHastly($igdbGame->getTimeToBeat());
 
         return $game;
     }
