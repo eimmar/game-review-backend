@@ -21,13 +21,13 @@ class SearchRequestConverter implements ParamConverterInterface
             throw new \InvalidArgumentException('Invalid request parameters.');
         }
 
-        $sortBy = isset($content['sortBy']) ? $content['sortBy'] : null;
+        $orderBy = isset($content['orderBy']) ? $content['orderBy'] : null;
         $order = isset($content['order']) ? $content['order'] : null;
 
         $request->attributes->set(
             $configuration->getName(),
             new SearchRequest(
-                $content['page'], $content['pageSize'], $content['filters'], $sortBy, $order
+                $content['page'], $content['pageSize'], $content['filters'], $orderBy, $order
             )
         );
     }

@@ -21,6 +21,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
  * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(
+ *     name="game",
+ *     indexes={@ORM\Index(columns={"name", "summary", "storyline"}, flags={"fulltext"})}
+ *     )
  */
 class Game implements ExternalEntityInterface
 {

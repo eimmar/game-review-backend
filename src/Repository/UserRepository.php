@@ -15,11 +15,19 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * @param SearchRequest $request
+     * @param string $alias
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     private function filterQueryBuilder(SearchRequest $request, string $alias)
     {
         $queryBuilder = $this->createQueryBuilder($alias);
@@ -40,6 +48,10 @@ class UserRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return int|mixed|string
+     */
     public function filter(SearchRequest $request)
     {
         return $this->filterQueryBuilder($request, 'u')
@@ -49,12 +61,21 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return int
+     */
     public function countWithFilter(SearchRequest $request)
     {
-        return count(
-            $this->filterQueryBuilder($request, 'u')
+        $queryBuilder = $this->createQueryBuilder('u');
+        if (strlen($request->getFilter('query')) !== 0) {
+            $queryBuilder
+                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0')
+                ->setParameter('query', $request->getFilter('query'));
+        }
+
+        return (int)$queryBuilder
                 ->getQuery()
-                ->getResult()
-        );
+                ->getScalarResult();
     }
 }

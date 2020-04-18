@@ -22,11 +22,20 @@ class GameRepository extends ServiceEntityRepository
         'gameModes' => 'gameMode',
     ];
 
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Game::class);
     }
 
+    /**
+     * @param SearchRequest $request
+     * @param string $alias
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     private function filterQueryBuilder(SearchRequest $request, string $alias)
     {
         $expr = Criteria::expr();
@@ -53,23 +62,52 @@ class GameRepository extends ServiceEntityRepository
         return $query;
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return int|mixed|string
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function filter(SearchRequest $request)
     {
         $orderBy = $request->getOrderBy() ?: 'releaseDate';
+        $queryBuilder = $this->filterQueryBuilder($request, 'g');
 
-        return $this->filterQueryBuilder($request, 'g')
+        if (strlen($request->getFilter('query')) !== 0) {
+            $queryBuilder
+                ->addSelect("MATCH_AGAINST (g.name, g.summary, g.storyline, :query 'IN NATURAL MODE') AS HIDDEN score")
+                ->add('where', 'MATCH_AGAINST(g.name, g.summary, g.storyline, :query) > 0.0')
+                ->setParameter('query', $request->getFilter('query'))
+                ->orderBy('score', 'DESC');
+        }
+
+        return $queryBuilder
             ->addSelect("CASE WHEN g.{$orderBy} IS NULL THEN 1 ELSE 0 END as HIDDEN sortIsNull")
-            ->orderBy('g.' . $orderBy, $request->getOrder() ?: 'DESC')
             ->addOrderBy('sortIsNull', 'ASC')
+            ->addOrderBy('g.' . $orderBy, $request->getOrder() ?: 'DESC')
             ->setFirstResult($request->getFirstResult())
             ->setMaxResults($request->getPageSize())
             ->getQuery()
             ->getResult();
     }
 
+    /**
+     * @param SearchRequest $request
+     * @return int
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function countWithFilter(SearchRequest $request)
     {
-        return (int)$this->filterQueryBuilder($request, 'g')
+        $queryBuilder = $this->filterQueryBuilder($request, 'g');
+
+        if (strlen($request->getFilter('query')) !== 0) {
+            $queryBuilder
+                ->add('where', 'MATCH_AGAINST(g.name, g.summary, g.storyline, :query) > 0.0')
+                ->setParameter('query', $request->getFilter('query'));
+        }
+
+        return (int)$queryBuilder
             ->select('COUNT(g)')
             ->getQuery()
             ->getSingleScalarResult();
