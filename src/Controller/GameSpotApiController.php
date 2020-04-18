@@ -17,9 +17,7 @@ class GameSpotApiController extends BaseApiController
 {
     /**
      * @Route("/reviews/{id}", name="game_spot_game_reviews_options", methods={"OPTIONS"})
-     * @Route("/articles/{id}", name="game_spot_game_articles_options", methods={"OPTIONS"})
      * @Route("/videos/{id}", name="game_spot_game_videos_options", methods={"OPTIONS"})
-     * @Route("/images/{id}", name="game_spot_game_images_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
@@ -40,18 +38,6 @@ class GameSpotApiController extends BaseApiController
     }
 
     /**
-     * @Route("/articles/{id}", name="game_spot_game_articles", methods={"POST"})
-     * @param GameSpotAdapter $gameSpotAdapter
-     * @param Game $game
-     * @param ApiRequest $apiRequest
-     * @return JsonResponse
-     */
-    public function articles(GameSpotAdapter $gameSpotAdapter, Game $game, ApiRequest $apiRequest): JsonResponse
-    {
-        return $this->apiResponseBuilder->buildResponse($gameSpotAdapter->get('articles', $game, $apiRequest));
-    }
-
-    /**
      * @Route("/videos/{id}", name="game_spot_game_videos", methods={"POST"})
      * @param GameSpotAdapter $gameSpotAdapter
      * @param Game $game
@@ -61,17 +47,5 @@ class GameSpotApiController extends BaseApiController
     public function videos(GameSpotAdapter $gameSpotAdapter, Game $game, ApiRequest $apiRequest): JsonResponse
     {
         return $this->apiResponseBuilder->buildResponse($gameSpotAdapter->get('videos', $game, $apiRequest));
-    }
-
-    /**
-     * @Route("/images/{id}", name="game_spot_game_images", methods={"POST"})
-     * @param GameSpotAdapter $gameSpotAdapter
-     * @param Game $game
-     * @param ApiRequest $apiRequest
-     * @return JsonResponse
-     */
-    public function images(GameSpotAdapter $gameSpotAdapter, Game $game, ApiRequest $apiRequest): JsonResponse
-    {
-        return $this->apiResponseBuilder->buildResponse($gameSpotAdapter->get('images', $game, $apiRequest));
     }
 }

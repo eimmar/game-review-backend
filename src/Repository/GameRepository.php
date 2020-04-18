@@ -20,7 +20,6 @@ class GameRepository extends ServiceEntityRepository
         'themes' => 'theme',
         'platforms' => 'platform',
         'gameModes' => 'gameMode',
-        'companies' => 'company'
     ];
 
     public function __construct(ManagerRegistry $registry)
@@ -42,7 +41,7 @@ class GameRepository extends ServiceEntityRepository
 
         foreach (self::JOIN_FILTERS as $field => $entity) {
             if ($value = $request->getFilter($entity)) {
-                $conditions[] = $expr->in($entity . '.id', (array)$value);
+                $conditions[] = $expr->in($entity . '.slug', (array)$value);
                 $query->leftJoin("$alias.$field", $entity);
             }
         }
@@ -74,5 +73,14 @@ class GameRepository extends ServiceEntityRepository
             ->select('COUNT(g)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @param string $slug
+     * @return Game|null
+     */
+    public function findBySlug(string $slug)
+    {
+        return $this->findOneBy(['slug' => $slug]);
     }
 }

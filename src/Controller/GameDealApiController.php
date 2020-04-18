@@ -16,24 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameDealApiController extends BaseApiController
 {
     /**
-     * @Route("/game-prices", name="any_deal_game_prices_options", methods={"OPTIONS"})
      * @Route("/search", name="any_deal_search_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
     public function options(): JsonResponse
     {
         return $this->apiResponseBuilder->preflightResponse();
-    }
-
-    /**
-     * @Route("/game-prices", name="any_deal_game_prices", methods={"POST"})
-     * @param ApiConnector $apiConnector
-     * @param GamePricesRequest $request
-     * @return JsonResponse
-     */
-    public function gamePrices(ApiConnector $apiConnector, GamePricesRequest $request): JsonResponse
-    {
-        return $this->apiResponseBuilder->buildResponse($apiConnector->gamePrices($request));
     }
 
     /**

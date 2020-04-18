@@ -112,30 +112,6 @@ class ReviewController extends BaseApiController
     }
 
     /**
-     * @Route("/{id}", name="review_edit", methods={"PUT"})
-     * @IsGranted({"ROLE_ADMIN"})
-     * @param Request $request
-     * @param Review $review
-     * @return JsonResponse
-     */
-    public function edit(Request $request, Review $review): JsonResponse
-    {
-        $form = $this->createForm(ReviewType::class, $review);
-        $form->submit(json_decode($request->getContent(), true));
-
-        if ($form->isValid()) {
-            try {
-                $this->getDoctrine()->getManager()->flush();
-            } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
-            }
-            return $this->apiResponseBuilder->buildResponse($review);
-        }
-
-        return $this->apiResponseBuilder->buildFormErrorResponse($form);
-    }
-
-    /**
      * @Route("/{id}", name="review_delete", methods={"DELETE"})
      * @IsGranted({"ROLE_ADMIN"})
      * @param Review $review
