@@ -66,12 +66,11 @@ class ApiConnector
      */
     public function games(RequestBody $requestBody)
     {
-//        $response = json_decode(
-//            $this->httpClient
-//                ->request('POST', self::GAMES_URL, $this->buildOptions($requestBody))
-//                ->getContent()
-//        );
-        $response = json_decode(file_get_contents('/home/emarkevicius/Documents/code/bakalauras/game-tracking-backend/game-request-response.json'));
+        $response = json_decode(
+            $this->httpClient
+                ->request('POST', self::GAMES_URL, $this->buildOptions($requestBody))
+                ->getContent()
+        );
 
         return array_map([$this->responseToGameTransformer, 'transform'], $response);
     }

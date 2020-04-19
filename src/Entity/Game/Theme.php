@@ -127,7 +127,18 @@ class Theme implements ExternalEntityInterface
      */
     public function setGames(ArrayCollection $games): void
     {
-        $this->games = $games;
+        array_map([$this, 'addGame'], $games->toArray());
+    }
+
+    /**
+     * @param Game $game
+     */
+    public function addGame(Game $game)
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+            $game->addTheme($this);
+        }
     }
 
     /**

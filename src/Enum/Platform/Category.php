@@ -9,6 +9,7 @@ namespace App\Enum\Platform;
 
 final class Category
 {
+    const UNKNOWN = 0;
     const CONSOLE = 1;
     const ARCADE = 2;
     const PLATFORM = 3;

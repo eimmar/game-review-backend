@@ -36,8 +36,8 @@ class ScreenshotTransformer implements IGDBTransformerInterface
 
         $screenshot->setUrl($igdbScreenshot->getUrl());
         $screenshot->setExternalId($igdbScreenshot->getId());
-        $screenshot->setHeight($igdbScreenshot->getHeight());
-        $screenshot->setWidth($igdbScreenshot->getWidth());
+        $screenshot->setHeight($igdbScreenshot->getHeight() ?? 0);
+        $screenshot->setWidth($igdbScreenshot->getWidth() ?? 0);
         $screenshot->setImageId($igdbScreenshot->getImageId());
 
         return $screenshot;

@@ -1,0 +1,36 @@
+{% extends base_template %}
+
+{% block title %}
+    {{ 'igdb.game.request'|trans }}
+{% endblock %}
+
+{% block navbar_title %}
+    {{ 'igdb.game.request'|trans }}
+{% endblock %}
+
+{% block actions %}
+    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
+{% endblock %}
+
+{%- block tab_menu -%}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass': 'active',
+        'template': get_global_template('tab_menu_template')
+    }, 'twig') }}
+{%- endblock -%}
+
+{% block form %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <a href="https://api-docs.igdb.com/#apicalypse" target="_blank">{{ 'igdb.request.more_info'|trans }}</a>
+
+        <div class="sonata-ba-form-actions well well-small form-actions">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-save" aria-hidden="true"></i> {{ 'igdb.request.execute'|trans }}
+            </button>
+            <button type="submit" class="btn btn-success" name="btn_update_and_list" value="1"><i class="fa fa-save"></i>
+                <i class="fa fa-list" aria-hidden="true"></i> {{ 'igdb.request.execute_to_list'|trans }}
+            </button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

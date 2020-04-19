@@ -121,13 +121,14 @@ class GameTransformer implements IGDBTransformerInterface
         $ageRatings = new ArrayCollection(array_map([$this->ageRatingTransformer, 'transform'], $igdbGame->getAgeRatings()));
 
         $game->setAgeRatings($ageRatings);
+        $game->setScreenshots($screenshots);
+        $game->setWebsites($websites);
+
         $game->setCompanies($companies);
         $game->setGameModes($gameModes);
         $game->setGenres($genres);
         $game->setPlatforms($platforms);
-        $game->setScreenshots($screenshots);
         $game->setThemes($themes);
-        $game->setWebsites($websites);
 
         if ($igdbGame->getFirstReleaseDate()) {
             $game->setReleaseDate((new DateTime)->setTimestamp($igdbGame->getFirstReleaseDate()));

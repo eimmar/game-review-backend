@@ -83,6 +83,10 @@ services:
     App\Controller\GameController:
         arguments: ['@app.api_json_response_builder', '@App\Repository\GameRepository']
 
+    App\Controller\Admin\IGDBController:
+        arguments: ['@App\Service\IGDBGameDataUpdater']
+        tags: ['controller.service_arguments']
+
     sonata.user.admin.group:
         abstract: true
         public: false

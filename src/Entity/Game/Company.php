@@ -170,4 +170,15 @@ class Company implements ExternalEntityInterface
     {
         $this->games = $games;
     }
+
+    /**
+     * @param Game $game
+     */
+    public function addGame(Game $game)
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+            $game->addCompany($this);
+        }
+    }
 }

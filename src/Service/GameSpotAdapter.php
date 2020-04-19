@@ -62,7 +62,7 @@ class GameSpotAdapter
     {
         $apiRequest = new ApiRequest('json', ['name' => $game->getName()]);
 
-        $response =  $this->cache->get(
+        $response = $this->cache->get(
             $this->getCacheKey('games', $apiRequest),
             function (ItemInterface $item) use ($apiRequest, $game) {
                 $item->expiresAfter(self::CACHE_LIFETIME);

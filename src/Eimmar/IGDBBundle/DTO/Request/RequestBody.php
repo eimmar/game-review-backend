@@ -7,44 +7,44 @@ namespace App\Eimmar\IGDBBundle\DTO\Request;
 class RequestBody
 {
     /**
-     * @var string|null
+     * @var array|null
      */
-    private ?string $fields;
+    private array $fields;
 
     /**
      * @var string|null
      */
-    private ?string $where;
+    private string $where;
 
     /**
      * @var string|null
      */
-    private ?string $sort;
+    private string $sort;
 
     /**
      * @var string|null
      */
-    private ?string $search;
+    private string $search;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $limit;
+    private int $limit;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $offset;
+    private int $offset;
 
     /**
-     * @param string $fields
+     * @param array $fields
      * @param string $where
      * @param string $sort
      * @param string $search
-     * @param int|null $limit
-     * @param int|null $offset
+     * @param int $limit
+     * @param int $offset
      */
-    public function __construct(string $fields = '', string $where = '', string $sort = '', string $search = '', int $limit = null, int $offset = null)
+    public function __construct(array $fields = [], string $where = '', string $sort = '', string $search = '', int $limit = 10, int $offset = 0)
     {
         $this->fields = $fields;
         $this->where = $where;
@@ -55,17 +55,113 @@ class RequestBody
     }
 
     /**
+     * @return array|null
+     */
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @param array $fields
+     */
+    public function setFields(array $fields): void
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWhere(): string
+    {
+        return $this->where;
+    }
+
+    /**
+     * @param string $where
+     */
+    public function setWhere(string $where): void
+    {
+        $this->where = $where;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSort(): string
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @param string $sort
+     */
+    public function setSort(string $sort): void
+    {
+        $this->sort = $sort;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearch(): string
+    {
+        return $this->search;
+    }
+
+    /**
+     * @param string $search
+     */
+    public function setSearch(string $search): void
+    {
+        $this->search = $search;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function setLimit(int $limit): void
+    {
+        $this->limit = $limit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function setOffset(int $offset): void
+    {
+        $this->offset = $offset;
+    }
+
+    /**
      * @return string
      */
     public function unwrap(): string
     {
         $unwrapped = '';
         $parts = [
-            'fields' => trim($this->fields),
+            'fields' => trim(implode(',', $this->fields)),
             'where' => trim($this->where),
             'sort' => trim($this->sort),
-            'limit' => trim((string)$this->limit),
-            'offset' => trim((string)$this->offset)
+            'limit' => (string)$this->limit,
+            'offset' => (string)$this->offset
         ];
 
         foreach ($parts as $part => $value) {

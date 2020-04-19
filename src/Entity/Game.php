@@ -64,14 +64,14 @@ class Game implements ExternalEntityInterface
     /**
      * @var string|null
      * @Groups({"gameLoaded", "game"})
-     * @ORM\Column(type="string", length=10000, nullable=true)
+     * @ORM\Column(type="text", length=20000, nullable=true)
      */
     private ?string $summary;
 
     /**
      * @var string|null
      * @Groups({"gameLoaded", "game"})
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", length=20000, nullable=true)
      */
     private ?string $storyline;
 
@@ -401,7 +401,18 @@ class Game implements ExternalEntityInterface
      */
     public function setGenres(ArrayCollection $genres): void
     {
-        $this->genres = $genres;
+        array_map([$this, 'addGenre'], $genres->toArray());
+    }
+
+    /**
+     * @param Genre $genre
+     */
+    public function addGenre(Genre $genre)
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres[] = $genre;
+            $genre->addGame($this);
+        }
     }
 
     /**
@@ -421,7 +432,18 @@ class Game implements ExternalEntityInterface
      */
     public function setThemes(ArrayCollection $themes): void
     {
-        $this->themes = $themes;
+        array_map([$this, 'addTheme'], $themes->toArray());
+    }
+
+    /**
+     * @param Theme $theme
+     */
+    public function addTheme(Theme $theme)
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes[] = $theme;
+            $theme->addGame($this);
+        }
     }
 
     /**
@@ -429,7 +451,18 @@ class Game implements ExternalEntityInterface
      */
     public function setPlatforms(ArrayCollection $platforms): void
     {
-        $this->platforms = $platforms;
+        array_map([$this, 'addPlatform'], $platforms->toArray());
+    }
+
+    /**
+     * @param Platform $platform
+     */
+    public function addPlatform(Platform $platform)
+    {
+        if (!$this->platforms->contains($platform)) {
+            $this->platforms[] = $platform;
+            $platform->addGame($this);
+        }
     }
 
     /**
@@ -437,7 +470,18 @@ class Game implements ExternalEntityInterface
      */
     public function setGameModes(ArrayCollection $gameModes): void
     {
-        $this->gameModes = $gameModes;
+        array_map([$this, 'addGameMode'], $gameModes->toArray());
+    }
+
+    /**
+     * @param GameMode $gameMode
+     */
+    public function addGameMode(GameMode $gameMode)
+    {
+        if (!$this->gameModes->contains($gameMode)) {
+            $this->gameModes[] = $gameMode;
+            $gameMode->addGame($this);
+        }
     }
 
     /**
@@ -457,7 +501,18 @@ class Game implements ExternalEntityInterface
      */
     public function setCompanies(ArrayCollection $companies): void
     {
-        $this->companies = $companies;
+        array_map([$this, 'addCompany'], $companies->toArray());
+    }
+
+    /**
+     * @param Company $company
+     */
+    public function addCompany(Company $company)
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies[] = $company;
+            $company->addGame($this);
+        }
     }
 
     /**

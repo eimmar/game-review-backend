@@ -6,6 +6,7 @@ namespace App\Service\Transformer\IGDB;
 
 use App\Eimmar\IGDBBundle\DTO\Platform;
 use App\Entity\Game;
+use App\Enum\Platform\Category;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PlatformTransformer implements IGDBTransformerInterface
@@ -38,7 +39,7 @@ class PlatformTransformer implements IGDBTransformerInterface
             $platform->setExternalId($igdbPlatform->getId());
             $platform->setName($igdbPlatform->getName());
             $platform->setUrl($igdbPlatform->getUrl());
-            $platform->setCategory($igdbPlatform->getCategory());
+            $platform->setCategory($igdbPlatform->getCategory() ?? Category::UNKNOWN);
             $platform->setSummary($igdbPlatform->getSummary());
             $platform->setAbbreviation($igdbPlatform->getAbbreviation());
             $platform->setSlug($igdbPlatform->getSlug() ?? (string)$igdbPlatform->getId());

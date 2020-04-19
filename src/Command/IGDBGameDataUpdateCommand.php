@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Service\IGDBGameDataUpdater;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,6 +32,8 @@ class IGDBGameDataUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->igdbGameDataUpdater->update();
+        $request = new RequestBody();
+
+        $this->igdbGameDataUpdater->update($request);
     }
 }

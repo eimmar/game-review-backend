@@ -49,11 +49,11 @@ class Platform implements ExternalEntityInterface
     private string $slug;
 
     /**
-     * @var string
+     * @var string|null
      * @Groups({"gameLoaded"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $abbreviation;
+    private ?string $abbreviation;
 
     /**
      * @var string|null
@@ -120,17 +120,17 @@ class Platform implements ExternalEntityInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAbbreviation(): string
+    public function getAbbreviation(): ?string
     {
         return $this->abbreviation;
     }
 
     /**
-     * @param string $abbreviation
+     * @param string|null $abbreviation
      */
-    public function setAbbreviation(string $abbreviation): void
+    public function setAbbreviation(?string $abbreviation): void
     {
         $this->abbreviation = $abbreviation;
     }
@@ -196,7 +196,18 @@ class Platform implements ExternalEntityInterface
      */
     public function setGames(ArrayCollection $games): void
     {
-        $this->games = $games;
+        array_map([$this, 'addGame'], $games->toArray());
+    }
+
+    /**
+     * @param Game $game
+     */
+    public function addGame(Game $game)
+    {
+        if (!$this->games->contains($game)) {
+            $this->games[] = $game;
+            $game->addPlatform($this);
+        }
     }
 
     /**

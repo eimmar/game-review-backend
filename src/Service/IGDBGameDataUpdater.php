@@ -8,6 +8,7 @@ use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\ApiConnector;
 use App\Service\Transformer\IGDB\GameTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Throwable;
 
 class IGDBGameDataUpdater
 {
@@ -32,11 +33,50 @@ class IGDBGameDataUpdater
         $this->apiConnector = $apiConnector;
     }
 
-    public function update()
+    /**
+     * @param RequestBody $requestBody
+     * @return array
+     */
+    public function update(RequestBody $requestBody)
     {
-        $gamesFromApi = $this->apiConnector->games(new RequestBody());
-        $games = array_map([$this->gameTransformer, 'transform'], $gamesFromApi);
-        array_walk($games, [$this->entityManager, 'persist']);
+        $created = 0;
+        $updated = 0;
+
+        if (count($requestBody->getFields()) === 0) {
+            $requestBody->setFields(
+                ['*',
+                    'age_ratings.*',
+                    'age_ratings.content_descriptions.*',
+                    'involved_companies.*',
+                    'involved_companies.company.*',
+                    'involved_companies.company.websites.*',
+                    'genres.*',
+                    'game_modes.*',
+                    'platforms.*',
+                    'screenshots.*',
+                    'themes.*',
+                    'websites.*',
+                    'cover.*',
+                    'release_dates.*'
+                ]
+            );
+        }
+
+        $gamesFromApi = $this->apiConnector->games($requestBody);
+
+        foreach ($gamesFromApi as $game) {
+            try {
+                $game = $this->gameTransformer->transform($game);
+                $this->entityManager->contains($game) ? $updated++ : $created++;
+                $this->entityManager->persist($game);
+            } catch (Throwable $exception) {}
+        }
         $this->entityManager->flush();
+
+        return [
+            'created' => $created,
+            'updated' => $updated,
+            'total' => count($gamesFromApi)
+        ];
     }
 }

@@ -12,6 +12,11 @@ sonata_admin:
                     - admin.user
                     - admin.review
                     - admin.game
+            igdb:
+                label: IGDB duomenų valdymas
+                keep_open: true
+                items:
+                    - admin.igdb.game
 
     options:
         legacy_twig_text_extension: false
@@ -39,3 +44,12 @@ services:
         arguments: [~, App\Entity\Game, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: game.main }
+
+    admin.igdb.game:
+        class: App\Admin\IGDBAdmin
+        arguments:
+            - ~
+            - ~
+            - App\Controller\Admin\IGDBController
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: igdb.game.main }

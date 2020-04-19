@@ -49,7 +49,7 @@ final class GameAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('coverImage', null, ['template' => 'Admin/list_image.html.twig', 'label' => 'game.cover_image'])
+            ->addIdentifier('coverImage', null, ['template' => 'admin/list_image.html.twig', 'label' => 'game.cover_image'])
             ->addIdentifier('name', null, ['label' => 'game.name'])
             ->addIdentifier('slug', null, ['label' => 'game.slug'])
             ->addIdentifier('rating', null, ['label' => 'game.rating'])
