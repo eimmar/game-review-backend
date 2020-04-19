@@ -74,8 +74,8 @@ class GameRepository extends ServiceEntityRepository
 
         if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
-                ->addSelect("MATCH_AGAINST (g.name, g.summary, g.storyline, :query 'IN NATURAL MODE') AS HIDDEN score")
-                ->add('where', 'MATCH_AGAINST(g.name, g.summary, g.storyline, :query) > 0.0')
+                ->addSelect("MATCH_AGAINST (g.name, :query 'IN NATURAL MODE') AS HIDDEN score")
+                ->add('where', 'MATCH_AGAINST(g.name, :query) > 0.0')
                 ->setParameter('query', $request->getFilter('query'))
                 ->orderBy('score', 'DESC');
         }
@@ -103,7 +103,7 @@ class GameRepository extends ServiceEntityRepository
 
         if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
-                ->add('where', 'MATCH_AGAINST(g.name, g.summary, g.storyline, :query) > 0.0')
+                ->add('where', 'MATCH_AGAINST(g.name, :query) > 0.0')
                 ->setParameter('query', $request->getFilter('query'));
         }
 

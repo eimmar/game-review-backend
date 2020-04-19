@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(
  *     name="game",
- *     indexes={@ORM\Index(columns={"name", "summary", "storyline"}, flags={"fulltext"})}
+ *     indexes={@ORM\Index(columns={"name"}, flags={"fulltext"})}
  *     )
  */
 class Game implements ExternalEntityInterface
