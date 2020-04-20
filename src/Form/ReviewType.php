@@ -4,12 +4,16 @@ namespace App\Form;
 
 use App\Entity\Review;
 use App\Form\DataMapper\ReviewTypeMapper;
+use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class ReviewType extends AbstractType
 {
@@ -28,9 +32,9 @@ class ReviewType extends AbstractType
         $builder
             ->add('game')
             ->add('user')
-            ->add('title')
-            ->add('comment')
-            ->add('rating')
+            ->add('title', TextType::class, ['constraints' => [new NotBlank(), new Length(['max' => 255])]])
+            ->add('comment', TextType::class, ['constraints' => [new NotBlank(), new Length(['max' => 10000])]])
+            ->add('rating', NumberType::class, ['constraints' => [new NotBlank(), new Range(['max' => 10, 'min' => 1])]])
             ->add('cons', CollectionType::class, [
                 'entry_options' => ['constraints' => [new Length(['max' => 99])]],
                 'constraints' => [new Count(['max' => 10])],

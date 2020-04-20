@@ -5,7 +5,9 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -17,13 +19,11 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', null, [
-                'constraints' => [new NotBlank(), new Email()]
-            ])
-            ->add('firstName')
+            ->add('email', EmailType::class, ['constraints' => [new NotBlank(), new Email()]])
+            ->add('firstName', TextType::class, ['constraints' => [new NotBlank()]])
             ->add('lastName')
             ->add('password', PasswordType::class, [
-                'constraints' => [new NotBlank(), new Length(array('min' => 4))]
+                'constraints' => [new NotBlank(), new Length(['min' => 4])]
             ]);
     }
 
@@ -32,7 +32,6 @@ class UserType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'csrf_protection' => false,
-            'allow_extra_fields' => true
         ]);
     }
 }

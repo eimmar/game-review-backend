@@ -18,7 +18,7 @@ class ChangePasswordType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, [
-                'constraints' => [new NotBlank(), new Length(array('min' => 4))]
+                'constraints' => [new NotBlank(), new Length(['min' => 4])]
             ])
         ;
     }
@@ -27,8 +27,7 @@ class ChangePasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ForgotPasswordRequest::class,
-            'csrf_protection' => false,
-            'allow_extra_fields' => false
+            'csrf_protection' => false
         ]);
     }
 }

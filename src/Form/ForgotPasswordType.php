@@ -27,8 +27,7 @@ class ForgotPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ForgotPasswordRequest::class,
-            'csrf_protection' => false,
-            'allow_extra_fields' => false
+            'csrf_protection' => false
         ]);
     }
 }
