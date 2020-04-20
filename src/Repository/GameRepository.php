@@ -46,7 +46,9 @@ class GameRepository extends ServiceEntityRepository
             $request->getFilter('releaseDateTo') ? $expr->lte('releaseDate', $request->getFilter('releaseDateTo')) : null,
             $request->getFilter('ratingFrom') ? $expr->gte('rating', $request->getFilter('ratingFrom')) : null,
             $request->getFilter('ratingTo') ? $expr->lte('rating', $request->getFilter('ratingTo')) : null,
-        ]);
+            $request->getFilter('ratingCountFrom') ? $expr->gte('ratingCount', $request->getFilter('ratingCountFrom')) : null,
+            $request->getFilter('ratingCountTo') ? $expr->lte('ratingCount', $request->getFilter('ratingCountTo')) : null,
+            ]);
 
         foreach (self::JOIN_FILTERS as $field => $entity) {
             if ($value = $request->getFilter($entity)) {

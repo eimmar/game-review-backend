@@ -17,6 +17,8 @@ class ApiConnector
 {
     const GAMES_URL = 'https://api-v3.igdb.com/games';
 
+    const REVIEWS_URL = 'https://api-v3.igdb.com/private/reviews';
+
     /**
      * @var string
      */
@@ -73,5 +75,23 @@ class ApiConnector
         );
 
         return array_map([$this->responseToGameTransformer, 'transform'], $response);
+    }
+
+    /**
+     * @param RequestBody $requestBody
+     * @return array
+     * @throws TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     */
+    public function reviews(RequestBody $requestBody): array
+    {
+        return json_decode(
+            $this->httpClient
+                ->request('POST', self::REVIEWS_URL, $this->buildOptions($requestBody))
+                ->getContent(),
+            true
+        );
     }
 }

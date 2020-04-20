@@ -43,7 +43,7 @@ user:
     last_name: Pavardė
     email: El. paštas
     password: Slaptažodis
-    repeat_passowrd: Pakartoti slaptažodį
+    repeat_password: Pakartoti slaptažodį
     roles: Rolės
     role:
         user: Naudotojas

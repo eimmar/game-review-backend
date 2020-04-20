@@ -70,7 +70,7 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var string|null
-     * @Groups({"gameLoaded", "game"})
+     * @Groups({"gameLoaded"})
      * @ORM\Column(type="text", length=20000, nullable=true)
      */
     private ?string $storyline;

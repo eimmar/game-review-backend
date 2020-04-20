@@ -12,6 +12,9 @@ final class Category
     const MAIN_GAME = 0;
     const DCL_ADDON = 1;
     const EXPANSION = 2;
-    const BUNDLE  = 3;
-    const STANDALONE_EXPANSION  = 4;
+    const BUNDLE = 3;
+    const STANDALONE_EXPANSION = 4;
+    const MOD = 5;
+    const EPISODE = 6;
+    const SEASON = 7;
 }

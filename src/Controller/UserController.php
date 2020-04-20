@@ -64,7 +64,7 @@ class UserController extends BaseApiController
         $users = $userRepository->filter($request);
 
         return $this->apiResponseBuilder->buildPaginationResponse(
-            new PaginationResponse(1, $userRepository->countWithFilter($request), $request->getPageSize(), $users),
+            new PaginationResponse($request->getPage(), $userRepository->countWithFilter($request), $request->getPageSize(), $users),
             ['groups' => ['user']]
         );
     }

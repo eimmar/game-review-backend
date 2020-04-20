@@ -75,7 +75,8 @@ class UserRepository extends ServiceEntityRepository
         }
 
         return (int)$queryBuilder
-                ->getQuery()
-                ->getScalarResult();
+            ->select('COUNT(u)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

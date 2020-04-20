@@ -55,7 +55,7 @@ class GameController extends BaseApiController
         $games = $this->repository->filter($request);
 
         return $this->apiResponseBuilder->buildPaginationResponse(
-            new PaginationResponse(1, $this->repository->countWithFilter($request), $request->getPageSize(), $games),
+            new PaginationResponse($request->getPage(), $this->repository->countWithFilter($request), $request->getPageSize(), $games),
             ['groups' => ['game']]
         );
     }

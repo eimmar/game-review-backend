@@ -50,7 +50,7 @@ class GameSpotAdapter
 
     private function getCacheKey(string $apiCallbackFunc, ApiRequest $apiRequest)
     {
-        return str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', self::CACHE_TAG . '.' . $apiCallbackFunc . '' . implode("_", $apiRequest->unwrap()));
+        return str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', self::CACHE_TAG . '.' . $apiCallbackFunc . '.' . implode("_", $apiRequest->unwrap()));
     }
 
     private function getCriteria(string $apiCallbackFunc, Game $game): array
@@ -90,7 +90,7 @@ class GameSpotAdapter
 
         if ($game->getGameSpotAssociation()) {
             $response = $this->cache->get(
-                $this->getCacheKey($apiCallbackFunc, $apiRequest),
+                $this->getCacheKey($apiCallbackFunc, $apiRequest) . '_' . $game->getId(),
                 function (ItemInterface $item) use ($apiRequest, $apiCallbackFunc, $game) {
                     $item->expiresAfter(self::CACHE_LIFETIME);
                     $item->tag([self::CACHE_TAG . $apiCallbackFunc]);
