@@ -9,6 +9,8 @@ use App\Entity\GameList;
 use App\Entity\User;
 use App\Enum\GameListPrivacyType;
 use App\Enum\GameListType;
+use App\Enum\LogicExceptionCode;
+use App\Exception\LogicException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -77,7 +79,7 @@ class GameListService
             || !in_array($gameList->getPrivacyType(), [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY, GameListPrivacyType::PUBLIC])
             || $gameList->getUser()->getGameLists()->matching($duplicateNameCriteria)->count()
         ) {
-            throw new \Exception();
+            throw new LogicException(LogicExceptionCode::INVALID_DATA);
         }
     }
 

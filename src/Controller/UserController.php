@@ -7,6 +7,8 @@ namespace App\Controller;
 use App\DTO\PaginationResponse;
 use App\DTO\SearchRequest;
 use App\Entity\User;
+use App\Enum\LogicExceptionCode;
+use App\Exception\LogicException;
 use App\Form\UserEditType;
 use App\Repository\UserRepository;
 use App\Security\Voter\UserVoter;
@@ -16,7 +18,6 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -84,6 +85,7 @@ class UserController extends BaseApiController
      * @param Request $request
      * @param User $user
      * @return JsonResponse
+     * @throws LogicException
      */
     public function changePassword(Request $request, User $user)
     {
@@ -97,7 +99,7 @@ class UserController extends BaseApiController
             return $this->apiResponseBuilder->buildMessageResponse('OK');
         }
 
-        return $this->apiResponseBuilder->buildMessageResponse('Bad Request', Response::HTTP_BAD_REQUEST);
+        throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }
 
     /**
@@ -107,6 +109,7 @@ class UserController extends BaseApiController
      * @param User $user
      * @param UserManagerInterface $userManager
      * @return JsonResponse
+     * @throws LogicException
      */
     public function edit(Request $request, User $user, UserManagerInterface $userManager): JsonResponse
     {
@@ -115,14 +118,10 @@ class UserController extends BaseApiController
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isValid()) {
-            try {
-                $userManager->updateUser($user);
-            } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
-            }
+            $userManager->updateUser($user);
 
             return $this->apiResponseBuilder->buildResponse($user, 200, [], ['groups' => 'user']);
         }
-        return $this->apiResponseBuilder->buildFormErrorResponse($form);
+        throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }
 }

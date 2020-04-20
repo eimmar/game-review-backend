@@ -7,6 +7,8 @@ use App\DTO\PaginationResponse;
 use App\Entity\Review;
 use App\Entity\Game;
 use App\Entity\User;
+use App\Enum\LogicExceptionCode;
+use App\Exception\LogicException;
 use App\Form\ReviewType;
 use App\Repository\ReviewRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -80,6 +82,7 @@ class ReviewController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @return JsonResponse
+     * @throws LogicException
      */
     public function new(Request $request): JsonResponse
     {
@@ -90,15 +93,12 @@ class ReviewController extends BaseApiController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($review);
-            try {
-                $entityManager->flush();
-            } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
-            }
+            $entityManager->flush();
+
             return $this->apiResponseBuilder->buildResponse($review, 200, [], ['groups' => ['review', 'user', 'game']]);
         }
 
-        return $this->apiResponseBuilder->buildFormErrorResponse($form);
+        throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }
 
     /**

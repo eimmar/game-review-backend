@@ -6,6 +6,8 @@ use App\Entity\GameList;
 use App\Entity\Game;
 use App\Entity\User;
 use App\Enum\GameListType;
+use App\Enum\LogicExceptionCode;
+use App\Exception\LogicException;
 use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
 use App\Security\Voter\GameListVoter;
@@ -53,7 +55,7 @@ class GameListController extends BaseApiController
      * @param Request $request
      * @param GameListService $service
      * @return JsonResponse
-     * @throws \Exception
+     * @throws LogicException
      */
     public function new(Request $request, GameListService $service): JsonResponse
     {
@@ -68,15 +70,12 @@ class GameListController extends BaseApiController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($gameList);
-            try {
-                $entityManager->flush();
-            } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
-            }
+            $entityManager->flush();
+
             return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
         }
 
-        return $this->apiResponseBuilder->buildFormErrorResponse($form);
+        throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }
 
     /**
@@ -107,15 +106,12 @@ class GameListController extends BaseApiController
 
         if ($form->isValid()) {
             $service->validate($form->getData());
-            try {
-                $this->getDoctrine()->getManager()->flush();
-            } catch (\Exception $e) {
-                return $this->apiResponseBuilder->buildMessageResponse('Incorrect data.', 400);
-            }
+            $this->getDoctrine()->getManager()->flush();
+
             return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
         }
 
-        return $this->apiResponseBuilder->buildFormErrorResponse($form);
+        throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }
 
     /**
