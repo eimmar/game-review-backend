@@ -48,7 +48,8 @@ class GameRepository extends ServiceEntityRepository
             $request->getFilter('ratingTo') ? $expr->lte('rating', $request->getFilter('ratingTo')) : null,
             $request->getFilter('ratingCountFrom') ? $expr->gte('ratingCount', $request->getFilter('ratingCountFrom')) : null,
             $request->getFilter('ratingCountTo') ? $expr->lte('ratingCount', $request->getFilter('ratingCountTo')) : null,
-            ]);
+            $request->getFilter('query') ? $expr->contains('name', $request->getFilter('query')) : null,
+        ]);
 
         foreach (self::JOIN_FILTERS as $field => $entity) {
             if ($value = $request->getFilter($entity)) {
@@ -77,7 +78,7 @@ class GameRepository extends ServiceEntityRepository
         if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
                 ->addSelect("MATCH_AGAINST (g.name, :query 'IN NATURAL MODE') AS HIDDEN score")
-                ->add('where', 'MATCH_AGAINST(g.name, :query) > 0.0')
+                ->andWhere('MATCH_AGAINST(g.name, :query) > 0.0')
                 ->setParameter('query', $request->getFilter('query'))
                 ->orderBy('score', 'DESC');
         }
@@ -105,7 +106,7 @@ class GameRepository extends ServiceEntityRepository
 
         if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
-                ->add('where', 'MATCH_AGAINST(g.name, :query) > 0.0')
+                ->andWhere('MATCH_AGAINST(g.name, :query) > 0.0')
                 ->setParameter('query', $request->getFilter('query'));
         }
 
