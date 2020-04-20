@@ -9,6 +9,7 @@ use App\Exception\LogicException;
 use App\Form\UserType;
 use App\Mailer\TwigSwiftMailer;
 use App\Service\ApiJsonResponseBuilder;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
@@ -62,6 +63,7 @@ class AuthController extends BaseApiController
      * @Route("/register", name="register", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
+     * @throws LogicException
      */
     public function register(Request $request)
     {
@@ -76,7 +78,12 @@ class AuthController extends BaseApiController
                 ->setEnabled(true)
                 ->setRoles(['ROLE_USER'])
                 ->setSuperAdmin(false);
-            $this->userManager->updateUser($user);
+
+            try {
+                $this->userManager->updateUser($user);
+            } catch (UniqueConstraintViolationException $e) {
+                throw new LogicException(LogicExceptionCode::AUTH_EMAIL_ALREADY_EXISTS);
+            }
 
             return $this->apiResponseBuilder->respond('OK');
         }

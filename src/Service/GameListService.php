@@ -79,7 +79,7 @@ class GameListService
             || !in_array($gameList->getPrivacyType(), [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY, GameListPrivacyType::PUBLIC])
             || $gameList->getUser()->getGameLists()->matching($duplicateNameCriteria)->count()
         ) {
-            throw new LogicException(LogicExceptionCode::INVALID_DATA);
+            throw new LogicException(LogicExceptionCode::GAME_LIST_DUPLICATE_NAME);
         }
     }
 
