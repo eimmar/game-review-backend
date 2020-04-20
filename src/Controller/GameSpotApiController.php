@@ -34,7 +34,7 @@ class GameSpotApiController extends BaseApiController
      */
     public function reviews(GameSpotAdapter $gameSpotAdapter, Game $game, ApiRequest $apiRequest): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($gameSpotAdapter->get('reviews', $game, $apiRequest));
+        return $this->apiResponseBuilder->respond($gameSpotAdapter->get('reviews', $game, $apiRequest));
     }
 
     /**
@@ -46,6 +46,6 @@ class GameSpotApiController extends BaseApiController
      */
     public function videos(GameSpotAdapter $gameSpotAdapter, Game $game, ApiRequest $apiRequest): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($gameSpotAdapter->get('videos', $game, $apiRequest));
+        return $this->apiResponseBuilder->respond($gameSpotAdapter->get('videos', $game, $apiRequest));
     }
 }

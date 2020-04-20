@@ -33,6 +33,6 @@ class IGDBController extends BaseApiController
      */
     public function reviews(IGDBReviewAdapter $reviewAdapter, int $externalGameId, PaginationRequest $paginationRequest): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($reviewAdapter->getReviews($externalGameId, $paginationRequest));
+        return $this->apiResponseBuilder->respond($reviewAdapter->getReviews($externalGameId, $paginationRequest));
     }
 }

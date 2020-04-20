@@ -34,6 +34,6 @@ class GameDealApiController extends BaseApiController
     public function search(ApiConnector $apiConnector, SearchRequest $request, SnakeToCamelCaseTransformer $snakeToCamelCaseTransformer): JsonResponse
     {
         $response = $apiConnector->search($request);
-        return $this->apiResponseBuilder->buildResponse($snakeToCamelCaseTransformer->transform($response));
+        return $this->apiResponseBuilder->respond($snakeToCamelCaseTransformer->transform($response));
     }
 }

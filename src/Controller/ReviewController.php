@@ -50,7 +50,7 @@ class ReviewController extends BaseApiController
             $request->getFirstResult()
         );
 
-        return $this->apiResponseBuilder->buildPaginationResponse(
+        return $this->apiResponseBuilder->respondWithPagination(
             new PaginationResponse(1, $repository->count(['game' => $game]), $request->getPageSize(), $reviews),
             ['groups' => ['review', 'user', 'game']]
         );
@@ -71,7 +71,7 @@ class ReviewController extends BaseApiController
             ->setMaxResults($request->getPageSize());
         $reviews = $user->getReviews()->matching($criteria)->toArray();
 
-        return $this->apiResponseBuilder->buildPaginationResponse(
+        return $this->apiResponseBuilder->respondWithPagination(
             new PaginationResponse($request->getPage(), $user->getReviews()->count(), $request->getPageSize(), $reviews),
             ['groups' => ['review', 'user', 'game']]
         );
@@ -95,7 +95,7 @@ class ReviewController extends BaseApiController
             $entityManager->persist($review);
             $entityManager->flush();
 
-            return $this->apiResponseBuilder->buildResponse($review, 200, [], ['groups' => ['review', 'user', 'game']]);
+            return $this->apiResponseBuilder->respond($review, 200, [], ['groups' => ['review', 'user', 'game']]);
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
@@ -108,7 +108,7 @@ class ReviewController extends BaseApiController
      */
     public function show(Review $review): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($review);
+        return $this->apiResponseBuilder->respond($review);
     }
 
     /**
@@ -123,6 +123,6 @@ class ReviewController extends BaseApiController
         $entityManager->remove($review);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse($review);
+        return $this->apiResponseBuilder->respond($review);
     }
 }

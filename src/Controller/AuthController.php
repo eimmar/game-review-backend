@@ -78,7 +78,7 @@ class AuthController extends BaseApiController
                 ->setSuperAdmin(false);
             $this->userManager->updateUser($user);
 
-            return $this->apiResponseBuilder->buildMessageResponse('OK');
+            return $this->apiResponseBuilder->respond('OK');
         }
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
 
@@ -116,7 +116,7 @@ class AuthController extends BaseApiController
         $user->setPasswordRequestedAt(new \DateTime());
         $this->userManager->updateUser($user);
 
-        return $this->apiResponseBuilder->buildMessageResponse('OK');
+        return $this->apiResponseBuilder->respond('OK');
     }
 
     /**
@@ -131,7 +131,7 @@ class AuthController extends BaseApiController
         $user = $this->userManager->findUserByConfirmationToken($token);
 
         if ($user && $user->isPasswordRequestNonExpired($params->get('fos_user.resetting.token_ttl'))) {
-            return $this->apiResponseBuilder->buildMessageResponse('OK');
+            return $this->apiResponseBuilder->respond('OK');
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
@@ -169,7 +169,7 @@ class AuthController extends BaseApiController
             $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_SUCCESS, $event);
             $this->userManager->updateUser($user);
 
-            return $this->apiResponseBuilder->buildMessageResponse('OK');
+            return $this->apiResponseBuilder->respond('OK');
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);

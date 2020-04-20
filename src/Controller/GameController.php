@@ -54,7 +54,7 @@ class GameController extends BaseApiController
     {
         $games = $this->repository->filter($request);
 
-        return $this->apiResponseBuilder->buildPaginationResponse(
+        return $this->apiResponseBuilder->respondWithPagination(
             new PaginationResponse($request->getPage(), $this->repository->countWithFilter($request), $request->getPageSize(), $games),
             ['groups' => ['game']]
         );
@@ -74,7 +74,7 @@ class GameController extends BaseApiController
             ->setMaxResults($request->getPageSize());
         $games = $gameList->getGames()->matching($criteria)->toArray();
 
-        return $this->apiResponseBuilder->buildPaginationResponse(
+        return $this->apiResponseBuilder->respondWithPagination(
             new PaginationResponse($request->getPage(), $gameList->getGames()->count(), $request->getPageSize(), $games),
             ['groups' => ['game']]
         );
@@ -95,7 +95,7 @@ class GameController extends BaseApiController
         GameModeRepository $gameModeRepository
     ): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse(
+        return $this->apiResponseBuilder->respond(
             [
                 'genres' => $genreRepository->findAll(),
                 'themes' => $themeRepository->findAll(),
@@ -116,7 +116,10 @@ class GameController extends BaseApiController
     public function show(string $slug): JsonResponse
     {
         $game = $this->repository->findBySlug($slug);
+        if (!$game) {
+            return $this->apiResponseBuilder->respond('', 404);
+        }
 
-        return $this->apiResponseBuilder->buildResponse($game, 200, [], ['groups' => 'gameLoaded']);
+        return $this->apiResponseBuilder->respond($game, 200, [], ['groups' => 'gameLoaded']);
     }
 }

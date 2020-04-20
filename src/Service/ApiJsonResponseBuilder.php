@@ -5,7 +5,6 @@ namespace App\Service;
 
 
 use App\DTO\PaginationResponse;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -33,7 +32,7 @@ class ApiJsonResponseBuilder
             'Access-Control-Allow-Methods' => 'GET, POST, PUT, OPTIONS, DELETE',
             'Access-Control-Allow-Headers' => '*'
         ];
-        return $this->buildResponse([], 200, $headers);
+        return $this->respond([], 200, $headers);
     }
 
     /**
@@ -43,7 +42,7 @@ class ApiJsonResponseBuilder
      * @param array $serializerParams
      * @return JsonResponse
      */
-    public function buildResponse($data, $status = 200, $headers = [], $serializerParams = [])
+    public function respond($data, $status = 200, $headers = [], $serializerParams = [])
     {
         $headers = array_merge($headers, [
             'Access-Control-Allow-Origin' => implode(', ', $this->corsAllowedUrls)
@@ -61,9 +60,9 @@ class ApiJsonResponseBuilder
         return new JsonResponse($this->serializer->serialize($data, 'json', $serializerParams), $status, $headers, true);
     }
 
-    public function buildPaginationResponse(PaginationResponse $paginationResponse, $serializerParams = [])
+    public function respondWithPagination(PaginationResponse $paginationResponse, $serializerParams = [])
     {
-        return $this->buildResponse(
+        return $this->respond(
             [
                 'page' => $paginationResponse->getPage(),
                 'totalResults' => $paginationResponse->getTotalResults(),
@@ -74,33 +73,5 @@ class ApiJsonResponseBuilder
             [],
             $serializerParams
         );
-    }
-
-    /**
-     * @param string $message
-     * @param int $status
-     * @param array $headers
-     * @return JsonResponse
-     */
-    public function buildMessageResponse($message, $status = 200, $headers = [])
-    {
-        return $this->buildResponse(['message' => $message], $status, $headers);
-    }
-
-    /**
-     * @param FormInterface $form
-     * @return JsonResponse
-     */
-    public function buildFormErrorResponse(FormInterface $form)
-    {
-       $currentError = $form->getErrors(true)->current();
-
-       if ($currentError) {
-           $msg = sprintf('%s: %s', ucfirst($currentError->getOrigin()->getName()), $currentError->getMessage());
-       } else {
-           $msg = 'Invalid form data.';
-       }
-
-       return $this->buildResponse(['message' => $msg], 400);
     }
 }

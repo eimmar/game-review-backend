@@ -18,7 +18,7 @@ class ExceptionController extends BaseApiController
             return new Response($statusText, $statusCode);
         }
 
-        return $this->apiResponseBuilder->buildResponse(
+        return $this->apiResponseBuilder->respond(
             [
                 'code' => (int)$exception->getCode(),
                 'message' => isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : '',

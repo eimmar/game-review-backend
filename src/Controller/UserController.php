@@ -64,7 +64,7 @@ class UserController extends BaseApiController
     {
         $users = $userRepository->filter($request);
 
-        return $this->apiResponseBuilder->buildPaginationResponse(
+        return $this->apiResponseBuilder->respondWithPagination(
             new PaginationResponse($request->getPage(), $userRepository->countWithFilter($request), $request->getPageSize(), $users),
             ['groups' => ['user']]
         );
@@ -76,7 +76,7 @@ class UserController extends BaseApiController
      */
     public function show(User $user): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($user, 200, [], ['groups' => ['user']]);
+        return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => ['user']]);
     }
 
     /**
@@ -96,7 +96,7 @@ class UserController extends BaseApiController
         if ($form->isValid()) {
             $this->userManager->updateUser($user);
 
-            return $this->apiResponseBuilder->buildMessageResponse('OK');
+            return $this->apiResponseBuilder->respond('OK');
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
@@ -120,7 +120,7 @@ class UserController extends BaseApiController
         if ($form->isValid()) {
             $userManager->updateUser($user);
 
-            return $this->apiResponseBuilder->buildResponse($user, 200, [], ['groups' => 'user']);
+            return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => 'user']);
         }
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }

@@ -46,7 +46,7 @@ class GameListController extends BaseApiController
     public function allForUser(User $user, GameListService $service): JsonResponse
     {
         $gameLists = $service->getListsByUser($user);
-        return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
+        return $this->apiResponseBuilder->respond($gameLists, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -72,7 +72,7 @@ class GameListController extends BaseApiController
             $entityManager->persist($gameList);
             $entityManager->flush();
 
-            return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+            return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
@@ -86,7 +86,7 @@ class GameListController extends BaseApiController
     public function show(GameList $gameList): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::VIEW, $gameList);
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => ['gameList', 'user']]);
+        return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => ['gameList', 'user']]);
     }
 
     /**
@@ -108,7 +108,7 @@ class GameListController extends BaseApiController
             $service->validate($form->getData());
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+            return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
@@ -125,7 +125,7 @@ class GameListController extends BaseApiController
     {
         $gameLists = $service->getUserListsContainingGame($user, $game);
 
-        return $this->apiResponseBuilder->buildResponse($gameLists, 200, [], ['groups' => 'gameList']);
+        return $this->apiResponseBuilder->respond($gameLists, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -141,7 +141,7 @@ class GameListController extends BaseApiController
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
         $service->addToList($gameList, $game);
 
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+        return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -157,7 +157,7 @@ class GameListController extends BaseApiController
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
         $service->removeFromList($gameList, $game);
 
-        return $this->apiResponseBuilder->buildResponse($gameList, 200, [], ['groups' => 'gameList']);
+        return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
     }
 
     /**
@@ -174,6 +174,6 @@ class GameListController extends BaseApiController
         $entityManager->remove($gameList);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->buildResponse('OK');
+        return $this->apiResponseBuilder->respond('OK');
     }
 }
