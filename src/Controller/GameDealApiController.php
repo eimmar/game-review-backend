@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\SearchRequest;
 use App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector;
+use App\Service\Transformer\SnakeToCamelCaseTransformer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,10 +28,12 @@ class GameDealApiController extends BaseApiController
      * @Route("/search", name="any_deal_search", methods={"POST"})
      * @param ApiConnector $apiConnector
      * @param SearchRequest $request
+     * @param SnakeToCamelCaseTransformer $snakeToCamelCaseTransformer
      * @return JsonResponse
      */
-    public function search(ApiConnector $apiConnector, SearchRequest $request): JsonResponse
+    public function search(ApiConnector $apiConnector, SearchRequest $request, SnakeToCamelCaseTransformer $snakeToCamelCaseTransformer): JsonResponse
     {
-        return $this->apiResponseBuilder->buildResponse($apiConnector->search($request));
+        $response = $apiConnector->search($request);
+        return $this->apiResponseBuilder->buildResponse($snakeToCamelCaseTransformer->transform($response));
     }
 }

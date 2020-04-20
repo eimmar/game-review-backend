@@ -7,7 +7,6 @@ namespace App\Eimmar\IsThereAnyDealBundle\Service;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\RequestInterface;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\SearchRequest;
-use App\Eimmar\IsThereAnyDealBundle\Transformer\ResponseTransformer;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -36,20 +35,16 @@ class ApiConnector
      */
     private HttpClientInterface $httpClient;
 
-    private ResponseTransformer $gamePriceTransformer;
-
     private TagAwareAdapter $cache;
 
     /**
      * @param string $userKey
      * @param HttpClientInterface $httpClient
-     * @param ResponseTransformer $responseTransformer
      */
-    public function __construct(string $userKey, HttpClientInterface $httpClient, ResponseTransformer $responseTransformer)
+    public function __construct(string $userKey, HttpClientInterface $httpClient)
     {
         $this->userKey = $userKey;
         $this->httpClient = $httpClient;
-        $this->gamePriceTransformer = $responseTransformer;
         $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
     }
 
@@ -77,14 +72,12 @@ class ApiConnector
             $item->expiresAfter(self::CACHE_LIFETIME);
             $item->tag([self::SEARCH_CACHE_TAG]);
 
-            $response = json_decode(
+            return json_decode(
                 $this->httpClient
                     ->request('GET', self::SEARCH_URL, $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             );
-
-            return $this->gamePriceTransformer->transform($response);
         });
     }
 
@@ -102,14 +95,12 @@ class ApiConnector
             $item->expiresAfter(self::CACHE_LIFETIME);
             $item->tag([self::GAME_PRICES_CACHE_TAG]);
 
-            $response = json_decode(
+            return json_decode(
                 $this->httpClient
                     ->request('GET', self::GAME_PRICES_URL, $this->buildOptions($requestBody))
                     ->getContent(),
                 true
             );
-
-            return $this->gamePriceTransformer->transform($response);
         });
     }
 }
