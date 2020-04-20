@@ -23,57 +23,6 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
-    App\Service\ApiJsonResponseBuilder:
-        arguments:
-            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
-
-    app.api_json_response_builder:
-            alias: App\Service\ApiJsonResponseBuilder
-            public: true
-
-    App\Security\Http\Authentication\CORSAuthenticationSuccessHandler:
-        arguments:
-            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
-
-    App\Security\Http\Authentication\CORSAuthenticationFailureHandler:
-        arguments:
-            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
-
-    App\Eimmar\IGDBBundle\Service\ApiConnector:
-        arguments:
-            $userKey: '%env(IDGB_API_KEY)%'
-
-    App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector:
-        arguments:
-            $userKey: '%env(IS_THERE_ANY_DEAL_API_KEY)%'
-
-    App\Eimmar\GameSpotBundle\Service\ApiConnector:
-        arguments:
-            $userKey: '%env(GAMESPOT_API_KEY)%'
-
-    App\EventListener\JWTCreatedListener:
-        arguments: [ '@request_stack',  '%env(JWT_REMEMBER_ME_DURATION)%']
-        tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
-
-    App\EventListener\JWTNotFoundEventListener:
-        arguments: [['%env(FRONTEND_URL)%']]
-        tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
-
-    FOS\UserBundle\Mailer\MailerInterface: '@fos_user.mailer.twig_swift'
-
-    App\Mailer\TwigSwiftMailer:
-        arguments:
-            $mailer: '@swiftmailer.mailer'
-            $router: '@router'
-            $twig: '@twig'
-            $params: '@parameter_bag'
-            $frontendUrl: '%env(FRONTEND_URL)%'
-
     App\Controller\AuthController:
         arguments: ['@fos_user.user_manager', '@app.api_json_response_builder', '@fos_user.resetting.form.factory']
 
@@ -86,6 +35,76 @@ services:
     App\Controller\Admin\IGDBController:
         arguments: ['@App\Service\IGDBGameDataUpdater']
         tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    # Service configuration
+    App\Service\ApiJsonResponseBuilder:
+        arguments:
+            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
+
+    app.api_json_response_builder:
+            alias: App\Service\ApiJsonResponseBuilder
+            public: true
+
+    App\Mailer\TwigSwiftMailer:
+        arguments:
+            $mailer: '@swiftmailer.mailer'
+            $router: '@router'
+            $twig: '@twig'
+            $params: '@parameter_bag'
+            $frontendUrl: '%env(FRONTEND_URL)%'
+
+
+    App\Service\GameSpotAdapter:
+        arguments:
+            $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
+
+    App\Service\IGDBReviewAdapter:
+        arguments:
+            $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
+
+    # Security component configuration
+    App\Security\Http\Authentication\CORSAuthenticationSuccessHandler:
+        arguments:
+            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
+
+    App\Security\Http\Authentication\CORSAuthenticationFailureHandler:
+        arguments:
+            $corsAllowedUrls: ['%env(FRONTEND_URL)%']
+
+    # Event listener configuration
+    App\EventListener\JWTCreatedListener:
+        arguments: [ '@request_stack',  '%env(JWT_REMEMBER_ME_DURATION)%']
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    App\EventListener\JWTNotFoundEventListener:
+        arguments: [['%env(FRONTEND_URL)%']]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
+
+
+    # IGDB Bundle service configuration
+    App\Eimmar\IGDBBundle\Service\ApiConnector:
+        arguments:
+            $userKey: '%env(IDGB_API_KEY)%'
+
+    # IsThereAnyDeal Bundle service configuration
+    App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector:
+        arguments:
+            $userKey: '%env(IS_THERE_ANY_DEAL_API_KEY)%'
+            $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
+
+    # GameSpot Bundle service configuration
+    App\Eimmar\GameSpotBundle\Service\ApiConnector:
+        arguments:
+            $userKey: '%env(GAMESPOT_API_KEY)%'
+
+
+    # Other 3rd party bundle configuration
+    FOS\UserBundle\Mailer\MailerInterface: '@fos_user.mailer.twig_swift'
 
     sonata.user.admin.group:
         abstract: true

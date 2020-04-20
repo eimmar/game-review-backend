@@ -23,7 +23,6 @@ namespace App\Service;
 use App\DTO\PaginationRequest;
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\ApiConnector;
-use App\Entity\Game;
 use App\Service\Transformer\SnakeToCamelCaseTransformer;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
@@ -32,8 +31,6 @@ use Symfony\Contracts\Cache\ItemInterface;
 class IGDBReviewAdapter
 {
     const CACHE_TAG = 'igdb.review';
-
-    const CACHE_LIFETIME = 86400;
 
     const REVIEW_FIELDS = [
         'id',
@@ -54,25 +51,24 @@ class IGDBReviewAdapter
 
     private ApiConnector $apiConnector;
 
+    private int $cacheLifeTime;
+
     /**
      * @param SnakeToCamelCaseTransformer $transformer
      * @param ApiConnector $apiConnector
+     * @param int $cacheLifeTime
      */
-    public function __construct(SnakeToCamelCaseTransformer $transformer, ApiConnector $apiConnector)
+    public function __construct(SnakeToCamelCaseTransformer $transformer, ApiConnector $apiConnector, int $cacheLifeTime)
     {
         $this->transformer = $transformer;
         $this->apiConnector = $apiConnector;
+        $this->cacheLifeTime = $cacheLifeTime;
         $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
     }
 
     private function getCacheKey(RequestBody $requestBody)
     {
         return str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', self::CACHE_TAG . $requestBody->unwrap());
-    }
-
-    private function getCriteria(string $apiCallbackFunc, Game $game): array
-    {
-        return $apiCallbackFunc === 'reviews' ? ['title' => $game->getName() . ' Review'] : ['association' => $game->getGameSpotAssociation()];
     }
 
     /**
@@ -95,7 +91,7 @@ class IGDBReviewAdapter
         return $this->cache->get(
             $this->getCacheKey($requestBody),
             function (ItemInterface $item) use ($requestBody) {
-                $item->expiresAfter(self::CACHE_LIFETIME);
+                $item->expiresAfter($this->cacheLifeTime);
                 $item->tag([self::CACHE_TAG]);
                 $response = $this->apiConnector->reviews($requestBody);
 

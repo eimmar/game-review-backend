@@ -20,7 +20,6 @@ class ApiConnector
 {
     const SEARCH_CACHE_TAG = 'isThereAnyDeal.search';
     const GAME_PRICES_CACHE_TAG = 'isThereAnyDeal.search';
-    const CACHE_LIFETIME = 86400;
 
     const SEARCH_URL = 'https://api.isthereanydeal.com/v01/search/search/';
     const GAME_PRICES_URL = 'https://api.isthereanydeal.com/v01/game/prices/';
@@ -37,15 +36,19 @@ class ApiConnector
 
     private TagAwareAdapter $cache;
 
+    private int $cacheLifeTime;
+
     /**
      * @param string $userKey
      * @param HttpClientInterface $httpClient
+     * @param int $cacheLifeTime
      */
-    public function __construct(string $userKey, HttpClientInterface $httpClient)
+    public function __construct(string $userKey, HttpClientInterface $httpClient, int $cacheLifeTime)
     {
         $this->userKey = $userKey;
         $this->httpClient = $httpClient;
         $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
+        $this->cacheLifeTime = $cacheLifeTime;
     }
 
     /**
@@ -69,7 +72,7 @@ class ApiConnector
     public function search(SearchRequest $requestBody)
     {
         return $this->cache->get($requestBody->getCacheKey(), function (ItemInterface $item) use ($requestBody) {
-            $item->expiresAfter(self::CACHE_LIFETIME);
+            $item->expiresAfter($this->cacheLifeTime);
             $item->tag([self::SEARCH_CACHE_TAG]);
 
             return json_decode(
@@ -92,7 +95,7 @@ class ApiConnector
     public function gamePrices(GamePricesRequest $requestBody)
     {
         return $this->cache->get($requestBody->getCacheKey(), function (ItemInterface $item) use ($requestBody) {
-            $item->expiresAfter(self::CACHE_LIFETIME);
+            $item->expiresAfter($this->cacheLifeTime);
             $item->tag([self::GAME_PRICES_CACHE_TAG]);
 
             return json_decode(

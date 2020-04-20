@@ -17,22 +17,24 @@ class GameSpotAdapter
 {
     const CACHE_TAG = 'gameSpot';
 
-    const CACHE_LIFETIME = 86400;
-
     private ApiConnector $apiConnector;
 
     private EntityManagerInterface $entityManager;
 
     private TagAwareAdapter $cache;
 
+    private int $cacheLifeTime;
+
     /**
      * @param ApiConnector $apiConnector
      * @param EntityManagerInterface $entityManager
+     * @param int $cacheLifeTime
      */
-    public function __construct(ApiConnector $apiConnector, EntityManagerInterface $entityManager)
+    public function __construct(ApiConnector $apiConnector, EntityManagerInterface $entityManager, int $cacheLifeTime)
     {
         $this->apiConnector = $apiConnector;
         $this->entityManager = $entityManager;
+        $this->cacheLifeTime = $cacheLifeTime;
         $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
     }
 
@@ -65,7 +67,7 @@ class GameSpotAdapter
         $response = $this->cache->get(
             $this->getCacheKey('games', $apiRequest),
             function (ItemInterface $item) use ($apiRequest, $game) {
-                $item->expiresAfter(self::CACHE_LIFETIME);
+                $item->expiresAfter($this->cacheLifeTime);
                 $item->tag([self::CACHE_TAG . 'games']);
 
                 return $this->apiConnector->games(new ApiRequest('json', ['name' => $game->getName()]));
@@ -92,7 +94,7 @@ class GameSpotAdapter
             $response = $this->cache->get(
                 $this->getCacheKey($apiCallbackFunc, $apiRequest) . '_' . $game->getId(),
                 function (ItemInterface $item) use ($apiRequest, $apiCallbackFunc, $game) {
-                    $item->expiresAfter(self::CACHE_LIFETIME);
+                    $item->expiresAfter($this->cacheLifeTime);
                     $item->tag([self::CACHE_TAG . $apiCallbackFunc]);
 
                     return $this->apiConnector->$apiCallbackFunc(new ApiRequest(
