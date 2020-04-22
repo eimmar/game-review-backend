@@ -27,12 +27,12 @@ class Screenshot implements ResponseDTO
      */
     public function __construct(
         int $id,
-        ?bool $alphaChannel,
-        ?bool $animated,
-        ?int $height,
-        ?string $imageId,
-        ?string $url,
-        ?int $width
+        ?bool $alphaChannel = null,
+        ?bool $animated = null,
+        ?int $height = null,
+        ?string $imageId = null,
+        ?string $url = null,
+        ?int $width = null
     ) {
         $this->id = $id;
         $this->alphaChannel = $alphaChannel;

@@ -1,0 +1,179 @@
+[
+    {
+        "id": 41876,
+        "age_ratings": [
+            {
+                "id": 12782,
+                "category": 1,
+                "content_descriptions": [
+                    {
+                        "id": 3,
+                        "category": 1,
+                        "description": "Blood"
+                    },
+                    {
+                        "id": 10,
+                        "category": 1,
+                        "description": "Intense Violence"
+                    }
+                ],
+                "rating": 11
+            },
+            {
+                "id": 12783,
+                "category": 2,
+                "content_descriptions": [
+                    50
+                ],
+                "rating": 4,
+                "synopsis": "synopsis"
+            }
+        ],
+        "alternative_names": [
+            21055
+        ],
+        "bundles": [
+            10962
+        ],
+        "category": 0,
+        "collection": 97,
+        "cover": {
+            "id": 85167,
+            "alpha_channel": false,
+            "animated": false,
+            "game": 41876,
+            "height": 800,
+            "image_id": "co1tpr",
+            "url": "coverUrl",
+            "width": 600
+        },
+        "created_at": 1498953600,
+        "first_release_date": 1481846400,
+        "game_modes": [
+            {
+                "id": 1,
+                "created_at": 1298937600,
+                "name": "Single player",
+                "slug": "single-player",
+                "updated_at": 1323216000,
+                "url": "url"
+            }
+        ],
+        "genres": [
+            {
+                "id": 31,
+                "created_at": 1323561600,
+                "name": "Adventure",
+                "slug": "adventure",
+                "updated_at": 1323561600,
+                "url": "url2"
+            }
+        ],
+        "involved_companies": [
+            {
+                "id": 75640,
+                "company": {
+                    "id": 907,
+                    "change_date": 1459468800
+                },
+                "created_at": 1552694400,
+                "developer": false,
+                "game": 41876,
+                "porting": false,
+                "publisher": true,
+                "supporting": false,
+                "updated_at": 1552780800
+            }
+        ],
+        "name": "Uncharted 3",
+        "platforms": [
+            {
+                "id": 48,
+                "abbreviation": "PS4",
+                "alternative_name": "PS4",
+                "category": 1,
+                "created_at": 1326499200,
+                "generation": 8,
+                "name": "PlayStation 4",
+                "platform_logo": 231,
+                "product_family": 1,
+                "slug": "ps4--1",
+                "summary": "ps4",
+                "updated_at": 1433116800,
+                "url": "ps4Url",
+                "versions": [
+                    17
+                ],
+                "websites": [
+                    11
+                ]
+            }
+        ],
+        "player_perspectives": [
+            2
+        ],
+        "popularity": 2.337346481468469,
+        "pulse_count": 1,
+        "rating": 93.4710882069384,
+        "rating_count": 27,
+        "release_dates": [
+            {
+                "id": 89795,
+                "category": 0,
+                "created_at": 1499299200,
+                "date": 1481846400,
+                "game": 41876,
+                "human": "2016-Dec-16",
+                "m": 12,
+                "platform": 48,
+                "region": 8,
+                "updated_at": 1499385600,
+                "y": 2016
+            }
+        ],
+        "screenshots": [
+            {
+                "id": 108770,
+                "game": 41876,
+                "height": 1075,
+                "image_id": "ikajnzvqtohdnhiwigve",
+                "url": "imageUrl",
+                "width": 2048
+            }
+        ],
+        "similar_games": [
+            37419,
+            78632,
+            86521,
+            87622,
+            96217,
+            103292,
+            105049,
+            106987,
+            111130,
+            115785
+        ],
+        "slug": "uncharted-3",
+        "summary": "summmary",
+        "tags": [
+            1,
+            268435487
+        ],
+        "themes": [
+            {
+                "id": 1,
+                "created_at": 1322524800,
+                "name": "Action",
+                "slug": "action",
+                "updated_at": 1323216000,
+                "url": "actionUrl"
+            }
+        ],
+        "total_rating": 93.4710882069384,
+        "total_rating_count": 27,
+        "updated_at": 1587254400,
+        "url": "gameUrl",
+        "version_parent": 512,
+        "version_title": "Remastered"
+    }
+]

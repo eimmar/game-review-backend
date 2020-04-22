@@ -1,0 +1,9 @@
+{
+    "query": "Game",
+    "offset": 0,
+    "region": "eu2",
+    "country": "lt",
+    "shops": [
+        "steam", "shop"
+    ]
+}

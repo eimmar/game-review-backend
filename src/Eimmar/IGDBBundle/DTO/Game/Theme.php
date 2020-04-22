@@ -26,8 +26,14 @@ class Theme implements ResponseDTO
      * @param int|null $createdAt
      * @param int|null $updatedAt
      */
-    public function __construct(int $id, ?string $name, ?string $slug, ?string $url, ?int $createdAt, ?int $updatedAt)
-    {
+    public function __construct(
+        int $id,
+        ?string $name = null,
+        ?string $slug = null,
+        ?string $url = null,
+        ?int $createdAt = null,
+        ?int $updatedAt = null
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->slug = $slug;

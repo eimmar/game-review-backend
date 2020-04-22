@@ -85,21 +85,21 @@ class Company implements ResponseDTO
      */
     public function __construct(
         int $id,
-        ?int $changeDate,
-        ?int $changeDateCategory,
-        $changedCompanyId,
-        ?int $country,
-        ?string $description,
-        ?int $logo,
-        $parent,
-        $published,
-        ?int $startDate,
-        $websites,
-        ?string $name,
-        ?string $url,
-        ?string $slug,
-        ?int $updatedAt,
-        ?int $createdAt
+        ?int $changeDate = null,
+        ?int $changeDateCategory = null,
+        $changedCompanyId = null,
+        ?int $country = null,
+        ?string $description = null,
+        ?int $logo = null,
+        $parent = null,
+        $published = null,
+        ?int $startDate = null,
+        $websites = null,
+        ?string $name = null,
+        ?string $url = null,
+        ?string $slug = null,
+        ?int $updatedAt = null,
+        ?int $createdAt = null
     ) {
         $this->id = $id;
         $this->changeDate = $changeDate;

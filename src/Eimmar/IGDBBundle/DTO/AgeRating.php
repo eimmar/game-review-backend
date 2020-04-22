@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Eimmar\IGDBBundle\DTO;
 
+use App\Eimmar\IGDBBundle\DTO\AgeRating\ContentDescription;
 use App\Eimmar\IGDBBundle\Traits\IdentifiableTrait;
 
 class AgeRating implements ResponseDTO
@@ -38,7 +39,7 @@ class AgeRating implements ResponseDTO
     /**
      * @param int $id
      * @param int|null $category
-     * @param int[]|null $contentDescriptions
+     * @param ContentDescription[]|int[]|null $contentDescriptions
      * @param int|null $rating
      * @param string|null $ratingCoverUrl
      * @param string|null $synopsis
