@@ -65,18 +65,23 @@ class GamePricesRequest implements RequestInterface
      */
     public function unwrap(): array
     {
-        return array_filter([
-            'plains' => $this->plains,
-            'region' => $this->region,
-            'country' => $this->country,
-            'shops' => implode(',', (array)$this->shops),
-            'exclude' => implode(',', (array)$this->exclude),
-            'added' => $this->added,
-        ]);
+        return array_filter(
+            [
+                'plains' => implode(',', (array)$this->plains),
+                'region' => $this->region,
+                'country' => $this->country,
+                'shops' => implode(',', (array)$this->shops),
+                'exclude' => implode(',', (array)$this->exclude),
+                'added' => $this->added,
+            ],
+            function ($item) {
+                return strlen(trim((string)$item)) !== 0;
+            }
+        );
     }
 
     public function getCacheKey(): string
     {
-        return 'isThereAnyDeal.gamePrices.' . str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', $this->plains);
+        return 'isThereAnyDeal.gamePrices.' . str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', implode('', $this->unwrap()));
     }
 }

@@ -73,14 +73,19 @@ class ApiRequest
             $filter[] = $field . ':' . $value;
         }
 
-        return array_filter([
-            'format' => $this->format,
-            'field_list' => implode(',', (array)$this->fieldList),
-            'limit' => $this->limit,
-            'offset' => $this->offset,
-            'sort' => $this->sort,
-            'filter' => implode(',', (array)$filter)
-        ]);
+        return array_filter(
+            [
+                'format' => $this->format,
+                'field_list' => implode(',', (array)$this->fieldList),
+                'limit' => $this->limit,
+                'offset' => $this->offset,
+                'sort' => $this->sort,
+                'filter' => implode(',', (array)$filter)
+            ],
+            function ($item) {
+                return strlen(trim((string)$item)) !== 0;
+            }
+        );
     }
 
     /**

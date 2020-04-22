@@ -62,7 +62,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', ApiConnector::REVIEWS_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
+            ->with('GET', ApiConnector::REVIEWS_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&offset=0&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
             ->willReturn(new HttpClientTestResponse($responseContents));
 
         $this->responseTransformer->expects($this->once())
@@ -81,7 +81,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', ApiConnector::GAMES_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
+            ->with('GET', ApiConnector::GAMES_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&offset=0&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
             ->willReturn(new HttpClientTestResponse($responseContents));
 
         $this->responseTransformer->expects($this->once())
@@ -100,7 +100,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', ApiConnector::ARTICLES_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
+            ->with('GET', ApiConnector::ARTICLES_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&offset=0&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
             ->willReturn(new HttpClientTestResponse($responseContents));
 
         $this->responseTransformer->expects($this->once())
@@ -119,7 +119,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', ApiConnector::VIDEOS_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
+            ->with('GET', ApiConnector::VIDEOS_URL . '?api_key=userKey&format=json&field_list=publish_date%2Cid%2Cauthors%2Ctitle%2Cimage%2Cscore%2Cdeck%2Cgood%2Cbad%2Cbody&limit=5&offset=0&sort=publish_date%3Adesc&filter=title%3ADue+Process+Review')
             ->willReturn(new HttpClientTestResponse($responseContents));
 
         $this->responseTransformer->expects($this->once())

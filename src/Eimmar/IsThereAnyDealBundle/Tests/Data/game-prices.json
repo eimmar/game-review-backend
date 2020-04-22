@@ -1,0 +1,11 @@
+{
+    "plains": [
+        "plain1", "plain2"
+    ],
+    "region": "eu2",
+    "country": "lt",
+    "exclude": [
+        "exclude"
+    ],
+    "added": 0
+}

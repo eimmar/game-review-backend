@@ -55,7 +55,7 @@ class ApiConnector
      * @param RequestInterface $requestBody
      * @return array
      */
-    private function buildOptions(RequestInterface $requestBody)
+    public function buildOptions(RequestInterface $requestBody)
     {
         return ['query' => array_merge(['key' => $this->userKey], $requestBody->unwrap())];
     }

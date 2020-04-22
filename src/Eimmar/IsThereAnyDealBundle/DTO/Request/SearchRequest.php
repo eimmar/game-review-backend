@@ -66,18 +66,23 @@ class SearchRequest implements RequestInterface
      */
     public function unwrap(): array
     {
-        return array_filter([
-            'q' => urldecode($this->query),
-            'offset' => $this->offset,
-            'limit' => $this->limit,
-            'region' => $this->region,
-            'country' => $this->country,
-            'shops' => implode(',', (array)$this->shops),
-        ]);
+        return array_filter(
+            [
+                'q' => urldecode($this->query),
+                'offset' => $this->offset,
+                'limit' => $this->limit,
+                'region' => $this->region,
+                'country' => $this->country,
+                'shops' => implode(',', (array)$this->shops),
+            ],
+            function ($item) {
+                return strlen(trim((string)$item)) !== 0;
+            }
+        );
     }
 
     public function getCacheKey(): string
     {
-        return 'isThereAnyDeal.search.' . str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', $this->query);
+        return 'isThereAnyDeal.search.' . str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', implode('', $this->unwrap()));
     }
 }
