@@ -33,12 +33,10 @@ class HttpClientTestResponse implements ResponseInterface
 
     public function getStatusCode(): int
     {
-        // TODO: Implement getStatusCode() method.
     }
 
     public function getHeaders(bool $throw = true): array
     {
-        // TODO: Implement getHeaders() method.
     }
 
     public function getContent(bool $throw = true): string
@@ -48,16 +46,13 @@ class HttpClientTestResponse implements ResponseInterface
 
     public function toArray(bool $throw = true): array
     {
-        // TODO: Implement toArray() method.
     }
 
     public function cancel(): void
     {
-        // TODO: Implement cancel() method.
     }
 
     public function getInfo(string $type = null)
     {
-        // TODO: Implement getInfo() method.
     }
 }
