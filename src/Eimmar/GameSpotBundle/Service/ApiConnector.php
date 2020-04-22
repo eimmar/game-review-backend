@@ -8,12 +8,9 @@ use App\Eimmar\GameSpotBundle\DTO\Response\GamesResponse;
 use App\Eimmar\GameSpotBundle\DTO\Response\Response;
 use App\Eimmar\GameSpotBundle\DTO\Response\ReviewsResponse;
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
-use App\Eimmar\GameSpotBundle\Service\Transformer\DefaultTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\GameTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\ResponseTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\ReviewTransformer;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -53,8 +50,6 @@ class ApiConnector
      */
     private ReviewTransformer $reviewTransformer;
 
-    private TagAwareAdapter $cache;
-
     /**
      * @param string $userKey
      * @param HttpClientInterface $httpClient
@@ -74,7 +69,6 @@ class ApiConnector
         $this->gameTransformer = $gameTransformer;
         $this->responseTransformer = $responseTransformer;
         $this->reviewTransformer = $reviewTransformer;
-        $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
     }
 
     /**

@@ -1,0 +1,40 @@
+{
+    "error": "OK",
+    "limit": 100,
+    "offset": 0,
+    "number_of_page_results": 1,
+    "number_of_total_results": 1,
+    "status_code": 1,
+    "results": [
+        {
+            "release_date": "2015-12-31 12:00:00",
+            "description": "Description",
+            "id": 125765,
+            "name": "Fortnite",
+            "deck": "Deck",
+            "image": {
+                "square_tiny": "https://gamespot1.cbsistatic.com/uploads/square_tiny/1197/11970954/2588712-w200_fortnite_button.jpg",
+                "screen_tiny": "https://gamespot1.cbsistatic.com/uploads/screen_tiny/1197/11970954/2588712-w200_fortnite_button.jpg",
+                "square_small": "https://gamespot1.cbsistatic.com/uploads/square_small/1197/11970954/2588712-w200_fortnite_button.jpg",
+                "original": "https://gamespot1.cbsistatic.com/uploads/original/1197/11970954/2588712-w200_fortnite_button.jpg"
+            },
+            "genres": [
+                {
+                    "name": "Action"
+                },
+                {
+                    "name": "Shooter"
+                }
+            ],
+            "themes": [],
+            "franchises": [],
+            "images_api_url": "images",
+            "reviews_api_url": "reviews",
+            "articles_api_url": "articles",
+            "videos_api_url": "videos",
+            "releases_api_url": "releases",
+            "site_detail_url": "detail"
+        }
+    ],
+    "version": "1.0"
+}

@@ -1,0 +1,27 @@
+{
+    "error": "OK",
+    "limit": 1,
+    "offset": 0,
+    "number_of_page_results": 1,
+    "number_of_total_results": 6,
+    "status_code": 1,
+    "results": [
+        {
+            "publish_date": "2012-08-31 06:26:23",
+            "id": 6394451,
+            "authors": "Eric Neigher",
+            "title": "Counter-Strike: Global Offensive Review",
+            "image": {
+                "square_tiny": "https://gamespot1.cbsistatic.com/uploads/square_tiny/mig/1/0/2/0/2121020-169_counter_strike_offensive_video_review_multi_083112_m1.jpg",
+                "screen_tiny": "https://gamespot1.cbsistatic.com/uploads/screen_tiny/mig/1/0/2/0/2121020-169_counter_strike_offensive_video_review_multi_083112_m1.jpg",
+                "square_small": "https://gamespot1.cbsistatic.com/uploads/square_small/mig/1/0/2/0/2121020-169_counter_strike_offensive_video_review_multi_083112_m1.jpg",
+                "original": "https://gamespot1.cbsistatic.com/uploads/original/mig/1/0/2/0/2121020-169_counter_strike_offensive_video_review_multi_083112_m1.jpg"
+            },
+            "score": "8.5",
+            "deck": "Counter-Strike: Global Offensive is a solid update to a classic shooter.",
+            "good": "The intense, skill-based combat of Counter-Strike is as enthralling as ever|Low price|New modes put a clever spin on classic Counter-Strike.",
+            "bad": ""
+        }
+    ],
+    "version": "1.0"
+}
