@@ -45,9 +45,11 @@ class JWTCreatedListener
             }
 
             $payload['id'] = $user->getId();
+            $payload['email'] = $user->getEmail();
             $payload['firstName'] = $user->getFirstName();
             $payload['lastName'] = $user->getLastName();
             $payload['createdAt'] = $user->getCreatedAt();
+            $payload['avatar'] = $user->getAvatar();
 
             $event->setData($payload);
         }

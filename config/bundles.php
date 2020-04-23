@@ -25,4 +25,5 @@ return [
     Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle::class => ['all' => true],
     Sonata\EasyExtendsBundle\SonataEasyExtendsBundle::class => ['all' => true],
     Sonata\UserBundle\SonataUserBundle::class => ['all' => true],
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
 ];

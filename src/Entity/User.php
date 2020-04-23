@@ -8,9 +8,12 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity
+ * @Vich\Uploadable
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(
  *     name="fos_user",
@@ -67,7 +70,26 @@ class User extends BaseUser
     /**
      * @Groups({"user"})
      */
+    protected $username;
+
+    /**
+     * @Groups({"user"})
+     */
     protected $roles;
+
+    /**
+     * @Vich\UploadableField(mapping="user_avatar", fileNameProperty="avatar")
+     * @var File|null
+     */
+    private $avatarFile;
+
+    /**
+     * @Groups({"user"})
+     * @var string
+     * @Assert\Length(max="255")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $avatar;
 
     public function __construct()
     {
@@ -145,11 +167,35 @@ class User extends BaseUser
     }
 
     /**
-     * @param string $email
+     * @return null|string
      */
-    public function setEmail($email): void
+    public function getAvatar(): ?string
     {
-        $this->email = $email;
-        $this->username = $email;
+        return $this->avatar;
+    }
+
+    /**
+     * @param null|string $avatar
+     */
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getAvatarFile()
+    {
+        return $this->avatarFile;
+    }
+
+    /**
+     * @param File|null $avatarFile
+     */
+    public function setAvatarFile($avatarFile): void
+    {
+        $this->avatarFile = $avatarFile;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

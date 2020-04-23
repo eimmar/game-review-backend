@@ -11,7 +11,7 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class MatchAgainst extends FunctionNode
 {
-    public array $columns = array();
+    public array $columns = [];
 
     public $needle;
 

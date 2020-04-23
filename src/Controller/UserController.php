@@ -69,13 +69,19 @@ class UserController extends BaseApiController
             ['groups' => ['user']]
         );
     }
+
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
-     * @param User $user
+     * @Route("/{username}", name="user_show", methods={"GET"})
+     * @param string $username
      * @return JsonResponse
      */
-    public function show(User $user): JsonResponse
+    public function show(string $username): JsonResponse
     {
+        $user = $this->userManager->findUserByUsername($username);
+        if (!$user) {
+            return $this->apiResponseBuilder->respond('', 404);
+        }
+
         return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => ['user']]);
     }
 
@@ -115,7 +121,8 @@ class UserController extends BaseApiController
     {
         $this->denyAccessUnlessGranted(UserVoter::EDIT, $user);
         $form = $this->createForm(UserEditType::class, $user);
-        $form->submit(json_decode($request->getContent(), true));
+        $form->handleRequest($request);
+        $user->setAvatarFile($form->get('avatarFile')->getData());
 
         if ($form->isValid()) {
             $userManager->updateUser($user);
