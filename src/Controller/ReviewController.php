@@ -10,8 +10,8 @@ use App\Entity\User;
 use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
 use App\Form\ReviewType;
-use App\Repository\ReviewRepository;
-use Doctrine\Common\Collections\Criteria;
+use App\Security\Voter\ReviewVoter;
+use App\Service\ReviewService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +25,7 @@ class ReviewController extends BaseApiController
     /**
      * @Route("/", name="new_review_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_review_options", methods={"OPTIONS"})
+     * @Route("/edit/{id}", name="review_edit_options", methods={"OPTIONS"})
      * @Route("/game/{game}", name="game_review_options", methods={"OPTIONS"})
      * @Route("/user/{user}", name="reviews_by_user_options", methods={"OPTIONS"})
      * @return JsonResponse
@@ -36,22 +37,17 @@ class ReviewController extends BaseApiController
 
     /**
      * @Route("/game/{game}", name="reviews_by_game", methods={"POST"})
-     * @param ReviewRepository $repository
+     * @param ReviewService $service
      * @param Game $game
      * @param PaginationRequest $request
      * @return JsonResponse
      */
-    public function showByGame(ReviewRepository $repository, Game $game, PaginationRequest $request): JsonResponse
+    public function showByGame(ReviewService $service, Game $game, PaginationRequest $request): JsonResponse
     {
-        $reviews = $repository->findBy(
-            ['game' => $game, 'approved' => true],
-            ['createdAt' => 'DESC'],
-            $request->getPageSize(),
-            $request->getFirstResult()
-        );
+        $reviews = $service->getGameReviews($request, $game);
 
         return $this->apiResponseBuilder->respondWithPagination(
-            new PaginationResponse(1, $repository->count(['game' => $game]), $request->getPageSize(), $reviews),
+            new PaginationResponse(1, $game->getReviews()->count(), $request->getPageSize(), $reviews),
             ['groups' => ['review', 'user', 'game']]
         );
     }
@@ -60,16 +56,12 @@ class ReviewController extends BaseApiController
      * @Route("/user/{user}", name="reviews_by_user", methods={"POST"})
      * @param PaginationRequest $request
      * @param User $user
+     * @param ReviewService $reviewService
      * @return JsonResponse
      */
-    public function showByUser(PaginationRequest $request, User $user): JsonResponse
+    public function showByUser(PaginationRequest $request, User $user, ReviewService $reviewService): JsonResponse
     {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('approved', true))
-            ->orderBy(['createdAt' => 'DESC'])
-            ->setFirstResult($request->getFirstResult())
-            ->setMaxResults($request->getPageSize());
-        $reviews = $user->getReviews()->matching($criteria)->toArray();
+        $reviews = $reviewService->getUserReviews($request, $user);
 
         return $this->apiResponseBuilder->respondWithPagination(
             new PaginationResponse($request->getPage(), $user->getReviews()->count(), $request->getPageSize(), $reviews),
@@ -89,11 +81,35 @@ class ReviewController extends BaseApiController
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
         $form->submit(json_decode($request->getContent(), true));
+        $this->denyAccessUnlessGranted(ReviewVoter::MODIFY, $review);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($review);
             $entityManager->flush();
+
+            return $this->apiResponseBuilder->respond($review, 200, [], ['groups' => ['review', 'user', 'game']]);
+        }
+
+        throw new LogicException(LogicExceptionCode::INVALID_DATA);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="review_edit", methods={"POST"})
+     * @IsGranted({"ROLE_USER"})
+     * @param Request $request
+     * @param Review $review
+     * @return JsonResponse
+     * @throws LogicException
+     */
+    public function edit(Request $request, Review $review): JsonResponse
+    {
+        $this->denyAccessUnlessGranted(ReviewVoter::MODIFY, $review);
+        $form = $this->createForm(ReviewType::class, $review);
+        $form->submit(json_decode($request->getContent(), true));
+
+        if ($form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
 
             return $this->apiResponseBuilder->respond($review, 200, [], ['groups' => ['review', 'user', 'game']]);
         }
@@ -108,21 +124,22 @@ class ReviewController extends BaseApiController
      */
     public function show(Review $review): JsonResponse
     {
-        return $this->apiResponseBuilder->respond($review);
+        return $this->apiResponseBuilder->respond($review, 200, [], ['groups' => ['review', 'user', 'game']]);
     }
 
     /**
      * @Route("/{id}", name="review_delete", methods={"DELETE"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted({"ROLE_USER"})
      * @param Review $review
      * @return JsonResponse
      */
     public function delete(Review $review): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ReviewVoter::MODIFY, $review);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($review);
         $entityManager->flush();
 
-        return $this->apiResponseBuilder->respond($review);
+        return $this->apiResponseBuilder->respond('OK');
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\API;
 
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
 use App\Eimmar\GameSpotBundle\DTO\Response\Response;

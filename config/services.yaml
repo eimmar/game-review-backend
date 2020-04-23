@@ -33,7 +33,7 @@ services:
         arguments: ['@app.api_json_response_builder', '@App\Repository\GameRepository']
 
     App\Controller\Admin\IGDBController:
-        arguments: ['@App\Service\IGDBGameDataUpdater']
+        arguments: ['@App\Service\API\IGDBGameDataUpdater']
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
@@ -57,11 +57,11 @@ services:
             $frontendUrl: '%env(FRONTEND_URL)%'
 
 
-    App\Service\GameSpotAdapter:
+    App\Service\API\GameSpotAdapter:
         arguments:
             $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
 
-    App\Service\IGDBReviewAdapter:
+    App\Service\API\IGDBReviewAdapter:
         arguments:
             $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
 

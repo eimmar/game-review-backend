@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DTO\PaginationRequest;
-use App\Service\IGDBReviewAdapter;
+use App\Service\API\IGDBReviewAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

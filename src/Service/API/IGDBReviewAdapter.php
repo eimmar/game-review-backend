@@ -18,7 +18,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\API;
 
 use App\DTO\PaginationRequest;
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;

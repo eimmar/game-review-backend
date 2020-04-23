@@ -43,10 +43,12 @@ class GameListService
     {
         $user = $this->security->getUser();
         $expr = Criteria::expr();
-        $criteria = Criteria::create()->where($expr->andX(
-            $expr->eq('privacyType', GameListPrivacyType::PUBLIC),
-            ...$filterExpressions
-        ));
+        $criteria = Criteria::create()
+            ->where($expr->andX(
+                $expr->eq('privacyType', GameListPrivacyType::PUBLIC),
+                ...$filterExpressions
+            ))
+        ->orderBy(['updatedAt' => 'DESC']);
 
         if ($user) {
             $criteria->orWhere($expr->andX(
@@ -114,24 +116,24 @@ class GameListService
 
     /**
      * @param User $user
-     * @return ArrayCollection|Collection|LazyCriteriaCollection
+     * @return GameList[]
      */
     public function getListsByUser(User $user)
     {
-        return $user->getGameLists()->matching($this->privacyTypeCriteria());
+        return $user->getGameLists()->matching($this->privacyTypeCriteria())->toArray();
     }
 
     /**
      * @param User $user
      * @param Game $game
-     * @return ArrayCollection|Collection|LazyCriteriaCollection
+     * @return GameList[]
      */
     public function getUserListsContainingGame(User $user, Game $game)
     {
-        $gameLists =  $this->entityManager
+        $gameLists = $this->entityManager
             ->getRepository(GameList::class)
             ->getGameListsWithContainingInfo($game, $user);
 
-        return (new ArrayCollection($gameLists))->matching($this->privacyTypeCriteria());
+        return array_values((new ArrayCollection($gameLists))->matching($this->privacyTypeCriteria())->toArray());
     }
 }

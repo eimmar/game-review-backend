@@ -524,6 +524,14 @@ class Game implements ExternalEntityInterface
     }
 
     /**
+     * @param ArrayCollection $gameLists
+     */
+    public function setGameLists(ArrayCollection $gameLists)
+    {
+        array_map([$this, 'addGameList'], $gameLists->toArray());
+    }
+
+    /**
      * @param GameList $gameList
      */
     public function addGameList(GameList $gameList)

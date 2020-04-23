@@ -46,6 +46,7 @@ class GameListController extends BaseApiController
     public function allForUser(User $user, GameListService $service): JsonResponse
     {
         $gameLists = $service->getListsByUser($user);
+
         return $this->apiResponseBuilder->respond($gameLists, 200, [], ['groups' => 'gameList']);
     }
 
@@ -65,8 +66,11 @@ class GameListController extends BaseApiController
         $form = $this->createForm(GameListCreateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isValid()) {
             $service->validate($form->getData(), false);
+            foreach ($gameList->getGames() as $game) {
+                $game->addGameList($gameList);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($gameList);
@@ -108,7 +112,7 @@ class GameListController extends BaseApiController
             $service->validate($form->getData());
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
+            return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => ['gameList', 'user']]);
         }
 
         throw new LogicException(LogicExceptionCode::INVALID_DATA);

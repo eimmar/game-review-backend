@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\API;
 
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\ApiConnector;

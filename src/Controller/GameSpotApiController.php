@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
 use App\Entity\Game;
-use App\Service\GameSpotAdapter;
+use App\Service\API\GameSpotAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

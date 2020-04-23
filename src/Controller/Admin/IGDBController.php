@@ -22,7 +22,7 @@ namespace App\Controller\Admin;
 
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Form\Admin\IGDBRequestBodyType;
-use App\Service\IGDBGameDataUpdater;
+use App\Service\API\IGDBGameDataUpdater;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormRenderer;
 

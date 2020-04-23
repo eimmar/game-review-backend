@@ -2,12 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\Game;
 use App\Entity\GameList;
 use App\Enum\GameListPrivacyType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class GameListCreateType extends AbstractType
@@ -23,8 +27,13 @@ class GameListCreateType extends AbstractType
                 ]])]
             ])
             ->add('user')
-            ->add('games')
-            ->add('name');
+            ->add('games', CollectionType::class, [
+                'entry_type' => EntityType::class,
+                'entry_options' => ['class' => Game::class],
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
+            ->add('name', null, ['constraints' => [new NotBlank(), new Length(['max' => 100])]]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
