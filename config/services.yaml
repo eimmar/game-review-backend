@@ -86,7 +86,6 @@ services:
     App\Eimmar\IsThereAnyDealBundle\Service\ApiConnector:
         arguments:
             $userKey: '%env(IS_THERE_ANY_DEAL_API_KEY)%'
-            $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
 
     # GameSpot Bundle service configuration
     App\Eimmar\GameSpotBundle\Service\ApiConnector:
