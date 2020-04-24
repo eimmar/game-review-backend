@@ -10,14 +10,18 @@ class PaginationRequest
 
     private int $pageSize;
 
+    private ?int $firstResult;
+
     /**
      * @param int $page
      * @param int $pageSize
+     * @param int|null $firstResult
      */
-    public function __construct(int $page, int $pageSize)
+    public function __construct(int $page, int $pageSize, ?int $firstResult = null)
     {
         $this->page = $page;
         $this->pageSize = $pageSize;
+        $this->firstResult = $firstResult;
     }
 
     /**
@@ -36,8 +40,8 @@ class PaginationRequest
         return $this->pageSize;
     }
 
-    public function getFirstResult()
+    public function getFirstResult(): int
     {
-        return $this->getPageSize() * ($this->getPage() - 1);
+        return $this->firstResult ?? $this->getPageSize() * ($this->getPage() - 1);
     }
 }

@@ -74,10 +74,7 @@ class GameController extends BaseApiController
             ->setMaxResults($request->getPageSize());
         $games = $gameList->getGames()->matching($criteria)->toArray();
 
-        return $this->apiResponseBuilder->respondWithPagination(
-            new PaginationResponse($request->getPage(), $gameList->getGames()->count(), $request->getPageSize(), $games),
-            ['groups' => ['game']]
-        );
+        return $this->apiResponseBuilder->respond($games, 200, [], ['groups' => ['game']]);
     }
 
     /**

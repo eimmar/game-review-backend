@@ -64,7 +64,13 @@ class IGDBGameAdapter
         $requestBody->setFields(self::LIST_FIELDS);
         $this->gameTransformer->setUseDatabase(false);
 
-        return array_map([$this->gameTransformer, 'transform'], $this->apiConnector->games($requestBody));
+        try {
+            $games = $this->apiConnector->games($requestBody);
+        } catch (\Exception $e) {
+            $games = [];
+        }
+
+        return array_map([$this->gameTransformer, 'transform'], $games);
     }
 
     public function findOneBySlug(string $slug)

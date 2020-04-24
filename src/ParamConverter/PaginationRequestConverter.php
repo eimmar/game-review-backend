@@ -21,7 +21,11 @@ class PaginationRequestConverter implements ParamConverterInterface
             throw new \InvalidArgumentException('Invalid request parameters.');
         }
 
-        $request->attributes->set($configuration->getName(), new PaginationRequest($content['page'], $content['pageSize']));
+        $request->attributes->set($configuration->getName(), new PaginationRequest(
+            $content['page'],
+            $content['pageSize'],
+            isset($content['firstResult']) ? $content['firstResult'] : null
+        ));
     }
 
     /**
