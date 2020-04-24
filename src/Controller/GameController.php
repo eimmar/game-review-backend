@@ -12,7 +12,7 @@ use App\Repository\Game\PlatformRepository;
 use App\Repository\Game\ThemeRepository;
 use App\Repository\GameRepository;
 use App\Service\ApiJsonResponseBuilder;
-use Doctrine\Common\Collections\Criteria;
+use App\Service\GameListService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -64,15 +64,12 @@ class GameController extends BaseApiController
      * @Route("/list/{gameList}", name="games_for_list", methods={"POST"})
      * @param PaginationRequest $request
      * @param GameList $gameList
+     * @param GameListService $service
      * @return JsonResponse
      */
-    public function listGames(PaginationRequest $request, GameList $gameList): JsonResponse
+    public function listGames(PaginationRequest $request, GameList $gameList, GameListService $service): JsonResponse
     {
-        $criteria = Criteria::create()
-            ->orderBy(['createdAt' => 'DESC'])
-            ->setFirstResult($request->getFirstResult())
-            ->setMaxResults($request->getPageSize());
-        $games = $gameList->getGames()->matching($criteria)->toArray();
+        $games = $service->getGames($gameList, $request);
 
         return $this->apiResponseBuilder->respond($games, 200, [], ['groups' => ['game']]);
     }

@@ -12,6 +12,7 @@ use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
 use App\Security\Voter\GameListVoter;
 use App\Service\GameListService;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,14 +68,7 @@ class GameListController extends BaseApiController
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isValid()) {
-            $service->validate($form->getData(), false);
-            foreach ($gameList->getGames() as $game) {
-                $game->addGameList($gameList);
-            }
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($gameList);
-            $entityManager->flush();
+            $service->createList($gameList, $form->get('games')->getData());
 
             return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
         }
@@ -98,19 +92,21 @@ class GameListController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @param GameList $gameList
-     * @param GameListService $service
      * @return JsonResponse
      * @throws \Exception
      */
-    public function edit(Request $request, GameList $gameList,  GameListService $service): JsonResponse
+    public function edit(Request $request, GameList $gameList): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
         $form = $this->createForm(GameListUpdateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isValid()) {
-            $service->validate($form->getData());
-            $this->getDoctrine()->getManager()->flush();
+            try {
+                $this->getDoctrine()->getManager()->flush();
+            } catch (UniqueConstraintViolationException $e) {
+                throw new LogicException(LogicExceptionCode::GAME_LIST_DUPLICATE_NAME);
+            }
 
             return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => ['gameList', 'user']]);
         }
@@ -140,7 +136,7 @@ class GameListController extends BaseApiController
      * @param GameListService $service
      * @return JsonResponse
      */
-    public function addGameToCustom(GameList $gameList, Game $game, GameListService $service): JsonResponse
+    public function addToList(GameList $gameList, Game $game, GameListService $service): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
         $service->addToList($gameList, $game);

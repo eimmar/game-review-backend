@@ -32,6 +32,7 @@ class GameListCreateType extends AbstractType
                 'entry_options' => ['class' => Game::class],
                 'allow_add' => true,
                 'allow_delete' => true,
+                'mapped' => false,
             ])
             ->add('name', null, ['constraints' => [new NotBlank(), new Length(['max' => 100])]]);
     }

@@ -174,9 +174,9 @@ class Game implements ExternalEntityInterface
 
     /**
      * @var GameList[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\GameList", inversedBy="games", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\GameListGame", mappedBy="game", cascade={"persist"})
      */
-    private $gameLists;
+    private $gameListGames;
 
     public function __construct()
     {
@@ -189,7 +189,7 @@ class Game implements ExternalEntityInterface
         $this->websites = new ArrayCollection();
         $this->companies = new ArrayCollection();
         $this->reviews = new ArrayCollection();
-        $this->gameLists = new ArrayCollection();
+        $this->gameListGames = new ArrayCollection();
     }
 
     /**
@@ -331,9 +331,9 @@ class Game implements ExternalEntityInterface
     /**
      * @return GameList[]|PersistentCollection
      */
-    public function getGameLists()
+    public function getGameListGames()
     {
-        return $this->gameLists;
+        return $this->gameListGames;
     }
 
     /**
@@ -524,34 +524,35 @@ class Game implements ExternalEntityInterface
     }
 
     /**
-     * @param ArrayCollection $gameLists
+     * @param ArrayCollection $gameListGames
      */
-    public function setGameLists(ArrayCollection $gameLists)
+    public function setGameListGames(ArrayCollection $gameListGames)
     {
-        array_map([$this, 'addGameList'], $gameLists->toArray());
+        $this->gameListGames = $gameListGames;
+//        array_map([$this, 'addGameList'], $gameLists->toArray());
     }
 
-    /**
-     * @param GameList $gameList
-     */
-    public function addGameList(GameList $gameList)
-    {
-        if (!$this->gameLists->contains($gameList)) {
-            $this->gameLists[] = $gameList;
-            $gameList->addGame($this);
-        }
-    }
-
-    /**
-     * @param GameList $gameList
-     */
-    public function removeGameList(GameList $gameList)
-    {
-        if ($this->gameLists->contains($gameList)) {
-            $this->gameLists->removeElement($gameList);
-            $gameList->removeGame($this);
-        }
-    }
+//    /**
+//     * @param GameList $gameList
+//     */
+//    public function addGameList(GameList $gameList)
+//    {
+//        if (!$this->gameLists->contains($gameList)) {
+//            $this->gameLists[] = $gameList;
+//            $gameList->addGame($this);
+//        }
+//    }
+//
+//    /**
+//     * @param GameList $gameList
+//     */
+//    public function removeGameList(GameList $gameList)
+//    {
+//        if ($this->gameLists->contains($gameList)) {
+//            $this->gameLists->removeElement($gameList);
+//            $gameList->removeGame($this);
+//        }
+//    }
 
     /**
      * @return float|null

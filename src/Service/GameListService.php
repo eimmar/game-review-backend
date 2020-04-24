@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\DTO\PaginationRequest;
 use App\Entity\Game;
 use App\Entity\GameList;
+use App\Entity\GameListGame;
 use App\Entity\User;
 use App\Enum\GameListPrivacyType;
-use App\Enum\GameListType;
 use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ExpressionBuilder;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\LazyCriteriaCollection;
 use Symfony\Component\Security\Core\Security;
 
 class GameListService
@@ -62,25 +61,19 @@ class GameListService
 
     /**
      * @param GameList $gameList
-     * @param bool $initialized
-     * @throws \Exception
+     * @param Game[] $games
+     * @throws LogicException
      */
-    public function validate(GameList $gameList, bool $initialized = true)
+    public function createList(GameList $gameList, $games)
     {
-        $expr = Criteria::expr();
-        $duplicateNameCriteria = Criteria::create()->where($expr->andX(
-            ...array_filter([
-                $expr->eq('type', GameListType::CUSTOM),
-                $expr->eq('name', $gameList->getName()),
-                $initialized ? $expr->neq('id', $gameList->getId()) : null
-            ])
-        ));
+        foreach ($games as $game) {
+            $this->entityManager->persist(new GameListGame($gameList, $game));
+        }
+        $this->entityManager->persist($gameList);
 
-        if (
-            !in_array($gameList->getType(), [GameListType::FAVORITES, GameListType::WISHLIST, GameListType::PLAYING, GameListType::CUSTOM])
-            || !in_array($gameList->getPrivacyType(), [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY, GameListPrivacyType::PUBLIC])
-            || $gameList->getUser()->getGameLists()->matching($duplicateNameCriteria)->count()
-        ) {
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
             throw new LogicException(LogicExceptionCode::GAME_LIST_DUPLICATE_NAME);
         }
     }
@@ -91,27 +84,19 @@ class GameListService
      */
     public function addToList(GameList $gameList, Game $game)
     {
-        $gameList->addGame($game);
-        $this->validate($gameList);
-
-        $this->entityManager->persist($gameList);
+        $this->entityManager->persist(new GameListGame($gameList, $game));
         $this->entityManager->flush();
     }
 
     /**
      * @param GameList $gameList
      * @param Game $game
-     * @return GameList
      */
-    public function removeFromList(GameList $gameList, Game $game): GameList
+    public function removeFromList(GameList $gameList, Game $game)
     {
-        $gameList->removeGame($game);
-        $this->validate($gameList);
-
-        $this->entityManager->persist($gameList);
+        $gameListGames = $gameList->getGameListGames()->matching(Criteria::create()->where(Criteria::expr()->eq('game', $game)));
+        $this->entityManager->remove($gameListGames[0]);
         $this->entityManager->flush();
-
-        return $gameList;
     }
 
     /**
@@ -130,10 +115,28 @@ class GameListService
      */
     public function getUserListsContainingGame(User $user, Game $game)
     {
-        $gameLists = $this->entityManager
-            ->getRepository(GameList::class)
-            ->getGameListsWithContainingInfo($game, $user);
+        $gameListGames = $this->entityManager
+            ->getRepository(GameListGame::class)
+            ->getVisibleUserGameListsContainingGame($game, $user, $this->security->getUser());
 
-        return array_values((new ArrayCollection($gameLists))->matching($this->privacyTypeCriteria())->toArray());
+        return array_map(function (GameListGame $listGame) {
+            return $listGame->getGameList();
+        }, $gameListGames);
+    }
+
+    /**
+     * @param GameList $gameList
+     * @param PaginationRequest $request
+     * @return array
+     */
+    public function getGames(GameList $gameList, PaginationRequest $request)
+    {
+        $criteria = Criteria::create()
+            ->orderBy(['createdAt' => 'DESC'])
+            ->setFirstResult($request->getFirstResult())
+            ->setMaxResults($request->getPageSize());
+        return $gameList->getGameListGames()->matching($criteria)->map(function (GameListGame $listGame) {
+            return $listGame->getGame();
+        })->toArray();
     }
 }

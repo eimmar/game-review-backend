@@ -6,6 +6,7 @@ use App\Enum\GameListPrivacyType;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\GameListRepository")
+ * @ORM\Table(name="game_list",
+ *    uniqueConstraints={
+ *       @UniqueConstraint(name="unique_user_list_name", columns={"user_id", "name", "type"})
+ *    }
+ * )
  */
 class GameList
 {
@@ -28,10 +34,10 @@ class GameList
     private string $id;
 
     /**
-     * @var Game[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Game", mappedBy="gameLists")
+     * @var GameListGame[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="GameListGame", mappedBy="gameList")
      */
-    private $games;
+    private $gameListGames;
 
     /**
      * @Groups({"gameList"})
@@ -66,34 +72,34 @@ class GameList
 
     public function __construct(int $type, $user)
     {
-        $this->games = new ArrayCollection();
+        $this->gameListGames = new ArrayCollection();
         $this->privacyType = GameListPrivacyType::PRIVATE;
         $this->type = $type;
         $this->name = '';
         $this->user = $user;
     }
 
-    /**
-     * @param Game $game
-     */
-    public function addGame(Game $game)
-    {
-        if (!$this->games->contains($game)) {
-            $this->games[] = $game;
-            $game->addGameList($this);
-        }
-    }
-
-    /**
-     * @param Game $game
-     */
-    public function removeGame(Game $game)
-    {
-        if ($this->games->contains($game)) {
-            $this->games->removeElement($game);
-            $game->removeGameList($this);
-        }
-    }
+//    /**
+//     * @param GameListGame $game
+//     */
+//    public function addGame(GameListGame $game)
+//    {
+//        if (!$this->games->contains($game)) {
+//            $this->games[] = $game;
+//            $game->addGameList($this);
+//        }
+//    }
+//
+//    /**
+//     * @param GameListGame $game
+//     */
+//    public function removeGame(GameListGame $game)
+//    {
+//        if ($this->games->contains($game)) {
+//            $this->games->removeElement($game);
+//            $game->removeGameList($this);
+//        }
+//    }
 
     /**
      * @return string
@@ -104,21 +110,22 @@ class GameList
     }
 
     /**
-     * @return Game[]|PersistentCollection
+     * @return GameListGame[]|PersistentCollection
      */
-    public function getGames()
+    public function getGameListGames()
     {
-        return $this->games;
+        return $this->gameListGames;
     }
 
     /**
-     * @param Game[]|PersistentCollection $games
+     * @param GameListGame[]|PersistentCollection $gameListGames
      */
-    public function setGames(PersistentCollection $games): void
+    public function setGameListGames(PersistentCollection $gameListGames): void
     {
-        foreach ($games as $game) {
-            $this->addGame($game);
-        }
+        $this->gameListGames = $gameListGames;
+//        foreach ($games as $game) {
+//            $this->addGame($game);
+//        }
     }
 
     /**
