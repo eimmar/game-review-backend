@@ -21,7 +21,6 @@ class IGDBGameAdapter
 
     const FIELDS = ['*',
         'age_ratings.*',
-        'age_ratings.content_descriptions.*',
         'involved_companies.*',
         'involved_companies.company.*',
         'involved_companies.company.websites.*',
@@ -32,7 +31,6 @@ class IGDBGameAdapter
         'themes.*',
         'websites.*',
         'cover.*',
-        'release_dates.*'
     ];
 
     const LIST_FIELDS = [
