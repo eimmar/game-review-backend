@@ -32,6 +32,8 @@ class GameTransformer implements IGDBTransformerInterface
 
     private ThemeTransformer $themeTransformer;
 
+    private bool $useDatabase = true;
+
     /**
      * @param EntityManagerInterface $entityManager
      * @param AgeRatingTransformer $ageRatingTransformer
@@ -85,13 +87,25 @@ class GameTransformer implements IGDBTransformerInterface
     }
 
     /**
+     * @param bool $useDatabase
+     */
+    public function setUseDatabase(bool $useDatabase)
+    {
+        $this->useDatabase = $useDatabase;
+    }
+
+    /**
      * @param IGDBGame $igdbGame
      * @return Game
      * @throws \Exception
      */
     public function transform($igdbGame)
     {
-        $game = $this->entityManager->getRepository(Game::class)->findOneBy(['externalId' => $igdbGame->getId()]) ?: new Game();
+        if ($this->useDatabase) {
+            $game = $this->entityManager->getRepository(Game::class)->findOneBy(['externalId' => $igdbGame->getId()]) ?: new Game();
+        } else {
+            $game = new Game();
+        }
 
         $game->setName($igdbGame->getName());
         $game->setExternalId($igdbGame->getId());
@@ -102,33 +116,35 @@ class GameTransformer implements IGDBTransformerInterface
         $game->setRatingCount($igdbGame->getTotalRatingCount());
         $game->setSlug($igdbGame->getSlug() ?? (string)$igdbGame->getId());
 
-        $companies = new ArrayCollection(array_map([$this->companyTransformer, 'transform'], $igdbGame->getInvolvedCompanies()));
-        $genres = new ArrayCollection(array_map([$this->genreTransformer, 'transform'], $igdbGame->getGenres()));
-        $gameModes = new ArrayCollection(array_map([$this->gameModeTransformer, 'transform'], $igdbGame->getGameModes()));
-        $platforms = new ArrayCollection(array_map([$this->platformTransformer, 'transform'], $igdbGame->getPlatforms()));
-        $themes = new ArrayCollection(array_map([$this->themeTransformer, 'transform'], $igdbGame->getThemes()));
+        if ($this->useDatabase) {
+            $companies = new ArrayCollection(array_map([$this->companyTransformer, 'transform'], $igdbGame->getInvolvedCompanies()));
+            $genres = new ArrayCollection(array_map([$this->genreTransformer, 'transform'], $igdbGame->getGenres()));
+            $gameModes = new ArrayCollection(array_map([$this->gameModeTransformer, 'transform'], $igdbGame->getGameModes()));
+            $platforms = new ArrayCollection(array_map([$this->platformTransformer, 'transform'], $igdbGame->getPlatforms()));
+            $themes = new ArrayCollection(array_map([$this->themeTransformer, 'transform'], $igdbGame->getThemes()));
 
-        /** @noinspection PhpParamsInspection */
-        $this->gameWebsiteTransformer->setCache($this->loadExisting(Game\Website::class, $igdbGame->getWebsites()));
-        $websites = new ArrayCollection(array_map([$this->gameWebsiteTransformer, 'transform'], $igdbGame->getWebsites()));
+            /** @noinspection PhpParamsInspection */
+            $this->gameWebsiteTransformer->setCache($this->loadExisting(Game\Website::class, $igdbGame->getWebsites()));
+            $websites = new ArrayCollection(array_map([$this->gameWebsiteTransformer, 'transform'], $igdbGame->getWebsites()));
 
-        /** @noinspection PhpParamsInspection */
-        $this->screenshotTransformer->setCache($this->loadExisting(Game\Screenshot::class, $igdbGame->getScreenshots()));
-        $screenshots = new ArrayCollection(array_map([$this->screenshotTransformer, 'transform'], $igdbGame->getScreenshots()));
+            /** @noinspection PhpParamsInspection */
+            $this->screenshotTransformer->setCache($this->loadExisting(Game\Screenshot::class, $igdbGame->getScreenshots()));
+            $screenshots = new ArrayCollection(array_map([$this->screenshotTransformer, 'transform'], $igdbGame->getScreenshots()));
 
-        /** @noinspection PhpParamsInspection */
-        $this->ageRatingTransformer->setCache($this->loadExisting(Game\AgeRating::class, $igdbGame->getAgeRatings()));
-        $ageRatings = new ArrayCollection(array_map([$this->ageRatingTransformer, 'transform'], $igdbGame->getAgeRatings()));
+            /** @noinspection PhpParamsInspection */
+            $this->ageRatingTransformer->setCache($this->loadExisting(Game\AgeRating::class, $igdbGame->getAgeRatings()));
+            $ageRatings = new ArrayCollection(array_map([$this->ageRatingTransformer, 'transform'], $igdbGame->getAgeRatings()));
 
-        $game->setAgeRatings($ageRatings);
-        $game->setScreenshots($screenshots);
-        $game->setWebsites($websites);
+            $game->setAgeRatings($ageRatings);
+            $game->setScreenshots($screenshots);
+            $game->setWebsites($websites);
 
-        $game->setCompanies($companies);
-        $game->setGameModes($gameModes);
-        $game->setGenres($genres);
-        $game->setPlatforms($platforms);
-        $game->setThemes($themes);
+            $game->setCompanies($companies);
+            $game->setGameModes($gameModes);
+            $game->setGenres($genres);
+            $game->setPlatforms($platforms);
+            $game->setThemes($themes);
+        }
 
         if ($igdbGame->getFirstReleaseDate()) {
             $game->setReleaseDate((new DateTime)->setTimestamp($igdbGame->getFirstReleaseDate()));

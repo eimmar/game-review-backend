@@ -64,13 +64,15 @@ class IGDBGameAdapter
     public function findAll(RequestBody $requestBody)
     {
         $requestBody->setFields(self::LIST_FIELDS);
+        $this->gameTransformer->setUseDatabase(false);
 
         return array_map([$this->gameTransformer, 'transform'], $this->apiConnector->games($requestBody));
     }
 
     public function findOneBySlug(string $slug)
     {
-        $game = $this->entityManager->getRepository(Game::class)->findOneBy(['slug' => $slug]);
+        $game = $this->entityManager->getRepository(Game::class)
+            ->findOneBy(['slug' => $slug]);
         if ($game) {
             return $game;
         }
@@ -78,6 +80,7 @@ class IGDBGameAdapter
         $requestBody = new RequestBody(self::FIELDS, ['slug' => '= "' . $slug . '"'], '', '', 1, 0);
         $games = $this->apiConnector->games($requestBody);
         if ($games) {
+            $this->gameTransformer->setUseDatabase(true);
             $game = $this->gameTransformer->transform($games[0]);
             $this->entityManager->persist($game);
             $this->entityManager->flush();

@@ -106,7 +106,7 @@ class Game implements ExternalEntityInterface
     /**
      * @var AgeRating[]|ArrayCollection
      * @Groups({"gameLoaded"})
-     * @ORM\OneToMany(targetEntity="App\Entity\Game\AgeRating", mappedBy="game", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\AgeRating", mappedBy="game", cascade={"persist", "remove"})
      */
     private $ageRatings;
 
@@ -120,7 +120,7 @@ class Game implements ExternalEntityInterface
     /**
      * @var Screenshot[]|ArrayCollection
      * @Groups({"gameLoaded"})
-     * @ORM\OneToMany(targetEntity="App\Entity\Game\Screenshot", mappedBy="game", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\Screenshot", mappedBy="game", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $screenshots;
 
@@ -155,7 +155,7 @@ class Game implements ExternalEntityInterface
     /**
      * @var Website[]|ArrayCollection
      * @Groups({"gameLoaded"})
-     * @ORM\OneToMany(targetEntity="App\Entity\Game\Website", mappedBy="game", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Game\Website", mappedBy="game", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $websites;
 
