@@ -7,6 +7,7 @@ namespace App\Service\API;
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\ApiConnector;
 use App\Entity\Game;
+use App\Service\CacheService;
 use App\Service\Transformer\IGDB\GameTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
@@ -18,6 +19,10 @@ class IGDBGameAdapter
     private GameTransformer $gameTransformer;
 
     private ApiConnector $apiConnector;
+
+    private CacheService $cache;
+
+    const CACHE_TAG = 'igdb.games';
 
     const FIELDS = ['*',
         'age_ratings.*',
@@ -48,29 +53,36 @@ class IGDBGameAdapter
      * @param EntityManagerInterface $entityManager
      * @param GameTransformer $gameTransformer
      * @param ApiConnector $apiConnector
+     * @param CacheService $cache
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         GameTransformer $gameTransformer,
-        ApiConnector $apiConnector
+        ApiConnector $apiConnector,
+        CacheService $cache
     ) {
         $this->entityManager = $entityManager;
         $this->gameTransformer = $gameTransformer;
         $this->apiConnector = $apiConnector;
+        $this->cache = $cache;
     }
 
     public function findAll(RequestBody $requestBody)
     {
         $requestBody->setFields(self::LIST_FIELDS);
-        $this->gameTransformer->setUseDatabase(false);
 
-        try {
-            $games = $this->apiConnector->games($requestBody);
-        } catch (\Exception $e) {
-            $games = [];
-        }
+        $callBack = function (RequestBody $requestBody) {
+            try {
+                $games = $this->apiConnector->games($requestBody);
+            } catch (\Exception $e) {
+                $games = [];
+            }
+            $this->gameTransformer->setUseDatabase(false);
 
-        return array_map([$this->gameTransformer, 'transform'], $games);
+            return array_map([$this->gameTransformer, 'transform'], $games);
+        };
+
+        return $this->cache->getItem(self::CACHE_TAG, $requestBody->unwrap(), $callBack, [$requestBody]);
     }
 
     public function findOneBySlug(string $slug)

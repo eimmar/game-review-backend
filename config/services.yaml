@@ -52,12 +52,7 @@ services:
             $params: '@parameter_bag'
             $frontendUrl: '%env(FRONTEND_URL)%'
 
-
-    App\Service\API\GameSpotAdapter:
-        arguments:
-            $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
-
-    App\Service\API\IGDBReviewAdapter:
+    App\Service\CacheService:
         arguments:
             $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
 
