@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
-use App\Service\API\IGDBGameDataUpdater;
+use App\Service\API\IGDBGameAdapter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,12 +14,12 @@ class IGDBGameDataUpdateCommand extends Command
 {
     protected static $defaultName = 'app:igdb:update-game-data';
 
-    private IGDBGameDataUpdater $igdbGameDataUpdater;
+    private IGDBGameAdapter $igdbGameDataUpdater;
 
     /**
-     * @param IGDBGameDataUpdater $igdbGameDataUpdater
+     * @param IGDBGameAdapter $igdbGameDataUpdater
      */
-    public function __construct(IGDBGameDataUpdater $igdbGameDataUpdater)
+    public function __construct(IGDBGameAdapter $igdbGameDataUpdater)
     {
         parent::__construct();
         $this->igdbGameDataUpdater = $igdbGameDataUpdater;

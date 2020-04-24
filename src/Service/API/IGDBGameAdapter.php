@@ -6,17 +6,45 @@ namespace App\Service\API;
 
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\ApiConnector;
+use App\Entity\Game;
 use App\Service\Transformer\IGDB\GameTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
 
-class IGDBGameDataUpdater
+class IGDBGameAdapter
 {
     private EntityManagerInterface $entityManager;
 
     private GameTransformer $gameTransformer;
 
     private ApiConnector $apiConnector;
+
+    const FIELDS = ['*',
+        'age_ratings.*',
+        'age_ratings.content_descriptions.*',
+        'involved_companies.*',
+        'involved_companies.company.*',
+        'involved_companies.company.websites.*',
+        'genres.*',
+        'game_modes.*',
+        'platforms.*',
+        'screenshots.*',
+        'themes.*',
+        'websites.*',
+        'cover.*',
+        'release_dates.*'
+    ];
+
+    const LIST_FIELDS = [
+        'name',
+        'slug',
+        'cover.url',
+        'summary',
+        'first_release_date',
+        'category',
+        'total_rating',
+        'total_rating_count',
+    ];
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -33,6 +61,31 @@ class IGDBGameDataUpdater
         $this->apiConnector = $apiConnector;
     }
 
+    public function findAll(RequestBody $requestBody)
+    {
+        $requestBody->setFields(self::LIST_FIELDS);
+
+        return array_map([$this->gameTransformer, 'transform'], $this->apiConnector->games($requestBody));
+    }
+
+    public function findOneBySlug(string $slug)
+    {
+        $game = $this->entityManager->getRepository(Game::class)->findOneBy(['slug' => $slug]);
+        if ($game) {
+            return $game;
+        }
+
+        $requestBody = new RequestBody(self::FIELDS, ['slug' => '= "' . $slug . '"'], '', '', 1, 0);
+        $games = $this->apiConnector->games($requestBody);
+        if ($games) {
+            $game = $this->gameTransformer->transform($games[0]);
+            $this->entityManager->persist($game);
+            $this->entityManager->flush();
+        }
+
+        return $game;
+    }
+
     /**
      * @param RequestBody $requestBody
      * @return array
@@ -43,23 +96,7 @@ class IGDBGameDataUpdater
         $updated = 0;
 
         if (count($requestBody->getFields()) === 0) {
-            $requestBody->setFields(
-                ['*',
-                    'age_ratings.*',
-                    'age_ratings.content_descriptions.*',
-                    'involved_companies.*',
-                    'involved_companies.company.*',
-                    'involved_companies.company.websites.*',
-                    'genres.*',
-                    'game_modes.*',
-                    'platforms.*',
-                    'screenshots.*',
-                    'themes.*',
-                    'websites.*',
-                    'cover.*',
-                    'release_dates.*'
-                ]
-            );
+            $requestBody->setFields(self::FIELDS);
         }
 
         $gamesFromApi = $this->apiConnector->games($requestBody);

@@ -18,14 +18,14 @@ trait TimestampableTrait
      * @Groups({"gameLoaded", "review", "user", "game"})
      * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
      */
-    protected DateTimeImmutable $createdAt;
+    protected $createdAt;
 
     /**
      * @var DateTimeImmutable
      * @Groups({"gameLoaded", "review", "user", "game"})
      * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
      */
-    protected DateTimeImmutable $updatedAt;
+    protected $updatedAt;
 
     /**
      * @param  DateTimeImmutable $createdAt
@@ -38,7 +38,7 @@ trait TimestampableTrait
     /**
      * @return DateTimeImmutable
      */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
@@ -54,7 +54,7 @@ trait TimestampableTrait
     /**
      * @return DateTimeImmutable
      */
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }

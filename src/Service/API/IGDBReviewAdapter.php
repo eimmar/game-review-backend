@@ -81,7 +81,7 @@ class IGDBReviewAdapter
     {
         $requestBody = new RequestBody(
             self::REVIEW_FIELDS,
-            'game =' . $externalGameId,
+            ['game' => '= ' . $externalGameId],
             'created_at desc',
             '',
             $paginationRequest->getPageSize(),

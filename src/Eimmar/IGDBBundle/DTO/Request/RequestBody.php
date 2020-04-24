@@ -12,9 +12,9 @@ class RequestBody
     private array $fields;
 
     /**
-     * @var string|null
+     * @var array
      */
-    private string $where;
+    private array $where;
 
     /**
      * @var string|null
@@ -38,13 +38,13 @@ class RequestBody
 
     /**
      * @param array $fields
-     * @param string $where
+     * @param array $where
      * @param string $sort
      * @param string $search
      * @param int $limit
      * @param int $offset
      */
-    public function __construct(array $fields = [], string $where = '', string $sort = '', string $search = '', int $limit = 10, int $offset = 0)
+    public function __construct(array $fields = [], array $where = [], string $sort = '', string $search = '', int $limit = 10, int $offset = 0)
     {
         $this->fields = $fields;
         $this->where = $where;
@@ -71,17 +71,17 @@ class RequestBody
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getWhere(): string
+    public function getWhere(): array
     {
         return $this->where;
     }
 
     /**
-     * @param string $where
+     * @param array $where
      */
-    public function setWhere(string $where): void
+    public function setWhere(array $where): void
     {
         $this->where = $where;
     }
@@ -158,7 +158,6 @@ class RequestBody
         $unwrapped = '';
         $parts = [
             'fields' => trim(implode(',', $this->fields)),
-            'where' => trim($this->where),
             'sort' => trim($this->sort),
             'limit' => (string)$this->limit,
             'offset' => (string)$this->offset
@@ -167,6 +166,15 @@ class RequestBody
         foreach ($parts as $part => $value) {
             $unwrapped .= strlen($value) > 0 ? sprintf('%s %s;', $part, $value) : '';
         }
+
+        if (count($this->where)) {
+            $unwrapped .= 'where ';
+            foreach ($this->where as $field => $value) {
+                $unwrapped .= sprintf('%s %s & ', $field, (string)$value);
+            }
+            $unwrapped = trim($unwrapped, ' &') . ';';
+        }
+
         $unwrapped .= strlen(trim($this->search)) > 0 ? sprintf('search "%s";', trim($this->search)) : '';
 
         return $unwrapped;

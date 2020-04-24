@@ -38,7 +38,7 @@ class Game implements ExternalEntityInterface
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private string $id;
+    private $id;
 
     /**
      * @var string
@@ -59,49 +59,49 @@ class Game implements ExternalEntityInterface
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $coverImage;
+    private $coverImage;
 
     /**
      * @var string|null
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="text", length=20000, nullable=true)
      */
-    private ?string $summary;
+    private $summary;
 
     /**
      * @var string|null
      * @Groups({"gameLoaded"})
      * @ORM\Column(type="text", length=20000, nullable=true)
      */
-    private ?string $storyline;
+    private $storyline;
 
     /**
      * @var DateTime|null
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="datetime", length=255, nullable=true)
      */
-    private ?DateTime $releaseDate;
+    private $releaseDate;
 
     /**
      * @var int|null
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="integer", length=255, nullable=true)
      */
-    private ?int $category;
+    private $category;
 
     /**
      * @var float|null
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="float", nullable=true)
      */
-    private ?float $rating;
+    private $rating;
 
     /**
      * @var int|null
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $ratingCount;
+    private $ratingCount;
 
     /**
      * @var AgeRating[]|ArrayCollection
@@ -150,7 +150,7 @@ class Game implements ExternalEntityInterface
      * @Groups({"gameLoaded", "game"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $gameSpotAssociation;
+    private $gameSpotAssociation;
 
     /**
      * @var Website[]|ArrayCollection
@@ -201,9 +201,9 @@ class Game implements ExternalEntityInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId(): string
+    public function getId()
     {
         return $this->id;
     }
@@ -211,7 +211,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -219,7 +219,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return string|null
      */
-    public function getCoverImage(): ?string
+    public function getCoverImage()
     {
         return $this->coverImage;
     }
@@ -227,7 +227,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return string|null
      */
-    public function getSummary(): ?string
+    public function getSummary()
     {
         return $this->summary;
     }
@@ -235,7 +235,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return string|null
      */
-    public function getStoryline(): ?string
+    public function getStoryline()
     {
         return $this->storyline;
     }
@@ -243,7 +243,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return DateTime|null
      */
-    public function getReleaseDate(): ?DateTime
+    public function getReleaseDate()
     {
         return $this->releaseDate;
     }
@@ -251,7 +251,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return int|null
      */
-    public function getCategory(): ?int
+    public function getCategory()
     {
         return $this->category;
     }
@@ -259,7 +259,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return AgeRating[]|PersistentCollection
      */
-    public function getAgeRatings(): PersistentCollection
+    public function getAgeRatings()
     {
         return $this->ageRatings;
     }
@@ -267,7 +267,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Genre[]|PersistentCollection
      */
-    public function getGenres(): PersistentCollection
+    public function getGenres()
     {
         return $this->genres;
     }
@@ -275,7 +275,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Screenshot[]|PersistentCollection
      */
-    public function getScreenshots(): PersistentCollection
+    public function getScreenshots()
     {
         return $this->screenshots;
     }
@@ -283,7 +283,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Theme[]|PersistentCollection
      */
-    public function getThemes(): PersistentCollection
+    public function getThemes()
     {
         return $this->themes;
     }
@@ -291,7 +291,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Platform[]|PersistentCollection
      */
-    public function getPlatforms(): PersistentCollection
+    public function getPlatforms()
     {
         return $this->platforms;
     }
@@ -299,7 +299,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return GameMode[]|PersistentCollection
      */
-    public function getGameModes(): PersistentCollection
+    public function getGameModes()
     {
         return $this->gameModes;
     }
@@ -307,7 +307,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Website[]|PersistentCollection
      */
-    public function getWebsites(): PersistentCollection
+    public function getWebsites()
     {
         return $this->websites;
     }
@@ -315,7 +315,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Company[]|PersistentCollection
      */
-    public function getCompanies(): PersistentCollection
+    public function getCompanies()
     {
         return $this->companies;
     }
@@ -323,7 +323,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return Review[]|PersistentCollection
      */
-    public function getReviews(): PersistentCollection
+    public function getReviews()
     {
         return $this->reviews;
     }
@@ -331,7 +331,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return GameList[]|PersistentCollection
      */
-    public function getGameLists(): PersistentCollection
+    public function getGameLists()
     {
         return $this->gameLists;
     }
@@ -556,7 +556,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return float|null
      */
-    public function getRating(): ?float
+    public function getRating()
     {
         return $this->rating;
     }
@@ -572,7 +572,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return int|null
      */
-    public function getRatingCount(): ?int
+    public function getRatingCount()
     {
         return $this->ratingCount;
     }
@@ -588,7 +588,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return string|null
      */
-    public function getGameSpotAssociation(): ?string
+    public function getGameSpotAssociation()
     {
         return $this->gameSpotAssociation;
     }
@@ -604,7 +604,7 @@ class Game implements ExternalEntityInterface
     /**
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug()
     {
         return $this->slug;
     }
