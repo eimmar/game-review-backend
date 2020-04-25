@@ -48,16 +48,23 @@ class FriendshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
      * @param User $currentUser
+     * @param User $user
+     * @param int|null $status
      * @return Friendship|null
      */
-    public function findFriendship(User $currentUser, User $user)
+    public function findFriendship(User $currentUser, User $user, ?int $status = null)
     {
-        return $this->createQueryBuilder('f')
+        $queryBuilder = $this->createQueryBuilder('f')
             ->where('f.sender = :current AND f.receiver = :user')
             ->orWhere('f.sender = :user AND f.receiver = :current')
-            ->setParameters(['current' => $currentUser, 'user' => $user])
+            ->setParameters(['current' => $currentUser, 'user' => $user]);
+
+        if ($status !== null) {
+            $queryBuilder->andWhere('f.status = :status')->setParameter('status', $status);
+        }
+
+        return $queryBuilder
             ->getQuery()
             ->getOneOrNullResult();
     }

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\GameList;
+use App\Entity\User;
+use App\Enum\GameListPrivacyType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,4 +19,28 @@ class GameListRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, GameList::class);
     }
+
+    /**
+     * @param User $user
+     * @param bool $includeFriendLists
+     * @return GameList[]
+     */
+   public function findAllVisible(User $user, bool $includeFriendLists = false)
+   {
+       $queryBuilder = $this->createQueryBuilder('gl')
+           ->where('gl.user = :user')
+           ->setParameter('user', $user);
+
+       if ($includeFriendLists) {
+           $queryBuilder
+               ->andWhere('gl.privacyType IN (:types)')
+               ->setParameter('types', [GameListPrivacyType::PUBLIC, GameListPrivacyType::FRIENDS_ONLY]);
+       } else {
+           $queryBuilder
+               ->andWhere('gl.privacyType = :type')
+               ->setParameter('type', GameListPrivacyType::PUBLIC);
+       }
+
+       return $queryBuilder->getQuery()->getResult();
+   }
 }

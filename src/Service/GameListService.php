@@ -9,6 +9,7 @@ use App\Entity\Game;
 use App\Entity\GameList;
 use App\Entity\GameListGame;
 use App\Entity\User;
+use App\Enum\FriendshipStatus;
 use App\Enum\GameListPrivacyType;
 use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
@@ -24,14 +25,18 @@ class GameListService
 
     private Security $security;
 
+    private FriendshipService $friendshipService;
+
     /**
      * @param EntityManagerInterface $entityManager
      * @param Security $security
+     * @param FriendshipService $friendshipService
      */
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, Security $security, FriendshipService $friendshipService)
     {
         $this->entityManager = $entityManager;
         $this->security = $security;
+        $this->friendshipService = $friendshipService;
     }
 
     /**
@@ -109,9 +114,16 @@ class GameListService
      * @param User $user
      * @return GameList[]
      */
-    public function getListsByUser(User $user)
+    public function getUserGameLists(User $user)
     {
-        return $user->getGameLists()->matching($this->privacyTypeCriteria())->toArray();
+        $currentUser = $this->security->getUser();
+        if ($currentUser === $user) {
+            return $user->getGameLists();
+        }
+
+        $isFriend = $currentUser && (bool)$this->friendshipService->getFriendship($user, FriendshipStatus::ACCEPTED);
+
+        return $this->entityManager->getRepository(GameList::class)->findAllVisible($user, $isFriend);
     }
 
     /**

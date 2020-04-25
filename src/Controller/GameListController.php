@@ -46,7 +46,7 @@ class GameListController extends BaseApiController
      */
     public function allForUser(User $user, GameListService $service): JsonResponse
     {
-        $gameLists = $service->getListsByUser($user);
+        $gameLists = $service->getUserGameLists($user);
 
         return $this->apiResponseBuilder->respond($gameLists, 200, [], ['groups' => 'gameList']);
     }

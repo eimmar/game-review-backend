@@ -125,10 +125,11 @@ class FriendshipService
 
     /**
      * @param User $user
+     * @param int|null $status
      * @return Friendship|null
      */
-    public function getFriendship(User $user)
+    public function getFriendship(User $user, ?int $status = null)
     {
-        return $this->friendshipRepository->findFriendship($this->security->getUser(), $user);
+        return $this->friendshipRepository->findFriendship($this->security->getUser(), $user, $status);
     }
 }

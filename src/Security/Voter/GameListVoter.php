@@ -6,8 +6,10 @@ namespace App\Security\Voter;
 
 use App\Entity\GameList;
 use App\Entity\User;
+use App\Enum\FriendshipStatus;
 use App\Enum\GameListPrivacyType;
 use App\Enum\GameListType;
+use App\Service\FriendshipService;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -16,6 +18,16 @@ class GameListVoter extends Voter
     const VIEW = 'view';
     const UPDATE = 'update';
     const DELETE = 'delete';
+
+    private FriendshipService $friendshipService;
+
+    /**
+     * @param FriendshipService $friendshipService
+     */
+    public function __construct(FriendshipService $friendshipService)
+    {
+        $this->friendshipService = $friendshipService;
+    }
 
     /**
      * @inheritDoc
@@ -58,7 +70,15 @@ class GameListVoter extends Voter
      */
     private function canView(GameList $gameList, $user)
     {
-        return $gameList->getPrivacyType() === GameListPrivacyType::PUBLIC || $gameList->getUser() === $user;
+        if ($gameList->getPrivacyType() === GameListPrivacyType::PUBLIC || $gameList->getUser() === $user) {
+            return true;
+        }
+
+        if ($gameList->getPrivacyType() === GameListPrivacyType::FRIENDS_ONLY) {
+            return (bool)$this->friendshipService->getFriendship($gameList->getUser(), FriendshipStatus::ACCEPTED);
+        }
+
+        return false;
     }
 
     /**
