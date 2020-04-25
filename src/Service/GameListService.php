@@ -94,9 +94,15 @@ class GameListService
      */
     public function removeFromList(GameList $gameList, Game $game)
     {
-        $gameListGames = $gameList->getGameListGames()->matching(Criteria::create()->where(Criteria::expr()->eq('game', $game)));
-        $this->entityManager->remove($gameListGames[0]);
-        $this->entityManager->flush();
+        /** @var GameListGame|null $gameListGame */
+        $gameListGame = $this->entityManager
+            ->getRepository(GameListGame::class)
+            ->findOneBy(['gameList' => $gameList, 'game' => $game]);
+
+        if ($gameListGame) {
+            $this->entityManager->remove($gameListGame);
+            $this->entityManager->flush();
+        }
     }
 
     /**

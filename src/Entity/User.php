@@ -91,6 +91,16 @@ class User extends BaseUser
      */
     private ?string $avatar;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Friendship", mappedBy="sender")
+     */
+    private $friends;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Friendship", mappedBy="receiver")
+     */
+    private $friendsWithMe;
+
     public function __construct()
     {
         parent::__construct();
@@ -102,6 +112,8 @@ class User extends BaseUser
         $played->setName('Played');
 
         $this->gameLists = new ArrayCollection([$favorites, $wishlist, $played]);
+        $this->friends = new ArrayCollection();
+        $this->friendsWithMe = new ArrayCollection();
         $this->firstName = '';
     }
 
