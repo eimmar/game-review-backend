@@ -56,6 +56,11 @@ services:
         arguments:
             $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
 
+    App\Service\API\IGDBGameAdapter:
+        arguments:
+            $dataLifeTime: '%env(GAME_DATA_LIFETIME)%'
+
+
     # Security component configuration
     App\Security\Http\Authentication\CORSAuthenticationSuccessHandler:
         arguments:

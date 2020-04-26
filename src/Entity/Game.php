@@ -13,6 +13,7 @@ use App\Entity\Game\Website;
 use App\Traits\ExternalEntityTrait;
 use App\Traits\TimestampableTrait;
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
@@ -177,6 +178,12 @@ class Game implements ExternalEntityInterface
      * @ORM\OneToMany(targetEntity="App\Entity\GameListGame", mappedBy="game", cascade={"persist"})
      */
     private $gameListGames;
+
+    /**
+     * @var DateTimeImmutable
+     * @ORM\Column(type="datetime_immutable", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    protected $importedAt;
 
     public function __construct()
     {
@@ -616,5 +623,31 @@ class Game implements ExternalEntityInterface
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = $this->createdAt;
+        $this->importedAt = $this->createdAt;
+    }
+
+    /**
+     * @return DateTimeImmutable
+     */
+    public function getImportedAt(): DateTimeImmutable
+    {
+        return $this->importedAt;
+    }
+
+    /**
+     * @param DateTimeImmutable $importedAt
+     */
+    public function setImportedAt(DateTimeImmutable $importedAt): void
+    {
+        $this->importedAt = $importedAt;
     }
 }

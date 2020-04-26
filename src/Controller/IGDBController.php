@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DTO\PaginationRequest;
-use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
+use App\DTO\SearchRequest;
+use App\Repository\GameRepository;
 use App\Service\API\IGDBGameAdapter;
 use App\Service\API\IGDBReviewAdapter;
+use App\Service\Transformer\SearchRequestToIGDBRequestTransformer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -43,12 +45,26 @@ class IGDBController extends BaseApiController
     /**
      * @Route("/games", name="igdb_games", methods={"POST"})
      * @param IGDBGameAdapter $gameAdapter
-     * @param RequestBody $requestBody
+     * @param GameRepository $repository
+     * @param SearchRequest $request
+     * @param SearchRequestToIGDBRequestTransformer $transformer
      * @return JsonResponse
      */
-    public function games(IGDBGameAdapter $gameAdapter, RequestBody $requestBody): JsonResponse
-    {
-        return $this->apiResponseBuilder->respond($gameAdapter->findAll($requestBody), 200, [], ['groups' => ['game']]);
+    public function games(
+        IGDBGameAdapter $gameAdapter,
+        GameRepository $repository,
+        SearchRequest $request,
+        SearchRequestToIGDBRequestTransformer $transformer
+    ): JsonResponse {
+        try {
+            $games = $gameAdapter->findAll($transformer->transform($request));
+            $status = 200;
+        } catch (\Exception $e) {
+            $games = $repository->filter($request);
+            $status = 206;
+        }
+
+        return $this->apiResponseBuilder->respond($games, $status, [], ['groups' => ['game']]);
     }
 
     /**

@@ -10,7 +10,6 @@ use App\Entity\Game;
 use App\Service\CacheService;
 use App\Service\Transformer\IGDB\GameTransformer;
 use Doctrine\ORM\EntityManagerInterface;
-use Throwable;
 
 class IGDBGameAdapter
 {
@@ -21,6 +20,8 @@ class IGDBGameAdapter
     private ApiConnector $apiConnector;
 
     private CacheService $cache;
+
+    private int $dataLifeTime;
 
     const CACHE_TAG = 'igdb.games';
 
@@ -54,19 +55,26 @@ class IGDBGameAdapter
      * @param GameTransformer $gameTransformer
      * @param ApiConnector $apiConnector
      * @param CacheService $cache
+     * @param int $dataLifeTime
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         GameTransformer $gameTransformer,
         ApiConnector $apiConnector,
-        CacheService $cache
+        CacheService $cache,
+        int $dataLifeTime
     ) {
         $this->entityManager = $entityManager;
         $this->gameTransformer = $gameTransformer;
         $this->apiConnector = $apiConnector;
         $this->cache = $cache;
+        $this->dataLifeTime = $dataLifeTime;
     }
 
+    /**
+     * @param RequestBody $requestBody
+     * @return Game[]
+     */
     public function findAll(RequestBody $requestBody)
     {
         $requestBody->setFields(self::LIST_FIELDS);
@@ -85,10 +93,14 @@ class IGDBGameAdapter
         return $this->cache->getItem(self::CACHE_TAG, $requestBody->unwrap(), $callBack, [$requestBody]);
     }
 
+    /**
+     * @param string $slug
+     * @return Game
+     */
     public function findOneBySlug(string $slug)
     {
         $game = $this->entityManager->getRepository(Game::class)
-            ->findOneBy(['slug' => $slug]);
+            ->findOneRecentlyImported($slug, new \DateTimeImmutable("now -{$this->dataLifeTime} second"));
         if ($game) {
             return $game;
         }
@@ -98,41 +110,11 @@ class IGDBGameAdapter
         if ($games) {
             $this->gameTransformer->setUseDatabase(true);
             $game = $this->gameTransformer->transform($games[0]);
+            $game->setImportedAt(new \DateTimeImmutable());
             $this->entityManager->persist($game);
             $this->entityManager->flush();
         }
 
         return $game;
-    }
-
-    /**
-     * @param RequestBody $requestBody
-     * @return array
-     */
-    public function update(RequestBody $requestBody)
-    {
-        $created = 0;
-        $updated = 0;
-
-        if (count($requestBody->getFields()) === 0) {
-            $requestBody->setFields(self::FIELDS);
-        }
-
-        $gamesFromApi = $this->apiConnector->games($requestBody);
-
-        foreach ($gamesFromApi as $game) {
-            try {
-                $game = $this->gameTransformer->transform($game);
-                $this->entityManager->contains($game) ? $updated++ : $created++;
-                $this->entityManager->persist($game);
-            } catch (Throwable $exception) {}
-        }
-        $this->entityManager->flush();
-
-        return [
-            'created' => $created,
-            'updated' => $updated,
-            'total' => count($gamesFromApi)
-        ];
     }
 }

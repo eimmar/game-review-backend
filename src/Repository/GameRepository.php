@@ -124,4 +124,19 @@ class GameRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['slug' => $slug]);
     }
+
+    /**
+     * @param string $slug
+     * @param \DateTimeImmutable $validFrom
+     * @return Game|null
+     */
+    public function findOneRecentlyImported(string $slug, \DateTimeImmutable $validFrom)
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.slug = :slug')
+            ->andWhere('g.importedAt >= :validFrom')
+            ->setParameters(['slug' => $slug, 'validFrom' => $validFrom])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

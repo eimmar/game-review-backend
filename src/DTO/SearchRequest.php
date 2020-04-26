@@ -18,10 +18,11 @@ class SearchRequest extends PaginationRequest
      * @param array $filters
      * @param string|null $orderBy
      * @param string|null $order
+     * @param int|null $firstResult
      */
-    public function __construct(int $page, int $pageSize, array $filters, ?string $orderBy = null, ?string $order = null)
+    public function __construct(int $page, int $pageSize, array $filters, ?string $orderBy = null, ?string $order = null, ?int $firstResult = null)
     {
-        parent::__construct($page, $pageSize);
+        parent::__construct($page, $pageSize, $firstResult);
         $this->filters = $filters;
         $this->orderBy = $orderBy;
         $this->order = $order;
