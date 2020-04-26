@@ -92,10 +92,6 @@ class SearchRequestToIGDBRequestTransformer
             $where['total_rating_count'] =  isset($where['total_rating_count']) ? $where['total_rating_count'] : '>= 20';
         }
 
-        $where['first_release_date'] = isset($where['first_release_date'])
-            ? $where['first_release_date'] . ' & first_release_date != null'
-            : '!= null & first_release_date <= ' . (new \DateTime())->getTimestamp();
-
         return new RequestBody(
             [],
             $where,

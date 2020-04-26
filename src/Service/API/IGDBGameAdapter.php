@@ -73,6 +73,18 @@ class IGDBGameAdapter
 
     /**
      * @param RequestBody $requestBody
+     */
+    private function addDefaultCriteria(RequestBody $requestBody)
+    {
+        $where = $requestBody->getWhere();
+        $where['first_release_date'] = isset($where['first_release_date'])
+            ? $where['first_release_date'] . ' & first_release_date != null'
+            : '!= null & first_release_date <= ' . (new \DateTime())->getTimestamp();
+        $requestBody->setWhere($where);
+    }
+
+    /**
+     * @param RequestBody $requestBody
      * @return Game[]
      */
     public function findAll(RequestBody $requestBody)
@@ -80,11 +92,8 @@ class IGDBGameAdapter
         $requestBody->setFields(self::LIST_FIELDS);
 
         $callBack = function (RequestBody $requestBody) {
-            try {
-                $games = $this->apiConnector->games($requestBody);
-            } catch (\Exception $e) {
-                $games = [];
-            }
+            $this->addDefaultCriteria($requestBody);
+            $games = $this->apiConnector->games($requestBody);
             $this->gameTransformer->setUseDatabase(false);
 
             return array_map([$this->gameTransformer, 'transform'], $games);
