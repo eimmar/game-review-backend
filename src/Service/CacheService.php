@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -32,11 +32,19 @@ class CacheService
 
     /**
      * @param int $cacheLifeTime
+     * @param string $redisUrl
      */
-    public function __construct(int $cacheLifeTime)
+    public function __construct(int $cacheLifeTime, string $redisUrl)
     {
+        $client = RedisAdapter::createConnection(
+            $redisUrl,
+            [
+                'compression' => true,
+            ]
+        );
+
         $this->cacheLifeTime = $cacheLifeTime;
-        $this->cache = new TagAwareAdapter(new FilesystemAdapter(), new FilesystemAdapter());
+        $this->cache = new TagAwareAdapter(new RedisAdapter($client), new RedisAdapter($client));
     }
 
     /**

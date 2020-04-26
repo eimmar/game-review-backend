@@ -55,6 +55,7 @@ services:
     App\Service\CacheService:
         arguments:
             $cacheLifeTime: '%env(API_RESPONSE_CACHE_LIFETIME)%'
+            $redisUrl: '%env(REDIS_URL)%'
 
     App\Service\API\IGDBGameAdapter:
         arguments:
