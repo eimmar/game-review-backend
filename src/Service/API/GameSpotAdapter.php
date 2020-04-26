@@ -77,26 +77,19 @@ class GameSpotAdapter
         }
 
         if ($game->getGameSpotAssociation()) {
-            $key = implode("_", $apiRequest->unwrap());
+            $apiRequest->setFilter($this->getCriteria($apiCallbackFunc, $game));
+            $key = implode("_", $apiRequest->unwrap()) . '_' . $apiCallbackFunc;
+
             $callback = function (ApiRequest $request, $apiCallbackFunc) {
                 return $this->apiConnector->$apiCallbackFunc($request);
             };
-            $request = new ApiRequest(
-                $apiRequest->getFormat(),
-                $this->getCriteria($apiCallbackFunc, $game),
-                $apiRequest->getFieldList(),
-                $apiRequest->getLimit(),
-                $apiRequest->getOffset(),
-                $apiRequest->getSort()
-            );
 
             $response = $this->cache->getItem(
                 self::CACHE_TAG . $apiCallbackFunc,
                 $key,
                 $callback,
-                [$request, $apiCallbackFunc]
+                [$apiRequest, $apiCallbackFunc]
             );
-
         } else {
             $response = new Response(
                 'OK',

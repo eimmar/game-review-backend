@@ -135,4 +135,52 @@ class ApiRequest
     {
         return $this->filter;
     }
+
+    /**
+     * @param string $format
+     */
+    public function setFormat(string $format): void
+    {
+        $this->format = $format;
+    }
+
+    /**
+     * @param array|null $fieldList
+     */
+    public function setFieldList(?array $fieldList): void
+    {
+        $this->fieldList = $fieldList;
+    }
+
+    /**
+     * @param int|null $limit
+     */
+    public function setLimit(?int $limit): void
+    {
+        $this->limit = $limit;
+    }
+
+    /**
+     * @param int|null $offset
+     */
+    public function setOffset(?int $offset): void
+    {
+        $this->offset = $offset;
+    }
+
+    /**
+     * @param string|null $sort
+     */
+    public function setSort(?string $sort): void
+    {
+        $this->sort = $sort;
+    }
+
+    /**
+     * @param array|null $filter
+     */
+    public function setFilter(?array $filter): void
+    {
+        $this->filter = $filter;
+    }
 }
