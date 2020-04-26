@@ -63,7 +63,7 @@ class User extends BaseUser
     private $lastName;
 
     /**
-     * @Groups({"user"})
+     * @Groups({"user-sensitive"})
      */
     protected $email;
 
@@ -73,7 +73,7 @@ class User extends BaseUser
     protected $username;
 
     /**
-     * @Groups({"user"})
+     * @Groups({"user-sensitive"})
      */
     protected $roles;
 

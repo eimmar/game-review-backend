@@ -82,7 +82,12 @@ class UserController extends BaseApiController
             return $this->apiResponseBuilder->respond('', 404);
         }
 
-        return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => ['user']]);
+        $groups[] = 'user';
+        if ($user === $this->getUser()) {
+            $groups[] = 'user-sensitive';
+        }
+
+        return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => $groups]);
     }
 
     /**
@@ -127,7 +132,7 @@ class UserController extends BaseApiController
         if ($form->isValid()) {
             $userManager->updateUser($user);
 
-            return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => 'user']);
+            return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => 'user', 'user-sensitive']);
         }
         throw new LogicException(LogicExceptionCode::INVALID_DATA);
     }
