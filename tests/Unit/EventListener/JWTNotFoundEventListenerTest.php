@@ -1,37 +1,21 @@
 <?php
 
-/**
- * @copyright C UAB NFQ Technologies
- *
- * This Software is the property of NFQ Technologies
- * and is protected by copyright law – it is NOT Freeware.
- *
- * Any unauthorized use of this software without a valid license key
- * is a violation of the license agreement and will be prosecuted by
- * civil and criminal law.
- *
- * Contact UAB NFQ Technologies:
- * E-mail: info@nfq.lt
- * http://www.nfq.lt
- *
- */
-
 declare(strict_types=1);
 
 namespace App\Tests\Unit\EventListener;
 
-use App\EventListener\JWTNotFoundEventListener;
+use App\EventListener\JWTFailureEventListener;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTNotFoundEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class JWTNotFoundEventListenerTest extends TestCase
 {
-    private JWTNotFoundEventListener $listener;
+    private JWTFailureEventListener $listener;
 
     public function setUp()
     {
-        $this->listener = new JWTNotFoundEventListener(['url', 'url2']);
+        $this->listener = new JWTFailureEventListener(['url', 'url2']);
     }
 
     public function testOnJWTNotFound()

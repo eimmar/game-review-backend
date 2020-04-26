@@ -34,13 +34,15 @@ class UserRepository extends ServiceEntityRepository
         if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
                 ->addSelect("MATCH_AGAINST (u.firstName, u.lastName, u.email, :query 'IN NATURAL MODE') AS HIDDEN score")
-                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0')
-                ->setParameter('query', $request->getFilter('query'))
+                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0 AND u.enabled = :enabled')
+                ->setParameters(['query' => $request->getFilter('query'), 'enabled' => true])
                 ->orderBy('score', 'DESC');
         } else {
             $orderBy = $request->getOrderBy() ?: 'createdAt';
             $queryBuilder
                 ->addSelect("CASE WHEN u.{$orderBy} IS NULL THEN 1 ELSE 0 END AS HIDDEN sortIsNull")
+                ->where('u.enabled = :enabled')
+                ->setParameter('enabled', true)
                 ->orderBy('u.' . $orderBy, $request->getOrder() ?: 'DESC')
                 ->addOrderBy('sortIsNull', 'ASC');
         }
@@ -70,8 +72,8 @@ class UserRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('u');
         if (strlen($request->getFilter('query')) !== 0) {
             $queryBuilder
-                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0')
-                ->setParameter('query', $request->getFilter('query'));
+                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0 AND u.enabled = :enabled')
+                ->setParameters(['query' => $request->getFilter('query'), 'enabled' => true]);
         }
 
         return (int)$queryBuilder

@@ -5,24 +5,33 @@ declare(strict_types=1);
 namespace App\Mailer;
 
 use FOS\UserBundle\Model\UserInterface;
+use Swift_Mailer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig_Environment;
 
 class TwigSwiftMailer extends \FOS\UserBundle\Mailer\TwigSwiftMailer
 {
     private string $frontendUrl;
 
+    protected TranslatorInterface $translator;
+
     /**
-     * TwigSwiftMailer constructor.
-     *
-     * @param \Swift_Mailer $mailer
+     * @param Swift_Mailer $mailer
      * @param UrlGeneratorInterface $router
-     * @param \Twig_Environment $twig
+     * @param Twig_Environment $twig
      * @param ParameterBagInterface $params
      * @param string $frontendUrl
      */
-    public function __construct(\Swift_Mailer $mailer, UrlGeneratorInterface $router, \Twig_Environment $twig, ParameterBagInterface $params, string $frontendUrl)
-    {
+    public function __construct(
+        Swift_Mailer $mailer,
+        UrlGeneratorInterface $router,
+        Twig_Environment $twig,
+        ParameterBagInterface $params,
+        TranslatorInterface $translator,
+        string $frontendUrl
+    ) {
         parent::__construct($mailer, $router, $twig, [
             'template' => [
                 'confirmation' => $params->get('fos_user.registration.confirmation.template'),
@@ -34,6 +43,7 @@ class TwigSwiftMailer extends \FOS\UserBundle\Mailer\TwigSwiftMailer
             ]
         ]);
         $this->frontendUrl = $frontendUrl;
+        $this->translator = $translator;
     }
 
     /**
@@ -42,7 +52,7 @@ class TwigSwiftMailer extends \FOS\UserBundle\Mailer\TwigSwiftMailer
     public function sendResettingEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['template']['resetting'];
-        $url = $this->frontendUrl . '/reset-password/' . $user->getConfirmationToken();
+        $url = $this->frontendUrl . $this->translator->trans('user.action.reset_password.frontend_route') . $user->getConfirmationToken();
         $context = [
             'user' => $user,
             'confirmationUrl' => $url,

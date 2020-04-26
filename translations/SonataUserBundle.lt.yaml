@@ -1,6 +1,6 @@
 security:
     login:
-        username: El. paštas
+        username: El. paštas arba slapyvardis
         password: Slaptažodis
 
 title_user_authentication: Prisijungimas

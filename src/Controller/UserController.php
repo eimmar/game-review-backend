@@ -78,7 +78,7 @@ class UserController extends BaseApiController
     public function show(string $username): JsonResponse
     {
         $user = $this->userManager->findUserByUsername($username);
-        if (!$user) {
+        if (!$user || !$user->isEnabled()) {
             return $this->apiResponseBuilder->respond('', 404);
         }
 

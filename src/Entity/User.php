@@ -92,14 +92,19 @@ class User extends BaseUser
     private ?string $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity="Friendship", mappedBy="sender")
+     * @ORM\OneToMany(targetEntity="Friendship", mappedBy="sender", cascade={"remove"})
      */
     private $friends;
 
     /**
-     * @ORM\OneToMany(targetEntity="Friendship", mappedBy="receiver")
+     * @ORM\OneToMany(targetEntity="Friendship", mappedBy="receiver", cascade={"remove"})
      */
     private $friendsWithMe;
+
+    /**
+     * @Groups({"user"})
+     */
+    protected $enabled;
 
     public function __construct()
     {

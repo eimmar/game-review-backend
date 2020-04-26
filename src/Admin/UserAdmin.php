@@ -15,6 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 final class UserAdmin extends AbstractAdmin
 {
@@ -26,8 +31,27 @@ final class UserAdmin extends AbstractAdmin
         if ($object->hasRole('ROLE_SUPER_ADMIN')) {
             $object->setSuperAdmin(true);
         }
+        $object->setAvatarFile($this->getForm()->get('avatarFile')->getData());
 
         $this->getConfigurationPool()->getContainer()->get('fos_user.user_manager')->updateUser($object);
+    }
+
+    /**
+     * @param User $object
+     */
+    public function preUpdate($object)
+    {
+        $object->setAvatarFile($this->getForm()->get('avatarFile')->getData());
+    }
+
+    public function configureActionButtons($action, $object = null)
+    {
+        $actions = parent::configureActionButtons($action, $object);
+        if ($action === 'edit' && $this->canAccessObject('edit', $object) && $this->hasRoute('edit')) {
+            $actions['resetPassword'] = ['template' => 'admin/user/reseting_button.html.twig'];
+        }
+
+        return $actions;
     }
 
     /**
@@ -36,9 +60,17 @@ final class UserAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('username', TextType::class, [
+                'label' => 'user.username',
+                'constraints' => [
+                    new NotBlank(),
+                    new Regex(['pattern' => '/^[a-zA-Z0-9_]+$/']),
+                    new Length(['min' => 4])
+                ]
+            ])
+            ->add('email', EmailType::class, ['label' => 'user.email'])
             ->add('firstName', TextType::class, ['label' => 'user.first_name'])
             ->add('lastName', TextType::class, ['required' => false, 'label' => 'user.last_name'])
-            ->add('email', EmailType::class, ['label' => 'user.email'])
             ->add('enabled', CheckboxType::class, ['required' => false, 'label' => 'user.enabled'])
             ->add(
                 'roles',
@@ -52,7 +84,22 @@ final class UserAdmin extends AbstractAdmin
                     ],
                     'multiple'=>true
                 ]
-            );
+            )
+            ->add('avatarFile', VichImageType::class, [
+                'label' => 'user.avatar',
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '2500k',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                    ])
+                ],
+            ]);
 
         if ($this->getSubject()->getId() === null) {
             $formMapper->add('plainPassword', RepeatedType::class, [
@@ -70,6 +117,7 @@ final class UserAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('enabled', null, ['label' => 'user.enabled'])
+            ->add('username', null, ['label' => 'user.username'])
             ->add('firstName', null, ['label' => 'user.first_name'])
             ->add('lastName', null, ['label' => 'user.last_name'])
             ->add('email', null, ['label' => 'user.email']);
@@ -82,6 +130,7 @@ final class UserAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('enabled', null, ['label' => 'user.enabled'])
+            ->addIdentifier('username', null, ['label' => 'user.username'])
             ->addIdentifier('firstName', null, ['label' => 'user.first_name'])
             ->addIdentifier('lastName', null, ['label' => 'user.last_name'])
             ->addIdentifier('email', null, ['label' => 'user.email']);

@@ -35,7 +35,7 @@ class GameList
 
     /**
      * @var GameListGame[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="GameListGame", mappedBy="gameList")
+     * @ORM\OneToMany(targetEntity="GameListGame", mappedBy="gameList", cascade={"remove"})
      */
     private $gameListGames;
 

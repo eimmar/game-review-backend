@@ -39,6 +39,8 @@ review:
 user:
     main: Naudotojai
     enabled: Aktyvus
+    username: Slapyvardis
+    avatar: Paskyros nuotrauka
     first_name: Vardas
     last_name: Pavardė
     email: El. paštas
@@ -49,3 +51,9 @@ user:
         user: Naudotojas
         admin: Administratorius
         super_admin: Super administratorius
+    action:
+        reset_password:
+            button: Siūsti slaptažodžio keitimo nuorodą
+            success: Slaptažodžio keitimo nurodymai nusiųsti į naudotojo elektroninio pašto paskyrą.
+            failure: Slaptažodžio pakeitimo užklausa jau yra išsiųsta. Palaukite bent 10 minučių prieš siūsdami sekančią.
+            frontend_route: /atstatyti-slaptazodi/

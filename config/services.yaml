@@ -46,10 +46,6 @@ services:
 
     App\Mailer\TwigSwiftMailer:
         arguments:
-            $mailer: '@swiftmailer.mailer'
-            $router: '@router'
-            $twig: '@twig'
-            $params: '@parameter_bag'
             $frontendUrl: '%env(FRONTEND_URL)%'
 
     App\Service\CacheService:
@@ -77,11 +73,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
-    App\EventListener\JWTNotFoundEventListener:
+    App\EventListener\JWTFailureEventListener:
         arguments: [['%env(FRONTEND_URL)%']]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
-
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_invalid, method: onJwtInvalid }
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_expired, method: onJWTExpired }
 
     # IGDB Bundle service configuration
     App\Eimmar\IGDBBundle\Service\ApiConnector:
