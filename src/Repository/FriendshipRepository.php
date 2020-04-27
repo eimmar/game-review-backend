@@ -70,6 +70,20 @@ class FriendshipRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param User $currentUser
+     * @param User $user
+     * @return Friendship|null
+     */
+    public function findFriendRequest(User $currentUser, User $user)
+    {
+       return $this->createQueryBuilder('f')
+            ->where('f.sender = :user AND f.receiver = :current')
+            ->setParameters(['current' => $currentUser, 'user' => $user])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * @param User $user
      * @param SearchRequest $request
      * @return Friendship[]

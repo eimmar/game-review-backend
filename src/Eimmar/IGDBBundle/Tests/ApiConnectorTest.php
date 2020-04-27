@@ -31,11 +31,11 @@ class ApiConnectorTest extends TestCase
 
     public function testGames()
     {
-        $request = new RequestBody(['field1', 'field2'], 'name="game"', 'date desc', 'search', 10, 0);
+        $request = new RequestBody(['field1', 'field2'], ['name' => '="game"'], 'date desc', 'search', 10, 0);
         $responseContents = '[{"ok": "OK"}]';
         $requestOptions = [
             'headers' => ['user-key' => 'userKey'],
-            'body' => 'fields field1,field2;where name="game";sort date desc;limit 10;offset 0;search "search";'
+            'body' => 'fields field1,field2;sort date desc;limit 10;offset 0;where name ="game";search "search";'
         ];
         $game = new Game(0);
 
@@ -51,11 +51,11 @@ class ApiConnectorTest extends TestCase
 
     public function testReviews()
     {
-        $request = new RequestBody(['field1', 'field2'], 'name="game"', 'date desc', 'search', 10, 0);
+        $request = new RequestBody(['field1', 'field2'], ['name' => '="game"'], 'date desc', 'search', 10, 0);
         $responseContents = '{"ok": "OK"}';
         $requestOptions = [
             'headers' => ['user-key' => 'userKey'],
-            'body' => 'fields field1,field2;where name="game";sort date desc;limit 10;offset 0;search "search";'
+            'body' => 'fields field1,field2;sort date desc;limit 10;offset 0;where name ="game";search "search";'
         ];
 
         $this->httpClient->expects($this->once())

@@ -136,6 +136,16 @@ class User extends BaseUser
     }
 
     /**
+     * @param GameList $gameList
+     */
+    public function addGameList(GameList $gameList)
+    {
+        if (!$this->gameLists->contains($gameList)) {
+            $this->gameLists[] = $gameList;
+        }
+    }
+
+    /**
      * @return string
      */
     public function getFirstName(): string

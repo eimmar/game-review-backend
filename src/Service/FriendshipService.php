@@ -61,7 +61,7 @@ class FriendshipService
     public function removeFriend(User $friend)
     {
         /** @var Friendship|null $friendship */
-        $friendship = $this->friendshipRepository->findFriendship($this->security->getUser(), $friend);
+        $friendship = $this->friendshipRepository->findFriendship($this->security->getUser(), $friend, FriendshipStatus::ACCEPTED);
 
         if ($friendship) {
             $this->entityManager->remove($friendship);
@@ -77,7 +77,7 @@ class FriendshipService
     public function acceptRequest(User $initiator)
     {
         /** @var Friendship|null $friendship */
-        $friendship = $this->friendshipRepository->findFriendship($this->security->getUser(), $initiator);
+        $friendship = $this->friendshipRepository->findFriendRequest($this->security->getUser(), $initiator);
 
         if ($friendship) {
             $friendship->setStatus(FriendshipStatus::ACCEPTED);

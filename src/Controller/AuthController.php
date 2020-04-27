@@ -152,7 +152,7 @@ class AuthController extends BaseApiController
      * @return JsonResponse
      * @throws LogicException
      */
-    public function resetAction(Request $request, string $token, EventDispatcherInterface $eventDispatcher)
+    public function reset(Request $request, string $token, EventDispatcherInterface $eventDispatcher)
     {
         $user = $this->userManager->findUserByConfirmationToken($token);
 

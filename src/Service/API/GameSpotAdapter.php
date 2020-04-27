@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\API;
 
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
+use App\Eimmar\GameSpotBundle\DTO\Response\GamesResponse;
 use App\Eimmar\GameSpotBundle\DTO\Response\Response;
 use App\Eimmar\GameSpotBundle\Service\ApiConnector;
 use App\Entity\Game;
@@ -33,11 +34,15 @@ class GameSpotAdapter
         $this->cache = $cache;
     }
 
+    /**
+     * @param \App\Eimmar\GameSpotBundle\DTO\Game $game
+     * @return string|null
+     */
     private function getAssociation(\App\Eimmar\GameSpotBundle\DTO\Game $game): ?string
     {
         $apiUrls = [$game->getArticlesApiUrl(), $game->getImagesApiUrl(), $game->getReleasesApiUrl(), $game->getReviewsApiUrl(), $game->getVideosApiUrl()];
         foreach ($apiUrls as $url) {
-            if (is_string($url) && count($parts = explode(':', urldecode(($game->getReviewsApiUrl())))) === 3) {
+            if (is_string($url) && count($parts = explode(':', urldecode(($url)))) === 3) {
                 return end($parts);
             }
         }
@@ -45,11 +50,19 @@ class GameSpotAdapter
         return null;
     }
 
+    /**
+     * @param string $apiCallbackFunc
+     * @param Game $game
+     * @return array|string[]
+     */
     private function getCriteria(string $apiCallbackFunc, Game $game): array
     {
         return $apiCallbackFunc === 'reviews' ? ['title' => $game->getName() . ' Review'] : ['association' => $game->getGameSpotAssociation()];
     }
 
+    /**
+     * @param Game $game
+     */
     private function setGameSpotAssociation(Game $game)
     {
         $apiRequest = new ApiRequest('json', ['name' => $game->getName()]);
@@ -58,6 +71,7 @@ class GameSpotAdapter
             return $this->apiConnector->games(new ApiRequest('json', ['name' => $game->getName()]));
         };
 
+        /** @var GamesResponse $response */
         $response = $this->cache->getItem(self::CACHE_TAG . 'games', $key, $callback, [$game]);
 
         foreach ($response->getResults() as $result) {
@@ -70,6 +84,12 @@ class GameSpotAdapter
         }
     }
 
+    /**
+     * @param string $apiCallbackFunc
+     * @param Game $game
+     * @param ApiRequest $apiRequest
+     * @return Response
+     */
     public function get(string $apiCallbackFunc, Game $game, ApiRequest $apiRequest): Response
     {
         if (!$game->getGameSpotAssociation()) {

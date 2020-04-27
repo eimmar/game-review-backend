@@ -17,7 +17,7 @@ class SearchRequestConverter implements ParamConverterInterface
     public function apply(Request $request, ParamConverter $configuration)
     {
         $content = json_decode($request->getContent(), true);
-        if (!$content || !isset($content['page']) || !isset($content['pageSize']) || !isset($content['filters'])) {
+        if (!$content || !isset($content['page']) || (!isset($content['pageSize']) && !isset($content['firstResult'])) || !isset($content['filters'])) {
             throw new \InvalidArgumentException('Invalid request parameters.');
         }
 
@@ -27,7 +27,12 @@ class SearchRequestConverter implements ParamConverterInterface
         $request->attributes->set(
             $configuration->getName(),
             new SearchRequest(
-                $content['page'], $content['pageSize'], $content['filters'], $orderBy, $order
+                $content['page'],
+                isset($content['pageSize']) ? $content['pageSize'] : null,
+                $content['filters'],
+                $orderBy,
+                $order,
+                isset($content['firstResult']) ? $content['firstResult'] : null
             )
         );
     }

@@ -79,28 +79,6 @@ class GameList
         $this->user = $user;
     }
 
-//    /**
-//     * @param GameListGame $game
-//     */
-//    public function addGame(GameListGame $game)
-//    {
-//        if (!$this->games->contains($game)) {
-//            $this->games[] = $game;
-//            $game->addGameList($this);
-//        }
-//    }
-//
-//    /**
-//     * @param GameListGame $game
-//     */
-//    public function removeGame(GameListGame $game)
-//    {
-//        if ($this->games->contains($game)) {
-//            $this->games->removeElement($game);
-//            $game->removeGameList($this);
-//        }
-//    }
-
     /**
      * @return string
      */
@@ -118,14 +96,33 @@ class GameList
     }
 
     /**
+     * @param GameListGame $game
+     */
+    public function addGameListGame(GameListGame $game)
+    {
+        if (!$this->gameListGames->contains($game)) {
+            $this->gameListGames[] = $game;
+        }
+    }
+
+    /**
+     * @param GameListGame $game
+     */
+    public function removeGameListGame(GameListGame $game)
+    {
+        if ($this->gameListGames->contains($game)) {
+            $this->gameListGames->removeElement($game);
+        }
+    }
+
+    /**
      * @param GameListGame[]|PersistentCollection $gameListGames
      */
     public function setGameListGames(PersistentCollection $gameListGames): void
     {
-        $this->gameListGames = $gameListGames;
-//        foreach ($games as $game) {
-//            $this->addGame($game);
-//        }
+        foreach ($gameListGames as $gameListGame) {
+            $this->addGameListGame($gameListGame);
+        }
     }
 
     /**

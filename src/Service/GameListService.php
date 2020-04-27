@@ -10,11 +10,9 @@ use App\Entity\GameList;
 use App\Entity\GameListGame;
 use App\Entity\User;
 use App\Enum\FriendshipStatus;
-use App\Enum\GameListPrivacyType;
 use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\ExpressionBuilder;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -37,31 +35,6 @@ class GameListService
         $this->entityManager = $entityManager;
         $this->security = $security;
         $this->friendshipService = $friendshipService;
-    }
-
-    /**
-     * @param ExpressionBuilder[] $filterExpressions
-     * @return Criteria
-     */
-    private function privacyTypeCriteria(array $filterExpressions = [])
-    {
-        $user = $this->security->getUser();
-        $expr = Criteria::expr();
-        $criteria = Criteria::create()
-            ->where($expr->andX(
-                $expr->eq('privacyType', GameListPrivacyType::PUBLIC),
-                ...$filterExpressions
-            ))
-        ->orderBy(['updatedAt' => 'DESC']);
-
-        if ($user) {
-            $criteria->orWhere($expr->andX(
-                $expr->in('privacyType', [GameListPrivacyType::PRIVATE, GameListPrivacyType::FRIENDS_ONLY]),
-                $expr->eq('user', $user)
-            ));
-        }
-
-        return $criteria;
     }
 
     /**

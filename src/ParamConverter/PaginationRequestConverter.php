@@ -17,13 +17,13 @@ class PaginationRequestConverter implements ParamConverterInterface
     public function apply(Request $request, ParamConverter $configuration)
     {
         $content = json_decode($request->getContent(), true);
-        if (!$content || !isset($content['page']) || !isset($content['pageSize'])) {
+        if (!$content || !isset($content['page']) || (!isset($content['pageSize']) && !isset($content['firstResult']))) {
             throw new \InvalidArgumentException('Invalid request parameters.');
         }
 
         $request->attributes->set($configuration->getName(), new PaginationRequest(
             $content['page'],
-            $content['pageSize'],
+            isset($content['pageSize']) ? $content['pageSize'] : null,
             isset($content['firstResult']) ? $content['firstResult'] : null
         ));
     }

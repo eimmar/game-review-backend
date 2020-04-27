@@ -531,35 +531,34 @@ class Game implements ExternalEntityInterface
     }
 
     /**
-     * @param ArrayCollection $gameListGames
+     * @param GameListGame $game
      */
-    public function setGameListGames(ArrayCollection $gameListGames)
+    public function addGameListGame(GameListGame $game)
     {
-        $this->gameListGames = $gameListGames;
-//        array_map([$this, 'addGameList'], $gameLists->toArray());
+        if (!$this->gameListGames->contains($game)) {
+            $this->gameListGames[] = $game;
+        }
     }
 
-//    /**
-//     * @param GameList $gameList
-//     */
-//    public function addGameList(GameList $gameList)
-//    {
-//        if (!$this->gameLists->contains($gameList)) {
-//            $this->gameLists[] = $gameList;
-//            $gameList->addGame($this);
-//        }
-//    }
-//
-//    /**
-//     * @param GameList $gameList
-//     */
-//    public function removeGameList(GameList $gameList)
-//    {
-//        if ($this->gameLists->contains($gameList)) {
-//            $this->gameLists->removeElement($gameList);
-//            $gameList->removeGame($this);
-//        }
-//    }
+    /**
+     * @param GameListGame $game
+     */
+    public function removeGameListGame(GameListGame $game)
+    {
+        if ($this->gameListGames->contains($game)) {
+            $this->gameListGames->removeElement($game);
+        }
+    }
+
+    /**
+     * @param GameListGame[]|PersistentCollection $gameListGames
+     */
+    public function setGameListGames(PersistentCollection $gameListGames): void
+    {
+        foreach ($gameListGames as $gameListGame) {
+            $this->addGameListGame($gameListGame);
+        }
+    }
 
     /**
      * @return float|null

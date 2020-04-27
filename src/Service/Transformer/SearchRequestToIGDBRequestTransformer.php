@@ -22,7 +22,8 @@ class SearchRequestToIGDBRequestTransformer
 
     private function transformSlugArrayField(array &$where, SearchRequest $request, string $field)
     {
-        if ($value = $request->getFilter($field)) {
+        $value = $request->getFilter($field);
+        if ($value && isset(self::FIELD_MAP[$field])) {
             $where[self::FIELD_MAP[$field]] = '= ("' . implode('", "', (array)$value) . '")';
         }
     }

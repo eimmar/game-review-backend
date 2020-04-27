@@ -42,6 +42,8 @@ class GameListGame
     {
         $this->gameList = $gameList;
         $this->game = $game;
+        $gameList->addGameListGame($this);
+        $game->addGameListGame($this);
     }
 
     /**

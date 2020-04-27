@@ -27,44 +27,34 @@ class JWTCreatedListenerTest extends TestCase
 
     public function testOnJWTCreated()
     {
-        $createdAt = new \DateTimeImmutable();
         $user = $this->createMock(User::class);
         $request = $this->createMock(Request::class);
 
         $user->method('getId')->willReturn('guid');
-        $user->method('getFirstName')->willReturn('firstName');
-        $user->method('getLastName')->willReturn('lastName');
-        $user->method('getCreatedAt')->willReturn($createdAt);
         $request->method('getContentType')->willReturn('json');
         $request->method('getContent')->willReturn('{}');
 
-        $expected = ['id' => 'guid', 'firstName' => 'firstName', 'lastName' => 'lastName', 'createdAt' => $createdAt];
         $event = new JWTCreatedEvent([], $user);
         $this->requestStack->push($request);
 
         $this->listener->onJWTCreated($event);
-        $this->assertEquals($expected, $event->getData());
+        $this->assertFalse(isset($event->getData()['rememberMe']));
 
     }
 
     public function testOnJWTCreatedWithRememberMe()
     {
-        $createdAt = new \DateTimeImmutable();
         $user = $this->createMock(User::class);
         $request = $this->createMock(Request::class);
 
         $user->method('getId')->willReturn('guid');
-        $user->method('getFirstName')->willReturn('firstName');
-        $user->method('getLastName')->willReturn('lastName');
-        $user->method('getCreatedAt')->willReturn($createdAt);
         $request->method('getContentType')->willReturn('json');
         $request->method('getContent')->willReturn('{"rememberMe": true}');
 
-        $expected = ['rememberMe' => true, 'id' => 'guid', 'firstName' => 'firstName', 'lastName' => 'lastName', 'createdAt' => $createdAt, 'exp' => (new \DateTime('+' . $this->rememberMeDuration . ' seconds'))->getTimestamp()];
         $event = new JWTCreatedEvent(['rememberMe' => true], $user);
         $this->requestStack->push($request);
 
         $this->listener->onJWTCreated($event);
-        $this->assertEquals($expected, $event->getData());
+        $this->assertTrue(isset($event->getData()['rememberMe']));
     }
 }

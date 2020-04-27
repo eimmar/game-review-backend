@@ -6,10 +6,6 @@ use App\DTO\PaginationRequest;
 use App\DTO\PaginationResponse;
 use App\DTO\SearchRequest;
 use App\Entity\GameList;
-use App\Repository\Game\GameModeRepository;
-use App\Repository\Game\GenreRepository;
-use App\Repository\Game\PlatformRepository;
-use App\Repository\Game\ThemeRepository;
 use App\Repository\GameRepository;
 use App\Service\ApiJsonResponseBuilder;
 use App\Service\GameListService;
@@ -36,7 +32,6 @@ class GameController extends BaseApiController
     /**
      * @Route("/", name="game_options", methods={"OPTIONS"})
      * @Route("/{slug}", name="individual_game_options", methods={"OPTIONS"})
-     * @Route("/entity-filter-values", name="game_entity_filter_values_options", methods={"OPTIONS"})
      * @Route("/list/{gameList}", name="games_for_list_options", methods={"OPTIONS"})
      * @return JsonResponse
      */
@@ -72,34 +67,6 @@ class GameController extends BaseApiController
         $games = $service->getGames($gameList, $request);
 
         return $this->apiResponseBuilder->respond($games, 200, [], ['groups' => ['game']]);
-    }
-
-    /**
-     * @Route("/entity-filter-values", name="game_entity_filter_values", methods={"POST"})
-     * @param GenreRepository $genreRepository
-     * @param ThemeRepository $themeRepository
-     * @param PlatformRepository $platformRepository
-     * @param GameModeRepository $gameModeRepository
-     * @return JsonResponse
-     */
-    public function entityFilterValues(
-        GenreRepository $genreRepository,
-        ThemeRepository $themeRepository,
-        PlatformRepository $platformRepository,
-        GameModeRepository $gameModeRepository
-    ): JsonResponse
-    {
-        return $this->apiResponseBuilder->respond(
-            [
-                'genres' => $genreRepository->findAll(),
-                'themes' => $themeRepository->findAll(),
-                'platforms' => $platformRepository->findAll(),
-                'gameModes' => $gameModeRepository->findAll(),
-            ],
-            200,
-            [],
-            ['groups' => ['gameLoaded']]
-        );
     }
 
     /**
