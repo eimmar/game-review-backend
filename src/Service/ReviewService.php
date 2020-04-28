@@ -42,6 +42,21 @@ class ReviewService
     }
 
     /**
+     * @param User $user
+     * @return int
+     */
+    public function countUserReviews(User $user)
+    {
+        $criteria = Criteria::create();
+
+        if ($this->security->getUser() !== $user) {
+            $criteria->where(Criteria::expr()->eq('approved', true));
+        }
+
+        return $user->getReviews()->matching($criteria)->count();
+    }
+
+    /**
      * @param PaginationRequest $request
      * @param Game $game
      * @return array
@@ -56,5 +71,18 @@ class ReviewService
             ->setMaxResults($request->getPageSize());
 
         return $game->getReviews()->matching($criteria)->toArray();
+    }
+
+    /**
+     * @param Game $game
+     * @return int
+     */
+    public function countGameReviews(Game $game)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('approved', true))
+            ->andWhere(Criteria::expr()->eq('game', $game));
+
+        return $game->getReviews()->matching($criteria)->count();
     }
 }

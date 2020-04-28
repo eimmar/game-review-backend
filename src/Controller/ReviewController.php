@@ -48,7 +48,7 @@ class ReviewController extends BaseApiController
         $reviews = $service->getGameReviews($request, $game);
 
         return $this->apiResponseBuilder->respondWithPagination(
-            new PaginationResponse(1, $game->getReviews()->count(), $request->getPageSize(), $reviews),
+            new PaginationResponse(1, $service->countGameReviews($game), $request->getPageSize(), $reviews),
             ['groups' => ['review', 'user', 'game']]
         );
     }
@@ -65,7 +65,7 @@ class ReviewController extends BaseApiController
         $reviews = $reviewService->getUserReviews($request, $user);
 
         return $this->apiResponseBuilder->respondWithPagination(
-            new PaginationResponse($request->getPage(), $user->getReviews()->count(), $request->getPageSize(), $reviews),
+            new PaginationResponse($request->getPage(), $reviewService->countUserReviews($user), $request->getPageSize(), $reviews),
             ['groups' => ['review', 'user', 'game']]
         );
     }
