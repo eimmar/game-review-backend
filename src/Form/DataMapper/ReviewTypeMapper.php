@@ -48,8 +48,14 @@ class ReviewTypeMapper implements DataMapperInterface
         if ($data !== null) {
             $forms = iterator_to_array($forms);
 
-            $forms['game']->setData($data->getGame());
-            $forms['user']->setData($data->getUser());
+            if (isset($forms['game'])) {
+                $forms['game']->setData($data->getGame());
+            }
+
+            if (isset($forms['user'])) {
+                $forms['user']->setData($data->getUser());
+            }
+
             $forms['title']->setData($data->getTitle());
             $forms['comment']->setData($data->getComment());
             $forms['rating']->setData($data->getRating());
@@ -67,8 +73,14 @@ class ReviewTypeMapper implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
 
-        $data->setGame($forms['game']->getData());
-        $data->setUser($forms['user']->getData());
+        if (isset($forms['game'])) {
+            $data->setGame($forms['game']->getData());
+        }
+
+        if (isset($forms['user'])) {
+            $data->setUser($forms['user']->getData());
+        }
+
         $data->setTitle($forms['title']->getData());
         $data->setComment($forms['comment']->getData());
         $data->setRating($forms['rating']->getData());

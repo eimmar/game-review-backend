@@ -12,6 +12,7 @@ use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
 use App\Repository\FriendshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
 class FriendshipService
@@ -33,6 +34,13 @@ class FriendshipService
         $this->security = $security;
     }
 
+    private function checkCurrentUser()
+    {
+        if (!$this->security->getUser()) {
+            throw new AccessDeniedException();
+        }
+    }
+
     /**
      * @param User $friend
      * @return Friendship
@@ -40,6 +48,8 @@ class FriendshipService
      */
     public function addFriend(User $friend)
     {
+        $this->checkCurrentUser();
+
         if ($this->friendshipRepository->findFriendship($this->security->getUser(), $friend)) {
             throw new LogicException(LogicExceptionCode::FRIENDSHIP_USER_ALREADY_FRIEND);
         }
@@ -60,6 +70,8 @@ class FriendshipService
      */
     public function removeFriend(User $friend)
     {
+        $this->checkCurrentUser();
+
         /** @var Friendship|null $friendship */
         $friendship = $this->friendshipRepository->findFriendship($this->security->getUser(), $friend, FriendshipStatus::ACCEPTED);
 
@@ -76,6 +88,8 @@ class FriendshipService
      */
     public function acceptRequest(User $initiator)
     {
+        $this->checkCurrentUser();
+
         /** @var Friendship|null $friendship */
         $friendship = $this->friendshipRepository->findFriendRequest($this->security->getUser(), $initiator);
 
@@ -95,6 +109,8 @@ class FriendshipService
      */
     public function getFriendships(SearchRequest $request)
     {
+        $this->checkCurrentUser();
+
         return $this->friendshipRepository->findAllFriendships($this->security->getUser(), $request);
     }
 
@@ -104,6 +120,8 @@ class FriendshipService
      */
     public function countFriendships(SearchRequest $request)
     {
+        $this->checkCurrentUser();
+
         return $this->friendshipRepository->countFriendships($this->security->getUser(), $request);
     }
 
@@ -114,6 +132,8 @@ class FriendshipService
      */
     public function getFriendship(User $user, ?int $status = null)
     {
+        $this->checkCurrentUser();
+
         return $this->friendshipRepository->findFriendship($this->security->getUser(), $user, $status);
     }
 }

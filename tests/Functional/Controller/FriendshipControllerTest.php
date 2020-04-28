@@ -21,7 +21,7 @@ class FriendshipControllerTest extends WebTestCase
         parent::setUpFixtures();
 
         $this->addFixture(new UserFixture(self::$kernel->getContainer()->get('fos_user.user_manager')));
-        $this->addFixture(new FriendshipFixture($this->entityManager));
+        $this->addFixture(new FriendshipFixture());
     }
 
     public function testFriendshipStatus()

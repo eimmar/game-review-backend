@@ -7,6 +7,7 @@ use App\DTO\PaginationResponse;
 use App\DTO\SearchRequest;
 use App\Entity\GameList;
 use App\Repository\GameRepository;
+use App\Security\Voter\GameListVoter;
 use App\Service\ApiJsonResponseBuilder;
 use App\Service\GameListService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -64,6 +65,7 @@ class GameController extends BaseApiController
      */
     public function listGames(PaginationRequest $request, GameList $gameList, GameListService $service): JsonResponse
     {
+        $this->denyAccessUnlessGranted(GameListVoter::VIEW, $gameList);
         $games = $service->getGames($gameList, $request);
 
         return $this->apiResponseBuilder->respond($games, 200, [], ['groups' => ['game']]);

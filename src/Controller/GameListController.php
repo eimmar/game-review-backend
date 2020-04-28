@@ -66,6 +66,7 @@ class GameListController extends BaseApiController
         $gameList = new GameList(GameListType::CUSTOM, $user);
         $form = $this->createForm(GameListCreateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
 
         if ($form->isValid()) {
             $service->createList($gameList, $form->get('games')->getData());
@@ -97,9 +98,9 @@ class GameListController extends BaseApiController
      */
     public function edit(Request $request, GameList $gameList): JsonResponse
     {
-        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
         $form = $this->createForm(GameListUpdateType::class, $gameList);
         $form->submit(json_decode($request->getContent(), true));
+        $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
 
         if ($form->isValid()) {
             try {

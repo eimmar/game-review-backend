@@ -9,6 +9,7 @@ use App\Entity\Game;
 use App\Entity\User;
 use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
+use App\Form\ReviewEditType;
 use App\Form\ReviewType;
 use App\Security\Voter\ReviewVoter;
 use App\Service\ReviewService;
@@ -70,7 +71,7 @@ class ReviewController extends BaseApiController
     }
 
     /**
-     * @Route("/", name="review_new", methods={"POST"})
+     * @Route("/new", name="review_new", methods={"POST"})
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @return JsonResponse
@@ -104,9 +105,9 @@ class ReviewController extends BaseApiController
      */
     public function edit(Request $request, Review $review): JsonResponse
     {
-        $this->denyAccessUnlessGranted(ReviewVoter::MODIFY, $review);
-        $form = $this->createForm(ReviewType::class, $review);
+        $form = $this->createForm(ReviewEditType::class, $review);
         $form->submit(json_decode($request->getContent(), true));
+        $this->denyAccessUnlessGranted(ReviewVoter::MODIFY, $review);
 
         if ($form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
@@ -124,6 +125,8 @@ class ReviewController extends BaseApiController
      */
     public function show(Review $review): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ReviewVoter::VIEW, $review);
+
         return $this->apiResponseBuilder->respond($review, 200, [], ['groups' => ['review', 'user', 'game']]);
     }
 
