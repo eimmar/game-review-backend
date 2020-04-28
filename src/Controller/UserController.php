@@ -100,6 +100,8 @@ class UserController extends BaseApiController
      */
     public function changePassword(Request $request, User $user)
     {
+        $this->denyAccessUnlessGranted(UserVoter::CHANGE_PASSWORD, $user);
+
         $form = $this->changePasswordFormFactory->createForm();
         $form->setData($user);
         $form->submit(json_decode($request->getContent(), true));
@@ -125,6 +127,7 @@ class UserController extends BaseApiController
     public function edit(Request $request, User $user, UserManagerInterface $userManager): JsonResponse
     {
         $this->denyAccessUnlessGranted(UserVoter::EDIT, $user);
+
         $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
         $user->setAvatarFile($form->get('avatarFile')->getData());

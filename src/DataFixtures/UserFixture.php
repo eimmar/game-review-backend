@@ -78,6 +78,8 @@ class UserFixture extends Fixture
         ));
         $manager->persist($this->createUser('naudotojas1', 'naudotojas1@gmail.com', 'naudotojas1', 'Naudotojas1'));
         $manager->persist($this->createUser('naudotojas2', 'naudotojas2@gmail.com', 'naudotojas2', 'Naudotojas2'));
+        $manager->persist($this->createUser('naudotojas3', 'naudotojas3@gmail.com', 'naudotojas3', 'Naudotojas3', '', ['ROLE_USER'], false));
+        $manager->persist($this->createUser('admin', 'admin@gmail.com', 'admin', 'Admin', '', ['ROLE_ADMIN']));
         $manager->flush();
     }
 }

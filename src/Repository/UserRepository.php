@@ -25,40 +25,27 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param SearchRequest $request
-     * @param string $alias
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    private function filterQueryBuilder(SearchRequest $request, string $alias)
-    {
-        $queryBuilder = $this->createQueryBuilder($alias);
-        if (strlen($request->getFilter('query')) !== 0) {
-            $queryBuilder
-                ->addSelect("MATCH_AGAINST (u.firstName, u.lastName, u.email, :query 'IN NATURAL MODE') AS HIDDEN score")
-                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0 AND u.enabled = :enabled')
-                ->setParameters(['query' => $request->getFilter('query'), 'enabled' => true])
-                ->orderBy('score', 'DESC');
-        } else {
-            $orderBy = $request->getOrderBy() ?: 'createdAt';
-            $queryBuilder
-                ->addSelect("CASE WHEN u.{$orderBy} IS NULL THEN 1 ELSE 0 END AS HIDDEN sortIsNull")
-                ->where('u.enabled = :enabled')
-                ->setParameter('enabled', true)
-                ->orderBy('u.' . $orderBy, $request->getOrder() ?: 'DESC')
-                ->addOrderBy('sortIsNull', 'ASC');
-        }
-
-        return $queryBuilder;
-    }
-
-    /**
-     * @param SearchRequest $request
      * @return int|mixed|string
      */
     public function filter(SearchRequest $request)
     {
-        return $this->filterQueryBuilder($request, 'u')
+        $orderBy = $request->getOrderBy() ?: 'createdAt';
+
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->addSelect("CASE WHEN u.{$orderBy} IS NULL THEN 1 ELSE 0 END AS HIDDEN sortIsNull")
+            ->where('u.enabled = :enabled')
+            ->setParameter('enabled', true)
+            ->orderBy('u.' . $orderBy, $request->getOrder() ?: 'DESC')
+            ->addOrderBy('sortIsNull', 'ASC')
             ->setFirstResult($request->getFirstResult())
-            ->setMaxResults($request->getPageSize())
+            ->setMaxResults($request->getPageSize());
+
+        if (strlen($request->getFilter('query')) !== 0) {
+            $queryBuilder->andWhere('u.username LIKE :username')
+                ->setParameter('username', "%{$request->getFilter('query')}%");
+        }
+
+        return $queryBuilder
             ->getQuery()
             ->getResult();
     }
@@ -69,15 +56,17 @@ class UserRepository extends ServiceEntityRepository
      */
     public function countWithFilter(SearchRequest $request)
     {
-        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
+            ->where('u.enabled = :enabled')
+            ->setParameter('enabled', true);
+
         if (strlen($request->getFilter('query')) !== 0) {
-            $queryBuilder
-                ->add('where', 'MATCH_AGAINST(u.firstName, u.lastName, u.email, :query) > 0.0 AND u.enabled = :enabled')
-                ->setParameters(['query' => $request->getFilter('query'), 'enabled' => true]);
+            $queryBuilder->andWhere('u.username LIKE :username')
+                ->setParameter('username', $request->getFilter('query'));
         }
 
         return (int)$queryBuilder
-            ->select('COUNT(u)')
             ->getQuery()
             ->getSingleScalarResult();
     }
