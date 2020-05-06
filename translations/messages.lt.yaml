@@ -9,22 +9,7 @@ game:
     game_spot_association: Game Spot asociacija
     summary: Aprašymas
     storyline: Siužetas
-igdb:
-    game:
-        main: Žaidimų duomenų atnaujinimas
-        request: Žaidimo duomenų užklausa į IGDB
-        request_success: Užklausa įvykdyta sėkmingai! Naujai sukurta %created%, atnaujinta %updated%, iš viso gauta %total%.
-        request_error: Vykdant užklausą įvyko klaida!
 
-    request:
-        where: Užklausos "where" dalies kriterijai
-        sort: Užklausos "sort" dalies rikiavimas
-        search: Paieškos frazė ("search")
-        limit: Norimas gauti maksimalus įrašų kiekis ("limit")
-        offset: Įrašo indeksas, nuo kurio imamas pirmasis įraškas ("offset")
-        more_info: Daugiau informacijos apie užklausos formatą
-        execute: Vykdyti
-        execute_to_list: Vykdyti ir uždaryti
 review:
     main: Atsiliepimai
     approved: Patvirtintas
@@ -55,5 +40,5 @@ user:
         reset_password:
             button: Siūsti slaptažodžio keitimo nuorodą
             success: Slaptažodžio keitimo nurodymai nusiųsti į naudotojo elektroninio pašto paskyrą.
-            failure: Slaptažodžio pakeitimo užklausa jau yra išsiųsta. Palaukite bent 10 minučių prieš siūsdami sekančią.
+            failure: Slaptažodžio pakeitimo užklausa jau yra išsiųsta. Palaukite bent 10 minučių prieš siųsdami sekančią.
             frontend_route: /atstatyti-slaptazodi/

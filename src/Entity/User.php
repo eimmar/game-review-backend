@@ -117,6 +117,7 @@ class User extends BaseUser
         $this->friends = new ArrayCollection();
         $this->friendsWithMe = new ArrayCollection();
         $this->firstName = '';
+        $this->avatar = null;
     }
 
     public function __toString()
