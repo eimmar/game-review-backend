@@ -73,7 +73,7 @@ class FriendshipService
         $this->checkCurrentUser();
 
         /** @var Friendship|null $friendship */
-        $friendship = $this->friendshipRepository->findFriendRequest($this->security->getUser(), $friend);
+        $friendship = $this->getFriendship($friend);
 
         if ($friendship) {
             $this->entityManager->remove($friendship);

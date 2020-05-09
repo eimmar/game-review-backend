@@ -62,8 +62,7 @@ class FriendshipControllerTest extends WebTestCase
         $receiverUser = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'naudotojas1']);
 
         $client->request('GET', '/api/friendship/accept/' . $receiverUser->getId());
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals('null', $client->getResponse()->getContent());
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
     }
 
     public function testAcceptFriendRequest()

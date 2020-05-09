@@ -101,6 +101,9 @@ class FriendshipServiceTest extends TestCase
         $this->security->method('getUser')->willReturn(new User());
 
         $this->assertEquals(FriendshipStatus::ACCEPTED, $this->service->acceptRequest($friend)->getStatus());
-        $this->assertEquals(null, $this->service->acceptRequest($friend));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionCode(LogicExceptionCode::INVALID_DATA);
+        $this->service->acceptRequest($friend);
     }
 }
