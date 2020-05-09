@@ -25,7 +25,6 @@ class AdminController extends AbstractController
      * @param User $user
      * @param TwigSwiftMailer $mailer
      * @param TokenGeneratorInterface $tokenGenerator
-     * @param ParameterBagInterface $params
      * @param TranslatorInterface $translator
      * @param UserManagerInterface $userManager
      * @param Request $request
@@ -35,17 +34,10 @@ class AdminController extends AbstractController
         User $user,
         TwigSwiftMailer $mailer,
         TokenGeneratorInterface $tokenGenerator,
-        ParameterBagInterface $params,
         TranslatorInterface $translator,
         UserManagerInterface $userManager,
         Request $request
     ) {
-        if ($user->isPasswordRequestNonExpired($params->get('fos_user.resetting.token_ttl'))) {
-            $this->addFlash('sonata_flash_error', $translator->trans('user.action.reset_password.failure'));
-
-            return $this->redirect($request->headers->get('referer'));
-        }
-
         if ($user->getConfirmationToken() === null) {
             $user->setConfirmationToken($tokenGenerator->generateToken());
         }

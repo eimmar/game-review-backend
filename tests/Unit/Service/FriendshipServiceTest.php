@@ -79,7 +79,7 @@ class FriendshipServiceTest extends TestCase
 
         $this->entityManager->expects($this->once())->method('remove')->with($friendship);
         $this->entityManager->expects($this->once())->method('flush');
-        $this->service->removeFriend($friend);
+        $this->service->removeFriendship($friend);
     }
 
     public function testRemoveFriendWhenNoFriendshipIsFount()
@@ -89,7 +89,7 @@ class FriendshipServiceTest extends TestCase
         $this->security->method('getUser')->willReturn(new User());
 
         $this->entityManager->expects($this->never())->method('flush');
-        $this->service->removeFriend($friend);
+        $this->service->removeFriendship($friend);
     }
 
 

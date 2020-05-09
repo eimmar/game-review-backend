@@ -75,7 +75,7 @@ class FriendshipController extends BaseApiController
      */
     public function removeFriend(User $friend): JsonResponse
     {
-        $this->friendshipService->removeFriend($friend);
+        $this->friendshipService->removeFriendship($friend);
 
         return $this->apiResponseBuilder->respond('OK');
     }

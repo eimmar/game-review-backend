@@ -68,12 +68,12 @@ class FriendshipService
     /**
      * @param User $friend
      */
-    public function removeFriend(User $friend)
+    public function removeFriendship(User $friend)
     {
         $this->checkCurrentUser();
 
         /** @var Friendship|null $friendship */
-        $friendship = $this->friendshipRepository->findFriendship($this->security->getUser(), $friend, FriendshipStatus::ACCEPTED);
+        $friendship = $this->friendshipRepository->findFriendRequest($this->security->getUser(), $friend);
 
         if ($friendship) {
             $this->entityManager->remove($friendship);
