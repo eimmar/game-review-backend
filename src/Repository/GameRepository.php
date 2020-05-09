@@ -33,8 +33,6 @@ class GameRepository extends ServiceEntityRepository
     /**
      * @param SearchRequest $request
      * @param string $alias
-     * @return \Doctrine\ORM\QueryBuilder
-     * @throws \Doctrine\ORM\Query\QueryException
      */
     private function filterQueryBuilder(SearchRequest $request, string $alias)
     {
@@ -68,7 +66,6 @@ class GameRepository extends ServiceEntityRepository
     /**
      * @param SearchRequest $request
      * @return int|mixed|string
-     * @throws \Doctrine\ORM\Query\QueryException
      */
     public function filter(SearchRequest $request)
     {

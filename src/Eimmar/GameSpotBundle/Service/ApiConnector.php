@@ -11,10 +11,6 @@ use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
 use App\Eimmar\GameSpotBundle\Service\Transformer\GameTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\ResponseTransformer;
 use App\Eimmar\GameSpotBundle\Service\Transformer\ReviewTransformer;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiConnector
@@ -83,10 +79,6 @@ class ApiConnector
     /**
      * @param ApiRequest $requestBody
      * @return ReviewsResponse
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function reviews(ApiRequest $requestBody)
     {
@@ -104,10 +96,6 @@ class ApiConnector
     /**
      * @param ApiRequest $requestBody
      * @return GamesResponse
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function games(ApiRequest $requestBody)
     {
@@ -125,10 +113,6 @@ class ApiConnector
     /**
      * @param ApiRequest $requestBody
      * @return Response
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function articles(ApiRequest $requestBody)
     {
@@ -145,10 +129,6 @@ class ApiConnector
     /**
      * @param ApiRequest $requestBody
      * @return Response
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function videos(ApiRequest $requestBody)
     {
@@ -165,10 +145,6 @@ class ApiConnector
     /**
      * @param ApiRequest $requestBody
      * @return Response
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function images(ApiRequest $requestBody)
     {

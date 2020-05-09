@@ -50,12 +50,12 @@ class FriendshipService
     {
         $this->checkCurrentUser();
 
-        if ($this->friendshipRepository->findFriendship($this->security->getUser(), $friend)) {
-            throw new LogicException(LogicExceptionCode::FRIENDSHIP_USER_ALREADY_FRIEND);
-        }
-
         if ($this->security->getUser() === $friend) {
             throw new LogicException(LogicExceptionCode::INVALID_DATA);
+        }
+
+        if ($this->friendshipRepository->findFriendship($this->security->getUser(), $friend)) {
+            throw new LogicException(LogicExceptionCode::FRIENDSHIP_USER_ALREADY_FRIEND);
         }
 
         $friendship = new Friendship($this->security->getUser(), $friend);
@@ -98,6 +98,8 @@ class FriendshipService
             $friendship->setAcceptedAt(new \DateTimeImmutable());
             $this->entityManager->persist($friendship);
             $this->entityManager->flush();
+        } else {
+            throw new LogicException(LogicExceptionCode::INVALID_DATA);
         }
 
         return $friendship;

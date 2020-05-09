@@ -171,7 +171,7 @@ class AuthController extends BaseApiController
         $form->setData($user);
         $form->submit(json_decode($request->getContent(), true));
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isValid()) {
             $event = new FormEvent($form, $request);
             $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_SUCCESS, $event);
             $this->userManager->updateUser($user);

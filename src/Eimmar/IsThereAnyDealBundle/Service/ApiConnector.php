@@ -7,10 +7,6 @@ namespace App\Eimmar\IsThereAnyDealBundle\Service;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\RequestInterface;
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\SearchRequest;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiConnector
@@ -42,7 +38,7 @@ class ApiConnector
      * @param RequestInterface $requestBody
      * @return array
      */
-    public function buildOptions(RequestInterface $requestBody)
+    private function buildOptions(RequestInterface $requestBody)
     {
         return ['query' => array_merge(['key' => $this->userKey], $requestBody->unwrap())];
     }
@@ -50,10 +46,6 @@ class ApiConnector
     /**
      * @param SearchRequest $requestBody
      * @return array
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function search(SearchRequest $requestBody)
     {
@@ -68,10 +60,6 @@ class ApiConnector
     /**
      * @param GamePricesRequest $requestBody
      * @return array
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function gamePrices(GamePricesRequest $requestBody)
     {

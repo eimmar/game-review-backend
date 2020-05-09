@@ -29,17 +29,20 @@ class UserController extends BaseApiController
 
     private FactoryInterface $changePasswordFormFactory;
 
+    private UserRepository $userRepository;
+
     /**
      * @param UserManagerInterface $userManager
      * @param ApiJsonResponseBuilder $builder
      * @param FactoryInterface $changePasswordFormFactory
      */
-    public function __construct(UserManagerInterface $userManager, ApiJsonResponseBuilder $builder, FactoryInterface $changePasswordFormFactory)
+    public function __construct(UserManagerInterface $userManager, ApiJsonResponseBuilder $builder, FactoryInterface $changePasswordFormFactory, UserRepository $userRepository)
     {
         parent::__construct($builder);
 
         $this->userManager = $userManager;
         $this->changePasswordFormFactory = $changePasswordFormFactory;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -56,16 +59,15 @@ class UserController extends BaseApiController
 
     /**
      * @Route("/", name="user_index", methods={"POST"})
-     * @param UserRepository $userRepository
      * @param SearchRequest $request
      * @return JsonResponse
      */
-    public function index(UserRepository $userRepository, SearchRequest $request): JsonResponse
+    public function index(SearchRequest $request): JsonResponse
     {
-        $users = $userRepository->filter($request);
+        $users = $this->userRepository->filter($request);
 
         return $this->apiResponseBuilder->respondWithPagination(
-            new PaginationResponse($request->getPage(), $userRepository->countWithFilter($request), $request->getPageSize(), $users),
+            new PaginationResponse($request->getPage(), $this->userRepository->countWithFilter($request), $request->getPageSize(), $users),
             ['groups' => ['user']]
         );
     }
@@ -77,8 +79,8 @@ class UserController extends BaseApiController
      */
     public function show(string $username): JsonResponse
     {
-        $user = $this->userManager->findUserByUsername($username);
-        if (!$user || !$user->isEnabled()) {
+        $user = $this->userRepository->findActiveUser($username);
+        if (!$user) {
             return $this->apiResponseBuilder->respond('', 404);
         }
 
@@ -120,11 +122,10 @@ class UserController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
      * @param User $user
-     * @param UserManagerInterface $userManager
      * @return JsonResponse
      * @throws LogicException
      */
-    public function edit(Request $request, User $user, UserManagerInterface $userManager): JsonResponse
+    public function edit(Request $request, User $user): JsonResponse
     {
         $this->denyAccessUnlessGranted(UserVoter::EDIT, $user);
 
@@ -133,7 +134,7 @@ class UserController extends BaseApiController
         $user->setAvatarFile($form->get('avatarFile')->getData());
 
         if ($form->isValid()) {
-            $userManager->updateUser($user);
+            $this->userManager->updateUser($user);
 
             return $this->apiResponseBuilder->respond($user, 200, [], ['groups' => 'user', 'user-sensitive']);
         }

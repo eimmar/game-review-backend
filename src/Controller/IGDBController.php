@@ -9,6 +9,7 @@ use App\DTO\SearchRequest;
 use App\Repository\GameRepository;
 use App\Service\API\IGDBGameAdapter;
 use App\Service\API\IGDBReviewAdapter;
+use App\Service\ApiJsonResponseBuilder;
 use App\Service\Transformer\SearchRequestToIGDBRequestTransformer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IGDBController extends BaseApiController
 {
+    private IGDBGameAdapter $gameAdapter;
+
+    private IGDBReviewAdapter $reviewAdapter;
+
+    public function __construct(ApiJsonResponseBuilder $builder, IGDBGameAdapter $gameAdapter, IGDBReviewAdapter $reviewAdapter)
+    {
+        parent::__construct($builder);
+        $this->gameAdapter = $gameAdapter;
+        $this->reviewAdapter = $reviewAdapter;
+    }
+
     /**
      * @Route("/reviews/{externalGameId}", name="igdb_game_reviews_options", methods={"OPTIONS"})
      * @Route("/games", name="igdb_games_options", methods={"OPTIONS"})
@@ -31,33 +43,29 @@ class IGDBController extends BaseApiController
 
     /**
      * @Route("/reviews/{externalGameId}", name="igdb_game_reviews", methods={"POST"})
-     * @param IGDBReviewAdapter $reviewAdapter
      * @param int $externalGameId
      * @param PaginationRequest $paginationRequest
      * @return JsonResponse
-     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function reviews(IGDBReviewAdapter $reviewAdapter, int $externalGameId, PaginationRequest $paginationRequest): JsonResponse
+    public function reviews(int $externalGameId, PaginationRequest $paginationRequest): JsonResponse
     {
-        return $this->apiResponseBuilder->respond($reviewAdapter->getReviews($externalGameId, $paginationRequest));
+        return $this->apiResponseBuilder->respond($this->reviewAdapter->getReviews($externalGameId, $paginationRequest));
     }
 
     /**
      * @Route("/games", name="igdb_games", methods={"POST"})
-     * @param IGDBGameAdapter $gameAdapter
      * @param GameRepository $repository
      * @param SearchRequest $request
      * @param SearchRequestToIGDBRequestTransformer $transformer
      * @return JsonResponse
      */
     public function games(
-        IGDBGameAdapter $gameAdapter,
         GameRepository $repository,
         SearchRequest $request,
         SearchRequestToIGDBRequestTransformer $transformer
     ): JsonResponse {
         try {
-            $games = $gameAdapter->findAll($transformer->transform($request));
+            $games = $this->gameAdapter->findAll($transformer->transform($request));
             $status = 200;
         } catch (\Exception $e) {
             $games = $repository->filter($request);
@@ -69,13 +77,12 @@ class IGDBController extends BaseApiController
 
     /**
      * @Route("/game/{slug}", name="igdb_game", methods={"POST"})
-     * @param IGDBGameAdapter $gameAdapter
      * @param string $slug
      * @return JsonResponse
      */
-    public function game(IGDBGameAdapter $gameAdapter, string $slug): JsonResponse
+    public function game(string $slug): JsonResponse
     {
-        $game = $gameAdapter->findOneBySlug($slug);
+        $game = $this->gameAdapter->findOneBySlug($slug);
         if (!$game) {
             return $this->apiResponseBuilder->respond('', 404);
         }

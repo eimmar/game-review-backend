@@ -70,4 +70,18 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @param string $username
+     * @return User|null
+     */
+    public function findActiveUser(string $username): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.enabled = :enabled')
+            ->andWhere('u.username = :username')
+            ->setParameters(['enabled' => true, 'username' => $username])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

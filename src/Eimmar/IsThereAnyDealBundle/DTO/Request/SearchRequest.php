@@ -80,9 +80,4 @@ class SearchRequest implements RequestInterface
             }
         );
     }
-
-    public function getCacheKey(): string
-    {
-        return 'isThereAnyDeal.search.' . str_replace(['{', '}', '(',')','/','\\','@', ':', ' '], '', implode('', $this->unwrap()));
-    }
 }

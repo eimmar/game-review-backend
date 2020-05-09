@@ -7,10 +7,6 @@ namespace App\Eimmar\IGDBBundle\Service;
 use App\Eimmar\IGDBBundle\DTO\Game;
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
 use App\Eimmar\IGDBBundle\Service\Transformer\GameTransformer;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiConnector
@@ -61,10 +57,6 @@ class ApiConnector
     /**
      * @param RequestBody $requestBody
      * @return Game[]
-     * @throws TransportExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
      */
     public function games(RequestBody $requestBody)
     {
@@ -80,10 +72,6 @@ class ApiConnector
     /**
      * @param RequestBody $requestBody
      * @return array
-     * @throws TransportExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
      */
     public function reviews(RequestBody $requestBody): array
     {

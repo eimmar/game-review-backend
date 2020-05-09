@@ -11,6 +11,7 @@ use App\Exception\LogicException;
 use App\Form\GameListCreateType;
 use App\Form\GameListUpdateType;
 use App\Security\Voter\GameListVoter;
+use App\Service\ApiJsonResponseBuilder;
 use App\Service\GameListService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,6 +24,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GameListController extends BaseApiController
 {
+    private GameListService $service;
+
+    public function __construct(ApiJsonResponseBuilder $builder, GameListService $service)
+    {
+        parent::__construct($builder);
+        $this->service = $service;
+    }
+
     /**
      * @Route("/new", name="gameList_new_options", methods={"OPTIONS"})
      * @Route("/{id}", name="individual_gameList_options", methods={"OPTIONS"})
@@ -41,12 +50,11 @@ class GameListController extends BaseApiController
     /**
      * @Route("/user/{user}", name="gameLists_by_user", methods={"GET"})
      * @param User $user
-     * @param GameListService $service
      * @return JsonResponse
      */
-    public function allForUser(User $user, GameListService $service): JsonResponse
+    public function allForUser(User $user): JsonResponse
     {
-        $gameLists = $service->getUserGameLists($user);
+        $gameLists = $this->service->getUserGameLists($user);
 
         return $this->apiResponseBuilder->respond($gameLists, 200, [], ['groups' => 'gameList']);
     }
@@ -55,11 +63,10 @@ class GameListController extends BaseApiController
      * @Route("/new", name="gameList_new", methods={"POST"})
      * @IsGranted({"ROLE_USER"})
      * @param Request $request
-     * @param GameListService $service
      * @return JsonResponse
      * @throws LogicException
      */
-    public function new(Request $request, GameListService $service): JsonResponse
+    public function new(Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -69,7 +76,7 @@ class GameListController extends BaseApiController
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
 
         if ($form->isValid()) {
-            $service->createList($gameList, $form->get('games')->getData());
+            $this->service->createList($gameList, $form->get('games')->getData());
 
             return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
         }
@@ -119,12 +126,11 @@ class GameListController extends BaseApiController
      * @Route("/containing/game/{game}/user/{user}", name="user_lists_containing_game", methods={"GET"})
      * @param Game $game
      * @param User $user
-     * @param GameListService $service
      * @return JsonResponse
      */
-    public function listsContainingGame(Game $game, User $user, GameListService $service): JsonResponse
+    public function listsContainingGame(Game $game, User $user): JsonResponse
     {
-        $gameLists = $service->getUserListsContainingGame($user, $game);
+        $gameLists = $this->service->getUserListsContainingGame($user, $game);
 
         return $this->apiResponseBuilder->respond($gameLists, 200, [], ['groups' => 'gameList']);
     }
@@ -134,13 +140,12 @@ class GameListController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param GameList $gameList
      * @param Game $game
-     * @param GameListService $service
      * @return JsonResponse
      */
-    public function addToList(GameList $gameList, Game $game, GameListService $service): JsonResponse
+    public function addToList(GameList $gameList, Game $game): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-        $service->addToList($gameList, $game);
+        $this->service->addToList($gameList, $game);
 
         return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
     }
@@ -150,13 +155,12 @@ class GameListController extends BaseApiController
      * @IsGranted({"ROLE_USER"})
      * @param GameList $gameList
      * @param Game $game
-     * @param GameListService $service
      * @return JsonResponse
      */
-    public function removeGame(GameList $gameList, Game $game, GameListService $service): JsonResponse
+    public function removeGame(GameList $gameList, Game $game): JsonResponse
     {
         $this->denyAccessUnlessGranted(GameListVoter::UPDATE, $gameList);
-        $service->removeFromList($gameList, $game);
+        $this->service->removeFromList($gameList, $game);
 
         return $this->apiResponseBuilder->respond($gameList, 200, [], ['groups' => 'gameList']);
     }
