@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Enum\FriendshipStatus;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -53,10 +54,10 @@ class Friendship
     protected $acceptedAt;
 
     /**
-     * @param User $sender
-     * @param User $receiver
+     * @param UserInterface $sender
+     * @param UserInterface $receiver
      */
-    public function __construct(User $sender, User $receiver)
+    public function __construct(UserInterface $sender, UserInterface $receiver)
     {
         $this->sender = $sender;
         $this->receiver = $receiver;

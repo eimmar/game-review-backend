@@ -51,7 +51,7 @@ class GameListService
 
         try {
             $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException $e) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (UniqueConstraintViolationException $e) {
             throw new LogicException(LogicExceptionCode::GAME_LIST_DUPLICATE_NAME);
         }
     }

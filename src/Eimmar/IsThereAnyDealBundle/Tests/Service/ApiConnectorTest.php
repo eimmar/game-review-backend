@@ -18,12 +18,13 @@ class ApiConnectorTest extends TestCase
 
     private HttpClientInterface $httpClient;
 
+    /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
     public function setUp()
     {
         $userKey = 'userKey';
         $this->httpClient = $this->createMock(HttpClientInterface::class);
 
-        $this->apiConnector = new ApiConnector($userKey, $this->httpClient, 0);
+        $this->apiConnector = new ApiConnector($userKey, $this->httpClient);
     }
 
     public function testSearch()
@@ -44,7 +45,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', ApiConnector::SEARCH_URL, $requestOptions)
+            ->with(['GET', ApiConnector::SEARCH_URL, $requestOptions])
             ->willReturn(new HttpClientTestResponse($responseContents));
 
 
@@ -69,7 +70,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', ApiConnector::GAME_PRICES_URL, $requestOptions)
+            ->with(['GET', ApiConnector::GAME_PRICES_URL, $requestOptions])
             ->willReturn(new HttpClientTestResponse($responseContents));
 
 

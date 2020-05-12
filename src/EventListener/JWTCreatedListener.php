@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use DateTime;
+use Exception;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -28,7 +30,7 @@ class JWTCreatedListener
 
     /**
      * @param JWTCreatedEvent $event
-     * @throws \Exception
+     * @throws Exception
      */
     public function onJWTCreated(JWTCreatedEvent $event)
     {
@@ -40,7 +42,7 @@ class JWTCreatedListener
             $user = $event->getUser();
 
             if (isset($data['rememberMe']) && $data['rememberMe']) {
-                $expiration = new \DateTime('+' . $this->rememberMeDuration . ' seconds');
+                $expiration = new DateTime('+' . $this->rememberMeDuration . ' seconds');
                 $payload['exp'] = $expiration->getTimestamp();
             }
 

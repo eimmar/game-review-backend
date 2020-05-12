@@ -31,6 +31,7 @@ class ReviewTransformerTest extends TestCase
 
     private ReviewTransformer $transformer;
 
+    /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
     public function setUp()
     {
         $this->imageTransformer = $this->createMock(ImageTransformer::class);

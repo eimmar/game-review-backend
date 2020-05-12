@@ -10,6 +10,7 @@ use App\Enum\FriendshipStatus;
 use App\Enum\GameListPrivacyType;
 use App\Enum\GameListType;
 use App\Service\FriendshipService;
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -60,7 +61,7 @@ class GameListVoter extends Voter
                 return $this->canDelete($gameList, $currentUser);
         }
 
-        throw new \LogicException('Invalid attribute!');
+        throw new LogicException('Invalid attribute!');
     }
 
     /**

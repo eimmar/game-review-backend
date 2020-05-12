@@ -6,6 +6,7 @@ namespace App\Eimmar\GameSpotBundle\Tests\ParamConverter;
 
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
 use App\Eimmar\GameSpotBundle\ParamConverter\ApiRequestConverter;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class ApiRequestConverterTest extends TestCase
         $request = new Request([],[],[],[],[],[],'{"limit":10,"offset":0,"sort":"publish_date:desc"}');
         $configuration = new ParamConverter(['name' => 'apiRequest', 'class' => ApiRequest::class]);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->service->apply($request, $configuration);
     }

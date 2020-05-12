@@ -9,7 +9,7 @@ use Swift_Mailer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class TwigSwiftMailer extends \FOS\UserBundle\Mailer\TwigSwiftMailer
 {
@@ -20,14 +20,16 @@ class TwigSwiftMailer extends \FOS\UserBundle\Mailer\TwigSwiftMailer
     /**
      * @param Swift_Mailer $mailer
      * @param UrlGeneratorInterface $router
-     * @param Twig_Environment $twig
+     * @param Environment $twig
      * @param ParameterBagInterface $params
+     * @param TranslatorInterface $translator
      * @param string $frontendUrl
+     * @noinspection PhpParamsInspection
      */
     public function __construct(
         Swift_Mailer $mailer,
         UrlGeneratorInterface $router,
-        Twig_Environment $twig,
+        Environment $twig,
         ParameterBagInterface $params,
         TranslatorInterface $translator,
         string $frontendUrl

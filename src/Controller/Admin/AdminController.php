@@ -6,10 +6,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Mailer\TwigSwiftMailer;
+use DateTime;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +43,7 @@ class AdminController extends AbstractController
         }
 
         $mailer->sendResettingEmailMessage($user);
-        $user->setPasswordRequestedAt(new \DateTime());
+        $user->setPasswordRequestedAt(new DateTime());
         $userManager->updateUser($user);
 
         $this->addFlash('sonata_flash_success', $translator->trans('user.action.reset_password.success'));

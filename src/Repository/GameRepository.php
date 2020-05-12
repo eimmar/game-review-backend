@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\DTO\SearchRequest;
 use App\Entity\Game;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Game|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,6 +35,7 @@ class GameRepository extends ServiceEntityRepository
     /**
      * @param SearchRequest $request
      * @param string $alias
+     * @return QueryBuilder
      */
     private function filterQueryBuilder(SearchRequest $request, string $alias)
     {
@@ -93,9 +96,6 @@ class GameRepository extends ServiceEntityRepository
     /**
      * @param SearchRequest $request
      * @return int
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\Query\QueryException
      */
     public function countWithFilter(SearchRequest $request)
     {
@@ -124,10 +124,10 @@ class GameRepository extends ServiceEntityRepository
 
     /**
      * @param string $slug
-     * @param \DateTimeImmutable $validFrom
+     * @param DateTimeImmutable $validFrom
      * @return Game|null
      */
-    public function findOneRecentlyImported(string $slug, \DateTimeImmutable $validFrom)
+    public function findOneRecentlyImported(string $slug, DateTimeImmutable $validFrom)
     {
         return $this->createQueryBuilder('g')
             ->where('g.slug = :slug')

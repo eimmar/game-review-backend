@@ -11,6 +11,7 @@ use App\Entity\Game;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class GameTransformer implements IGDBTransformerInterface
 {
@@ -97,7 +98,7 @@ class GameTransformer implements IGDBTransformerInterface
     /**
      * @param IGDBGame $igdbGame
      * @return Game
-     * @throws \Exception
+     * @throws Exception
      */
     public function transform($igdbGame)
     {

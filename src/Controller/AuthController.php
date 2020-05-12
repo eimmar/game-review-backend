@@ -9,11 +9,11 @@ use App\Exception\LogicException;
 use App\Form\UserType;
 use App\Mailer\TwigSwiftMailer;
 use App\Service\ApiJsonResponseBuilder;
+use DateTime;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
-use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -81,7 +81,7 @@ class AuthController extends BaseApiController
 
             try {
                 $this->userManager->updateUser($user);
-            } catch (UniqueConstraintViolationException $e) {
+            } /** @noinspection PhpRedundantCatchClauseInspection */ catch (UniqueConstraintViolationException $e) {
                 throw new LogicException(LogicExceptionCode::AUTH_EMAIL_ALREADY_EXISTS);
             }
 
@@ -120,7 +120,7 @@ class AuthController extends BaseApiController
         }
 
         $mailer->sendResettingEmailMessage($user);
-        $user->setPasswordRequestedAt(new \DateTime());
+        $user->setPasswordRequestedAt(new DateTime());
         $this->userManager->updateUser($user);
 
         return $this->apiResponseBuilder->respond('OK');
@@ -161,7 +161,7 @@ class AuthController extends BaseApiController
         }
 
         $event = new GetResponseUserEvent($user, $request);
-        $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_INITIALIZE, $event);
+        $eventDispatcher->dispatch($event);
 
         if ($event->getResponse() !== null) {
             throw new LogicException(LogicExceptionCode::INVALID_DATA);
@@ -173,7 +173,7 @@ class AuthController extends BaseApiController
 
         if ($form->isValid()) {
             $event = new FormEvent($form, $request);
-            $eventDispatcher->dispatch(FOSUserEvents::RESETTING_RESET_SUCCESS, $event);
+            $eventDispatcher->dispatch($event);
             $this->userManager->updateUser($user);
 
             return $this->apiResponseBuilder->respond('OK');

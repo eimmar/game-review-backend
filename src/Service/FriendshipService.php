@@ -11,6 +11,7 @@ use App\Enum\FriendshipStatus;
 use App\Enum\LogicExceptionCode;
 use App\Exception\LogicException;
 use App\Repository\FriendshipRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
@@ -95,7 +96,7 @@ class FriendshipService
 
         if ($friendship) {
             $friendship->setStatus(FriendshipStatus::ACCEPTED);
-            $friendship->setAcceptedAt(new \DateTimeImmutable());
+            $friendship->setAcceptedAt(new DateTimeImmutable());
             $this->entityManager->persist($friendship);
             $this->entityManager->flush();
         } else {

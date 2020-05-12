@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security\Voter;
 
 use App\Entity\User;
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -41,6 +42,6 @@ class UserVoter extends Voter
                 return $user === $currentUser;
         }
 
-        throw new \LogicException('Invalid attribute!');
+        throw new LogicException('Invalid attribute!');
     }
 }

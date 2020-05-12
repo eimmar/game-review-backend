@@ -27,89 +27,35 @@ use PHPUnit\Framework\TestCase;
 
 class GameTransformerTest extends TestCase
 {
-    /**
-     * @var AgeRatingTransformer
-     */
-    private AgeRatingTransformer $ageRatingTransformer;
-
-    /**
-     * @var EntityTransformer
-     */
-    private EntityTransformer $entityTransformer;
-
-    /**
-     * @var GameModeTransformer
-     */
-    private GameModeTransformer $gameModeTransformer;
-
-    /**
-     * @var GenreTransformer
-     */
-    private GenreTransformer $genreTransformer;
-
-    /**
-     * @var InvolvedCompanyTransformer
-     */
-    private InvolvedCompanyTransformer $involvedCompanyTransformer;
-
-    /**
-     * @var PlatformTransformer
-     */
-    private PlatformTransformer $platformTransformer;
-
-    /**
-     * @var ScreenshotTransformer
-     */
-    private ScreenshotTransformer $screenshotTransformer;
-
-    /**
-     * @var ThemeTransformer
-     */
-    private ThemeTransformer $themeTransformer;
-
-    /**
-     * @var WebsiteTransformer
-     */
-    private WebsiteTransformer $websiteTransformer;
-
-    /**
-     * @var TimeToBeatTransformer
-     */
-    private TimeToBeatTransformer $timeToBeatTransformer;
-
-    /**
-     * @var CoverTransformer
-     */
-    private CoverTransformer $coverTransformer;
 
     private GameTransformer $transformer;
 
     public function setUp()
     {
-        $this->ageRatingTransformer = new AgeRatingTransformer(new ContentDescriptionTransformer());
-        $this->entityTransformer =  new EntityTransformer();
-        $this->gameModeTransformer = new GameModeTransformer();
-        $this->genreTransformer = new GenreTransformer();
-        $this->involvedCompanyTransformer = new InvolvedCompanyTransformer(new CompanyTransformer($this->entityTransformer, new \App\Eimmar\IGDBBundle\Service\Transformer\Company\WebsiteTransformer()));
-        $this->platformTransformer = new PlatformTransformer($this->entityTransformer);
-        $this->screenshotTransformer = new ScreenshotTransformer();
-        $this->themeTransformer = new ThemeTransformer();
-        $this->websiteTransformer = new WebsiteTransformer();
-        $this->timeToBeatTransformer = new TimeToBeatTransformer();
-        $this->coverTransformer = new CoverTransformer();
+        $ageRatingTransformer = new AgeRatingTransformer(new ContentDescriptionTransformer());
+        $entityTransformer =  new EntityTransformer();
+        $gameModeTransformer = new GameModeTransformer();
+        $genreTransformer = new GenreTransformer();
+        $involvedCompanyTransformer = new InvolvedCompanyTransformer(new CompanyTransformer($entityTransformer, new \App\Eimmar\IGDBBundle\Service\Transformer\Company\WebsiteTransformer()));
+        $platformTransformer = new PlatformTransformer($entityTransformer);
+        $screenshotTransformer = new ScreenshotTransformer();
+        $themeTransformer = new ThemeTransformer();
+        $websiteTransformer = new WebsiteTransformer();
+        $timeToBeatTransformer = new TimeToBeatTransformer();
+        $coverTransformer = new CoverTransformer();
 
         $this->transformer = new GameTransformer(
-            $this->ageRatingTransformer,
-            $this->entityTransformer,
-            $this->gameModeTransformer,
-            $this->genreTransformer,
-            $this->involvedCompanyTransformer,
-            $this->platformTransformer,
-            $this->screenshotTransformer,
-            $this->themeTransformer,
-            $this->websiteTransformer,
-            $this->timeToBeatTransformer,
-            $this->coverTransformer,
+            $ageRatingTransformer,
+            $entityTransformer,
+            $gameModeTransformer,
+            $genreTransformer,
+            $involvedCompanyTransformer,
+            $platformTransformer,
+            $screenshotTransformer,
+            $themeTransformer,
+            $websiteTransformer,
+            $timeToBeatTransformer,
+            $coverTransformer,
         );
     }
 

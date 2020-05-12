@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ParamConverter;
 
 use App\DTO\ForgotPasswordRequest;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ class ForgotPasswordRequestConverter implements ParamConverterInterface
     {
         $content = json_decode($request->getContent(), true);
         if (!$content || !isset($content['email'])) {
-            throw new \InvalidArgumentException('Invalid request parameters.');
+            throw new InvalidArgumentException('Invalid request parameters.');
         }
 
         $request->attributes->set($configuration->getName(), new ForgotPasswordRequest($content['email']));

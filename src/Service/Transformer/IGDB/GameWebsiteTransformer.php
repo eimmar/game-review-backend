@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Transformer\IGDB;
 
-use App\Entity\Company\Website;
 use App\Entity\Game;
 use App\Eimmar\IGDBBundle\DTO as IGDB;
-use Doctrine\ORM\EntityManagerInterface;
 
 class GameWebsiteTransformer implements IGDBTransformerInterface
 {

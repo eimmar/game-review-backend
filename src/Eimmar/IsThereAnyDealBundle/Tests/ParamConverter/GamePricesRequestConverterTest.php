@@ -6,6 +6,7 @@ namespace App\Eimmar\IsThereAnyDealBundle\Tests\ParamConverter;
 
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
 use App\Eimmar\IsThereAnyDealBundle\ParamConverter\GamePricesRequestConverter;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class GamePricesRequestConverterTest extends TestCase
         $request = new Request([],[],[],[],[],[],'{"limit":10,"offset":0,"sort":"publish_date:desc"}');
         $configuration = new ParamConverter(['name' => 'request', 'class' => GamePricesRequest::class]);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->service->apply($request, $configuration);
     }

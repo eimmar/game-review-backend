@@ -6,6 +6,7 @@ namespace App\Security\Voter;
 
 use App\Entity\Review;
 use App\Entity\User;
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -40,7 +41,7 @@ class ReviewVoter extends Voter
             return $this->canModify($subject, $currentUser);
         }
 
-        throw new \LogicException('Invalid attribute!');
+        throw new LogicException('Invalid attribute!');
     }
 
     /**

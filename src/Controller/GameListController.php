@@ -14,6 +14,7 @@ use App\Security\Voter\GameListVoter;
 use App\Service\ApiJsonResponseBuilder;
 use App\Service\GameListService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,7 +102,7 @@ class GameListController extends BaseApiController
      * @param Request $request
      * @param GameList $gameList
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function edit(Request $request, GameList $gameList): JsonResponse
     {
@@ -112,7 +113,7 @@ class GameListController extends BaseApiController
         if ($form->isValid()) {
             try {
                 $this->getDoctrine()->getManager()->flush();
-            } catch (UniqueConstraintViolationException $e) {
+            } /** @noinspection PhpRedundantCatchClauseInspection */ catch (UniqueConstraintViolationException $e) {
                 throw new LogicException(LogicExceptionCode::GAME_LIST_DUPLICATE_NAME);
             }
 

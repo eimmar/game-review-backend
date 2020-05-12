@@ -26,6 +26,7 @@ class GameTransformerTest extends TestCase
 
     private GameTransformer $transformer;
 
+    /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
     public function setUp()
     {
         $this->imageTransformer = $this->createMock(ImageTransformer::class);

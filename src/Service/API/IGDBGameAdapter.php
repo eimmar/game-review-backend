@@ -9,6 +9,8 @@ use App\Eimmar\IGDBBundle\Service\ApiConnector;
 use App\Entity\Game;
 use App\Service\CacheService;
 use App\Service\Transformer\IGDB\GameTransformer;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 class IGDBGameAdapter
@@ -79,7 +81,7 @@ class IGDBGameAdapter
         $where = $requestBody->getWhere();
         $where['first_release_date'] = isset($where['first_release_date'])
             ? $where['first_release_date'] . ' & first_release_date != null'
-            : '!= null & first_release_date <= ' . (new \DateTime())->getTimestamp();
+            : '!= null & first_release_date <= ' . (new DateTime())->getTimestamp();
         $requestBody->setWhere($where);
     }
 
@@ -109,7 +111,7 @@ class IGDBGameAdapter
     public function findOneBySlug(string $slug)
     {
         $game = $this->entityManager->getRepository(Game::class)
-            ->findOneRecentlyImported($slug, new \DateTimeImmutable("now -{$this->dataLifeTime} second"));
+            ->findOneRecentlyImported($slug, new DateTimeImmutable("now -{$this->dataLifeTime} second"));
         if ($game) {
             return $game;
         }
@@ -119,7 +121,7 @@ class IGDBGameAdapter
         if ($games) {
             $this->gameTransformer->setUseDatabase(true);
             $game = $this->gameTransformer->transform($games[0]);
-            $game->setImportedAt(new \DateTimeImmutable());
+            $game->setImportedAt(new DateTimeImmutable());
             $this->entityManager->persist($game);
             $this->entityManager->flush();
         }

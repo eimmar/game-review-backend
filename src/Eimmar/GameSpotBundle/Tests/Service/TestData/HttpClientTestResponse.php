@@ -17,10 +17,12 @@ class HttpClientTestResponse implements ResponseInterface
 
     public function getStatusCode(): int
     {
+        return 200;
     }
 
     public function getHeaders(bool $throw = true): array
     {
+        return [];
     }
 
     public function getContent(bool $throw = true): string
@@ -30,6 +32,7 @@ class HttpClientTestResponse implements ResponseInterface
 
     public function toArray(bool $throw = true): array
     {
+        return [];
     }
 
     public function cancel(): void

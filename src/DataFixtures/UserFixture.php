@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -27,6 +28,7 @@ class UserFixture extends Fixture
      * @param string|null $lastName
      * @param array|string[] $roles
      * @param bool $enabled
+     * @param string|null $confirmationToken
      * @return User
      */
     private function createUser(
@@ -58,7 +60,7 @@ class UserFixture extends Fixture
 
         if ($confirmationToken) {
             $user->setConfirmationToken($confirmationToken);
-            $user->setPasswordRequestedAt(new \DateTime());
+            $user->setPasswordRequestedAt(new DateTime());
         }
 
         return $user;

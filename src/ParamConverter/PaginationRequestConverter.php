@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ParamConverter;
 
 use App\DTO\PaginationRequest;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ class PaginationRequestConverter implements ParamConverterInterface
     {
         $content = json_decode($request->getContent(), true);
         if (!$content || !isset($content['page']) || (!isset($content['pageSize']) && !isset($content['firstResult']))) {
-            throw new \InvalidArgumentException('Invalid request parameters.');
+            throw new InvalidArgumentException('Invalid request parameters.');
         }
 
         $request->attributes->set($configuration->getName(), new PaginationRequest(

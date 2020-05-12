@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Eimmar\GameSpotBundle\ParamConverter;
 
 use App\Eimmar\GameSpotBundle\DTO\Request\ApiRequest;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ class ApiRequestConverter implements ParamConverterInterface
         $content = json_decode($request->getContent(), true);
 
         if (!$content || !isset($content['format'])) {
-            throw new \InvalidArgumentException('Invalid request parameters.');
+            throw new InvalidArgumentException('Invalid request parameters.');
         }
 
         $gamePricesRequest = new ApiRequest(

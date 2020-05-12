@@ -20,6 +20,7 @@ class ApiConnectorTest extends TestCase
 
     private GameTransformer $gameTransformer;
 
+    /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
     public function setUp()
     {
         $userKey = 'userKey';
@@ -41,7 +42,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('POST', ApiConnector::GAMES_URL, $requestOptions)
+            ->with(['POST', ApiConnector::GAMES_URL, $requestOptions])
             ->willReturn(new HttpClientTestResponse($responseContents));
 
         $this->gameTransformer->expects($this->once())->method('transform')->with(json_decode($responseContents)[0])->willReturn($game);
@@ -60,7 +61,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('POST', ApiConnector::REVIEWS_URL, $requestOptions)
+            ->with(['POST', ApiConnector::REVIEWS_URL, $requestOptions])
             ->willReturn(new HttpClientTestResponse($responseContents));
 
 

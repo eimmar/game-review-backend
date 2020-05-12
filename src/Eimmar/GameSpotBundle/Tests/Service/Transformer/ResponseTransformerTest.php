@@ -19,6 +19,7 @@ class ResponseTransformerTest extends TestCase
         $this->transformer = new ResponseTransformer();
     }
 
+    /** @noinspection PhpParamsInspection */
     public function testTransformWithResultsTransformer()
     {
         $reviewTransformer = $this->createMock(ReviewTransformer::class);

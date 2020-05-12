@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Eimmar\IsThereAnyDealBundle\ParamConverter;
 
 use App\Eimmar\IsThereAnyDealBundle\DTO\Request\GamePricesRequest;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ class GamePricesRequestConverter implements ParamConverterInterface
         $content = json_decode($request->getContent(), true);
 
         if (!$content || !isset($content['plains'])) {
-            throw new \InvalidArgumentException('Invalid request parameters.');
+            throw new InvalidArgumentException('Invalid request parameters.');
         }
 
         $gamePricesRequest = new GamePricesRequest(

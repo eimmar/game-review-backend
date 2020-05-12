@@ -6,6 +6,7 @@ namespace App\Service\Transformer;
 
 use App\DTO\SearchRequest;
 use App\Eimmar\IGDBBundle\DTO\Request\RequestBody;
+use DateTime;
 
 class SearchRequestToIGDBRequestTransformer
 {
@@ -64,12 +65,12 @@ class SearchRequestToIGDBRequestTransformer
         }
 
         if ($value = $request->getFilter('releaseDateFrom')) {
-            $where['first_release_date'] = '>= ' . (new \DateTime($value))->getTimestamp();
+            $where['first_release_date'] = '>= ' . (new DateTime($value))->getTimestamp();
         }
 
         if ($value = $request->getFilter('releaseDateTo')) {
             $previousVal = isset($where['first_release_date']) ? $where['first_release_date'] . ' & first_release_date ' : '';
-            $where['first_release_date'] = $previousVal . '<= ' . (new \DateTime($value))->getTimestamp();
+            $where['first_release_date'] = $previousVal . '<= ' . (new DateTime($value))->getTimestamp();
         }
 
         if ($request->getOrderBy() === 'rating') {

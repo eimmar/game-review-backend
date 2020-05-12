@@ -2,6 +2,7 @@
 namespace App\Entity;
 use App\Enum\GameListType;
 use App\Traits\TimestampableTrait;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -221,6 +222,6 @@ class User extends BaseUser
     public function setAvatarFile($avatarFile): void
     {
         $this->avatarFile = $avatarFile;
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

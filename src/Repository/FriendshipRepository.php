@@ -4,10 +4,10 @@ namespace App\Repository;
 
 use App\DTO\SearchRequest;
 use App\Entity\Friendship;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Friendship|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,10 +23,10 @@ class FriendshipRepository extends ServiceEntityRepository
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param User $user
+     * @param UserInterface $user
      * @param SearchRequest $request
      */
-    private function buildQueryFromRequest(QueryBuilder $queryBuilder, User $user, SearchRequest $request)
+    private function buildQueryFromRequest(QueryBuilder $queryBuilder, UserInterface $user, SearchRequest $request)
     {
         if (strlen($request->getFilter('search')) !== 0) {
             $queryBuilder
@@ -48,12 +48,12 @@ class FriendshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $currentUser
-     * @param User $user
+     * @param UserInterface $currentUser
+     * @param UserInterface $user
      * @param int|null $status
      * @return Friendship|null
      */
-    public function findFriendship(User $currentUser, User $user, ?int $status = null)
+    public function findFriendship(UserInterface $currentUser, UserInterface $user, ?int $status = null)
     {
         $queryBuilder = $this->createQueryBuilder('f')
             ->where('f.sender = :current AND f.receiver = :user')
@@ -70,11 +70,11 @@ class FriendshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $currentUser
-     * @param User $user
+     * @param UserInterface $currentUser
+     * @param UserInterface $user
      * @return Friendship|null
      */
-    public function findFriendRequest(User $currentUser, User $user)
+    public function findFriendRequest(UserInterface $currentUser, UserInterface $user)
     {
        return $this->createQueryBuilder('f')
             ->where('f.sender = :user AND f.receiver = :current')
@@ -84,11 +84,11 @@ class FriendshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      * @param SearchRequest $request
      * @return Friendship[]
      */
-    public function findAllFriendships(User $user, SearchRequest $request)
+    public function findAllFriendships(UserInterface $user, SearchRequest $request)
     {
         $queryBuilder = $this->createQueryBuilder('f');
         $this->buildQueryFromRequest($queryBuilder, $user, $request);
@@ -103,11 +103,11 @@ class FriendshipRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      * @param SearchRequest $request
      * @return int
      */
-    public function countFriendships(User $user, SearchRequest $request)
+    public function countFriendships(UserInterface $user, SearchRequest $request)
     {
         $queryBuilder = $this->createQueryBuilder('f')->select('COUNT(f.receiver)');
         $this->buildQueryFromRequest($queryBuilder, $user, $request);
