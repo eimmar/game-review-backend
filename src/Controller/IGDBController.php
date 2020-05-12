@@ -11,6 +11,7 @@ use App\Service\API\IGDBGameAdapter;
 use App\Service\API\IGDBReviewAdapter;
 use App\Service\ApiJsonResponseBuilder;
 use App\Service\Transformer\SearchRequestToIGDBRequestTransformer;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,11 +24,14 @@ class IGDBController extends BaseApiController
 
     private IGDBReviewAdapter $reviewAdapter;
 
-    public function __construct(ApiJsonResponseBuilder $builder, IGDBGameAdapter $gameAdapter, IGDBReviewAdapter $reviewAdapter)
+    private GameRepository $repository;
+
+    public function __construct(ApiJsonResponseBuilder $builder, IGDBGameAdapter $gameAdapter, IGDBReviewAdapter $reviewAdapter, GameRepository $repository)
     {
         parent::__construct($builder);
         $this->gameAdapter = $gameAdapter;
         $this->reviewAdapter = $reviewAdapter;
+        $this->repository = $repository;
     }
 
     /**
@@ -54,21 +58,16 @@ class IGDBController extends BaseApiController
 
     /**
      * @Route("/games", name="igdb_games", methods={"POST"})
-     * @param GameRepository $repository
      * @param SearchRequest $request
      * @param SearchRequestToIGDBRequestTransformer $transformer
      * @return JsonResponse
      */
-    public function games(
-        GameRepository $repository,
-        SearchRequest $request,
-        SearchRequestToIGDBRequestTransformer $transformer
-    ): JsonResponse {
+    public function games(SearchRequest $request, SearchRequestToIGDBRequestTransformer $transformer): JsonResponse {
         try {
             $games = $this->gameAdapter->findAll($transformer->transform($request));
             $status = 200;
-        } catch (\Exception $e) {
-            $games = $repository->filter($request);
+        } catch (Exception $e) {
+            $games = $this->repository->filter($request);
             $status = 206;
         }
 
@@ -82,7 +81,12 @@ class IGDBController extends BaseApiController
      */
     public function game(string $slug): JsonResponse
     {
-        $game = $this->gameAdapter->findOneBySlug($slug);
+        try {
+            $game = $this->gameAdapter->findOneBySlug($slug);
+        } catch (Exception $e) {
+            $game = $this->repository->findBySlug($slug);
+        }
+
         if (!$game) {
             return $this->apiResponseBuilder->respond('', 404);
         }
