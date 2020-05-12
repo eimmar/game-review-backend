@@ -23,8 +23,25 @@
     </testsuites>
 
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
+        <whitelist>
+            <directory suffix=".php">src/Controller/</directory>
+
+            <directory suffix=".php">src/Mailer/</directory>
+            <directory suffix=".php">src/Security/Voter/</directory>
+            <directory suffix=".php">src/Service/</directory>
+            <directory suffix=".php">src/Eimmar/</directory>
+
+            <directory suffix=".php">src/ParamConverter/</directory>
+            <directory suffix=".php">src/Repository/</directory>
+            <directory suffix=".php">src/Form/</directory>
+
+            <exclude>
+                <file>src/Controller/DefaultController.php</file>
+                <directory suffix=".php">src/Eimmar/*/DTO/</directory>
+                <directory suffix=".php">src/Eimmar/*/Traits/</directory>
+                <directory suffix=".php">src/Service/Transformer/</directory>
+            </exclude>
+            <file>src/Service/Transformer/GameTransformer.php</file>
         </whitelist>
     </filter>
 
@@ -35,4 +52,9 @@
     <extensions>
         <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
     </extensions>
+
+    <logging>
+        <log lowUpperBound="35" highLowerBound="70" showUncoveredFiles="true" />
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+    </logging>
 </phpunit>

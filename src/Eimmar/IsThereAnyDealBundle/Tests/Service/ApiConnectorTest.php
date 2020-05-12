@@ -45,7 +45,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with(['GET', ApiConnector::SEARCH_URL, $requestOptions])
+            ->with(...['GET', ApiConnector::SEARCH_URL, $requestOptions])
             ->willReturn(new HttpClientTestResponse($responseContents));
 
 
@@ -70,7 +70,7 @@ class ApiConnectorTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with(['GET', ApiConnector::GAME_PRICES_URL, $requestOptions])
+            ->with(...['GET', ApiConnector::GAME_PRICES_URL, $requestOptions])
             ->willReturn(new HttpClientTestResponse($responseContents));
 
 
