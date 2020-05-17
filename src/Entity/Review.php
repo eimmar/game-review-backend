@@ -238,4 +238,9 @@ class Review
     {
         $this->approved = $approved;
     }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 }
